@@ -1,0 +1,43 @@
+.board {
+    display: grid;
+    grid-template: repeat(6, 1fr) / repeat(6, 1fr);
+    grid-gap: 4px;
+    height: 70vh;
+    width: 70vh;
+    position: relative;
+    background-color: gray;
+    padding: 4px;
+}
+
+.pawn {
+    position: absolute;
+    height: 3.3%;
+    width: 3.3%;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.color--black {
+    background-color: black;
+    border: 2px solid gray;
+}
+.color--gray {
+    background-color: gray;
+    border: 2px solid black;
+}
+.color--blue {
+    background-color: blue;
+    border: 2px solid gray;
+}
+.color--red {
+    background-color: red;
+    border: 2px solid gray;
+}
+.color--yellow {
+    background-color: yellow;
+    border: 2px solid gray;
+}
+.color--green {
+    background-color: green;
+    border: 2px solid black;
+}

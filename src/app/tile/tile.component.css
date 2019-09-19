@@ -1,0 +1,30 @@
+.tile {
+    box-sizing: border-box;
+    height: 100%;
+    position: relative
+}
+
+.tile--present {
+    border: 2px solid black;
+    border-radius: 6px;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.landing {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.tile--empty {
+    
+}
+
+.treasure {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+}

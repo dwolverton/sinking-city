@@ -1,0 +1,6 @@
+<div class="tile tile--present" *ngIf="tileState" [ngClass]="{landing: tile.landing}">
+  {{ tile.name }}
+  <span class="treasure" *ngIf="treasure" [title]="treasure.name">{{treasure.emoji}}</span>
+</div>
+<div class="tile tile--empty" *ngIf="!tileState">
+</div>

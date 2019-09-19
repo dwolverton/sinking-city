@@ -1,0 +1,6 @@
+<main>
+  <app-board [board]="board"></app-board>
+  <div class="players">
+    <app-player *ngFor="let player of board.players"></app-player>
+  </div>
+</main>
