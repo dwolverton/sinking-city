@@ -17,7 +17,6 @@ export class TileComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.tileState);
     this.tile = this.tileState ? TILES[this.tileState.id] : null;
     this.treasure = this.tile && this.tile.treasure !== null ? TREASURES[this.tile.treasure] : null;
   }

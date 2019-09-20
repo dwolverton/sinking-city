@@ -1,5 +1,5 @@
-<div class="board">
-  <app-tile *ngFor="let tile of board.tiles" [tile]="tile"></app-tile>
-  <div class="pawn" *ngFor="let pawn of pawns" [ngClass]="'color--' + pawn.role.color"
-       [ngStyle]="pawn.position"></div>
-</div>
+
+<app-tile *ngFor="let tile of board.tiles" [tile]="tile"></app-tile>
+<div class="pawn" *ngFor="let pawn of pawns" [ngClass]="'color--' + pawn.role.color"
+      [ngStyle]="pawn.position"></div>
+

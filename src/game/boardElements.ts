@@ -7,14 +7,22 @@ export class Tile {
     ) {}
 }
 
-export enum TreasureCardSpecial { WATERS_RISE, HELICOPTER_LIFT, SANDBAGS };
-
 export class TreasureCard {
     constructor(
         readonly id:number,
-        readonly treasure:number = null,
+        readonly treasure:Treasure = null,
         readonly special:TreasureCardSpecial = null
     ) {}
+}
+
+export class TreasureCardSpecial {
+    constructor(
+        readonly name:string,
+        readonly emoji:string
+    ) {}
+    static readonly WATERS_RISE:TreasureCardSpecial = new TreasureCardSpecial("Waters Rise!", "🌊");
+    static readonly HELICOPTER_LIFT:TreasureCardSpecial = new TreasureCardSpecial("Helicopter Lift", "🚁");
+    static readonly SANDBAGS:TreasureCardSpecial = new TreasureCardSpecial("Sandbags", "💰");
 }
 
 export class FloodCard {
@@ -27,7 +35,7 @@ export class FloodCard {
 export class Role {
     constructor(
         readonly id:number,
-        readonly role:string,
+        readonly name:string,
         readonly color:string,
         readonly startingTile:number
     ) {}
@@ -79,26 +87,26 @@ export const TILES:ReadonlyArray<Tile> = [
 
 idCtr = 0;
 export const TREASURE_CARDS:ReadonlyArray<TreasureCard> = [
-    new TreasureCard(idCtr++, 0),
-    new TreasureCard(idCtr++, 0),
-    new TreasureCard(idCtr++, 0),
-    new TreasureCard(idCtr++, 0),
-    new TreasureCard(idCtr++, 0),
-    new TreasureCard(idCtr++, 1),
-    new TreasureCard(idCtr++, 1),
-    new TreasureCard(idCtr++, 1),
-    new TreasureCard(idCtr++, 1),
-    new TreasureCard(idCtr++, 1),
-    new TreasureCard(idCtr++, 2),
-    new TreasureCard(idCtr++, 2),
-    new TreasureCard(idCtr++, 2),
-    new TreasureCard(idCtr++, 2),
-    new TreasureCard(idCtr++, 2),
-    new TreasureCard(idCtr++, 3),
-    new TreasureCard(idCtr++, 3),
-    new TreasureCard(idCtr++, 3),
-    new TreasureCard(idCtr++, 3),
-    new TreasureCard(idCtr++, 3),
+    new TreasureCard(idCtr++, TREASURES[0]),
+    new TreasureCard(idCtr++, TREASURES[0]),
+    new TreasureCard(idCtr++, TREASURES[0]),
+    new TreasureCard(idCtr++, TREASURES[0]),
+    new TreasureCard(idCtr++, TREASURES[0]),
+    new TreasureCard(idCtr++, TREASURES[1]),
+    new TreasureCard(idCtr++, TREASURES[1]),
+    new TreasureCard(idCtr++, TREASURES[1]),
+    new TreasureCard(idCtr++, TREASURES[1]),
+    new TreasureCard(idCtr++, TREASURES[1]),
+    new TreasureCard(idCtr++, TREASURES[2]),
+    new TreasureCard(idCtr++, TREASURES[2]),
+    new TreasureCard(idCtr++, TREASURES[2]),
+    new TreasureCard(idCtr++, TREASURES[2]),
+    new TreasureCard(idCtr++, TREASURES[2]),
+    new TreasureCard(idCtr++, TREASURES[3]),
+    new TreasureCard(idCtr++, TREASURES[3]),
+    new TreasureCard(idCtr++, TREASURES[3]),
+    new TreasureCard(idCtr++, TREASURES[3]),
+    new TreasureCard(idCtr++, TREASURES[3]),
     new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE),
     new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE),
     new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE),

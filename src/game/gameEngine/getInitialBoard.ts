@@ -29,7 +29,7 @@ function addPlayers(board:BoardState, playerCount:number):void {
             id: i,
             name: "Player " + (i + 1),
             role: roles.pop(),
-            cards: [drawNonWatersRiseTreasureCard(board), drawNonWatersRiseTreasureCard(board)]
+            cards: [drawNonWatersRiseTreasureCard(board).id, drawNonWatersRiseTreasureCard(board).id]
         };
         const startingTile = ROLES[player.role].startingTile;
         const startingTileIndex = board.tiles.findIndex(tile => tile && tile.id === startingTile);

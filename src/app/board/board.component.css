@@ -1,9 +1,11 @@
-.board {
+:host {
     display: grid;
     grid-template: repeat(6, 1fr) / repeat(6, 1fr);
     grid-gap: 4px;
-    height: 70vh;
-    width: 70vh;
+    height: 100vh;
+    min-width: 70vh;
+    max-width: 100vh;
+    box-sizing: border-box;
     position: relative;
     background-color: gray;
     padding: 4px;

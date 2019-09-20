@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { TreasureCard } from 'src/game/boardElements';
 
 @Component({
   selector: 'app-player-card',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./player-card.component.css']
 })
 export class PlayerCardComponent implements OnInit {
+
+  @Input()
+  card:TreasureCard
 
   constructor() { }
 

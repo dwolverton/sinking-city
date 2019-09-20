@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { TileComponent } from './tile/tile.component';
-import { PlayerComponent } from './player/player.component';
+import { PlayerBoardComponent } from './player-board/player-board.component';
 import { PlayerCardComponent } from './player-card/player-card.component';
 import { PlayComponent } from './play/play.component';
 
@@ -14,7 +14,7 @@ import { PlayComponent } from './play/play.component';
     AppComponent,
     BoardComponent,
     TileComponent,
-    PlayerComponent,
+    PlayerBoardComponent,
     PlayerCardComponent,
     PlayComponent
   ],
