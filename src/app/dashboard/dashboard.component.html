@@ -1,0 +1,12 @@
+<div class="water-level">
+  <label>Water Level ({{waterLevel}})</label>
+  <progress min="0" max="9" [value]="board.waterLevel"></progress>
+</div>
+<div class="flood-discard">
+  <label>Flood Discard ({{board.floodDiscard.length}})</label>
+  <app-flood-card [card]="floodDiscard"></app-flood-card>
+</div>
+<div class="treasure-discard">
+  <label>Treasure Discard ({{board.treasureDiscard.length}})</label>
+  <app-player-card [card]="treasureDiscard"></app-player-card>
+</div>

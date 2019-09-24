@@ -1,4 +1,4 @@
-import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
+import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial, FloodCard } from '../boardElements';
 import BoardState, { TileState } from '../BoardState';
 import { Action } from '../actions';
 import shuffle from 'lodash/shuffle';
@@ -21,11 +21,13 @@ export default function getInitialBoard(playerCount:number, difficulty:number):B
     addPlayers(board, playerCount);
 
     // Temp
-    for (let i = 0; i < 5; i++) {
-        board.players[0].cards.push(drawNonWatersRiseTreasureCard(board).id);
-    }
-    board.currentPlayer = 1;
-    board.tiles[7].flooded = true;
+    // for (let i = 0; i < 5; i++) {
+    //     board.players[0].cards.push(drawNonWatersRiseTreasureCard(board).id);
+    // }
+    // board.currentPlayer = 1;
+    // board.tiles[7].flooded = true;
+    // board.treasureDiscard.push(drawTreasureCard(board).id);
+    // board.floodDiscard.push(drawFloodCard(board).id);
 
     return board;
 }
@@ -47,6 +49,12 @@ function addPlayers(board:BoardState, playerCount:number):void {
         player.y = startingTileCoord.y;
         board.players.push(player);
     }
+}
+
+function drawFloodCard(board:BoardState):FloodCard {
+    // TODO if deck is empty, shuffle discard pile and replace.
+    const id = board.floodStack.pop();
+    return FLOOD_CARDS[id];
 }
 
 function drawTreasureCard(board:BoardState):TreasureCard {

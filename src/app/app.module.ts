@@ -8,6 +8,8 @@ import { TileComponent } from './tile/tile.component';
 import { PlayerBoardComponent } from './player-board/player-board.component';
 import { PlayerCardComponent } from './player-card/player-card.component';
 import { PlayComponent } from './play/play.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { FloodCardComponent } from './flood-card/flood-card.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { PlayComponent } from './play/play.component';
     TileComponent,
     PlayerBoardComponent,
     PlayerCardComponent,
-    PlayComponent
+    PlayComponent,
+    DashboardComponent,
+    FloodCardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,26 @@
+:host {
+    display: flex;
+    background-color: white;
+    border: 2px solid black;
+    padding: 4px;
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 6px;
+}
+
+:host > div {
+    margin-right: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+:host > div:last-child {
+    margin-right: 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}

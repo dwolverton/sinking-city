@@ -6,19 +6,10 @@
     padding: 6px 0;
     width: 78px;
     height: 80px;
+    justify-content: center;
     text-align: center;
-    background-color: beige;
+    background-color: lightsteelblue;
     box-shadow: 1px 1px 2px black;
-}
-
-.special-treasure-card {
-    justify-content: flex-end;
-    background-color: lightcoral;
-}
-
-.symbol {
-    font-size: 30px;
-    margin: 4px 0;
 }
 
 .card-empty {

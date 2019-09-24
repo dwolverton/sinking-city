@@ -1,6 +1,6 @@
 .player {
     display: flex;
-    padding: 4px;
+    padding: 4px 4px 4px 0;
 }
 .player-id {
     display: flex;
