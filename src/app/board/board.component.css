@@ -7,7 +7,6 @@
     max-width: 100vh;
     box-sizing: border-box;
     position: relative;
-    background-color: gray;
     padding: 4px;
 }
 
@@ -17,6 +16,10 @@
     width: 3.3%;
     border-radius: 50%;
     box-sizing: border-box;
+}
+
+.pawn.current {
+    box-shadow: 0 0 2px 2px dodgerblue;
 }
 
 .color--black {

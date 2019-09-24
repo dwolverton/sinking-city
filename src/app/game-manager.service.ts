@@ -12,7 +12,7 @@ export class GameManagerService {
   private _board:BoardState = null;
 
   constructor() {
-    this.updateBoard(getInitialBoard(4));
+    this.updateBoard(getInitialBoard(4, 1));
   }
 
   private updateBoard(board:BoardState) {

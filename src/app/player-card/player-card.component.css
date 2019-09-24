@@ -3,14 +3,17 @@
     flex-direction: column;
     border: 2px solid black;
     border-radius: 4px;
-    padding: 6px;
-    width: 70px;
+    padding: 6px 0;
+    width: 78px;
     height: 80px;
     text-align: center;
+    background-color: beige;
+    box-shadow: 1px 1px 2px black;
 }
 
 .special-treasure-card {
     justify-content: flex-end;
+    background-color: lightcoral;
 }
 
 .symbol {

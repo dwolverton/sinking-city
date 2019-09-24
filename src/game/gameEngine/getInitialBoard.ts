@@ -5,19 +5,28 @@ import shuffle from 'lodash/shuffle';
 import findIndex from 'lodash/findIndex';
 import Coord from '../Coord';
 
-export default function getInitialBoard(playerCount:number):BoardState {
+// Difficulties: 0=Novice, 1=Normal, 2=Elite, 3=Legendary
+export default function getInitialBoard(playerCount:number, difficulty:number):BoardState {
     const board:BoardState = {
         players: [],
         tiles: createTiles(),
         currentPlayer: null,
         actionsRemaining: null,
-        waterLevel: 0,
+        waterLevel: difficulty,
         treasureStack: createShuffledNumbersArray(TREASURE_CARDS.length),
         treasureDiscard: [],
         floodStack: createShuffledNumbersArray(FLOOD_CARDS.length),
         floodDiscard: []
     };
     addPlayers(board, playerCount);
+
+    // Temp
+    for (let i = 0; i < 5; i++) {
+        board.players[0].cards.push(drawNonWatersRiseTreasureCard(board).id);
+    }
+    board.currentPlayer = 1;
+    board.tiles[7].flooded = true;
+
     return board;
 }
 

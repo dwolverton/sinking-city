@@ -1,6 +1,7 @@
 <main>
   <app-board [board]="board"></app-board>
   <div class="players">
-    <app-player-board *ngFor="let player of board.players" [player]="player"></app-player-board>
+    <app-player-board *ngFor="let player of board.players; index as i" [player]="player"
+                    [ngClass]="{current: i === board.currentPlayer}"></app-player-board>
   </div>
 </main>

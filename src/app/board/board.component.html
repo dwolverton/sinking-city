@@ -1,5 +1,5 @@
 
 <app-tile *ngFor="let tile of board.tiles" [tile]="tile"></app-tile>
-<div class="pawn" *ngFor="let pawn of pawns" [ngClass]="'color--' + pawn.role.color"
-      [ngStyle]="pawn.position"></div>
+<div [class]="'pawn color--' + pawn.role.color" *ngFor="let pawn of pawns; index as i"
+      [ngClass]="{current: i === board.currentPlayer}" [ngStyle]="pawn.position"></div>
 
