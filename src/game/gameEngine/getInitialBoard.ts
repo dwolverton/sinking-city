@@ -1,8 +1,6 @@
 import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial, FloodCard } from '../boardElements';
 import BoardState, { TileState } from '../BoardState';
-import { Action } from '../actions';
 import shuffle from 'lodash/shuffle';
-import findIndex from 'lodash/findIndex';
 import Coord from '../Coord';
 
 // Difficulties: 0=Novice, 1=Normal, 2=Elite, 3=Legendary
@@ -15,8 +13,11 @@ export default function getInitialBoard(playerCount:number, difficulty:number):B
         waterLevel: difficulty,
         treasureStack: createShuffledNumbersArray(TREASURE_CARDS.length),
         treasureDiscard: [],
+        treasureCardsToDraw: 0,
         floodStack: createShuffledNumbersArray(FLOOD_CARDS.length),
-        floodDiscard: []
+        floodDiscard: [],
+        floodCardsToDraw: 6,
+        startupComplete: false
     };
     addPlayers(board, playerCount);
 
@@ -51,14 +52,7 @@ function addPlayers(board:BoardState, playerCount:number):void {
     }
 }
 
-function drawFloodCard(board:BoardState):FloodCard {
-    // TODO if deck is empty, shuffle discard pile and replace.
-    const id = board.floodStack.pop();
-    return FLOOD_CARDS[id];
-}
-
 function drawTreasureCard(board:BoardState):TreasureCard {
-    // TODO if deck is empty, shuffle discard pile and replace.
     const id = board.treasureStack.pop();
     return TREASURE_CARDS[id];
 }

@@ -6,5 +6,8 @@
       <app-player-board *ngFor="let player of board.players; index as i" [player]="player"
                       [ngClass]="{current: i === board.currentPlayer}"></app-player-board>
     </div>
+    <div class="actions">
+      <button *ngFor="let action of actions" (click)="doAction(action)">{{action.text}}</button>
+    </div>
   </div>
 </main>

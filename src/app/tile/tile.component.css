@@ -20,11 +20,7 @@
 }
 
 .flooded {
-    background-color: rgba(255, 255, 255, .5);
-}
-
-.tile--empty {
-    
+    background-color: rgba(255, 255, 255, .3);
 }
 
 .treasure {

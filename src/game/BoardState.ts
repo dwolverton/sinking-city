@@ -6,8 +6,11 @@ export default interface BoardState {
     waterLevel:number;
     treasureStack:number[];
     treasureDiscard:number[];
+    treasureCardsToDraw:number;
     floodStack:number[];
     floodDiscard:number[];
+    floodCardsToDraw:number;
+    startupComplete:boolean;
 }
 
 export interface PlayerState {
