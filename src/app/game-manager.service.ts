@@ -24,6 +24,7 @@ export class GameManagerService {
     this.board$.next(board);
     this._actions = getValidActions(board, board.currentPlayer);
     this.actions$.next(this._actions);
+    console.log("Available", this._actions);
   }
 
   get board():BoardState {

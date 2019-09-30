@@ -1,5 +1,3 @@
-import { CoordI } from './Coord';
-
 export interface AvailableAction {
     type:ActionType;
     tiles?:number[];

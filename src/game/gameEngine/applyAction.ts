@@ -3,7 +3,6 @@ import { Action, ActionType } from '../actions';
 import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS } from '../boardElements';
 
 export default function applyAction(board: BoardState, action: Action, player: number): BoardState {
-    console.log(action);
     if (action.type === ActionType.DrawFloodCard) {
         const card: FloodCard = drawFloodCard();
         const tileIndex = board.tiles.findIndex(tile => tile && (tile.id === card.tile.id));
