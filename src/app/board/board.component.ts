@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { GameManagerService } from '../game-manager.service';
 import BoardState, { PlayerState } from 'src/game/BoardState';
 import { ROLES } from 'src/game/boardElements';
@@ -8,20 +8,29 @@ import { ROLES } from 'src/game/boardElements';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnChanges {
 
   @Input()
   board:BoardState;
+  @Input()
+  highlightTiles:number[];
+  @Output()
+  clickTile = new EventEmitter<number>();
   pawns:any[];
 
   constructor(private gameManager:GameManagerService) { }
 
-  ngOnInit() {
-    this.pawns = this.board.players.map(player => ({
-      ...player,
-      role: ROLES[player.role],
-      position: calcPawnPos(player)
-    }));
+  ngOnChanges({board:boardChg}:SimpleChanges) {
+    if (boardChg) {
+      const { previousValue, currentValue } = boardChg;
+      if (!previousValue || previousValue.players !== currentValue.players) {
+        this.pawns = this.board.players.map(player => ({
+          ...player,
+          role: ROLES[player.role],
+          position: calcPawnPos(player)
+        }));
+      }
+    }
   }
 
 }

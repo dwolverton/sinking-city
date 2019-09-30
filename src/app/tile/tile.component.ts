@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TileState } from 'src/game/BoardState';
 import { Tile, TILES, Treasure, TREASURES } from 'src/game/boardElements';
 
@@ -9,6 +9,8 @@ import { Tile, TILES, Treasure, TREASURES } from 'src/game/boardElements';
 })
 export class TileComponent implements OnInit {
 
+  @Output()
+  click = new EventEmitter();
   @Input("tile")
   tileState:TileState;
   tile:Tile;

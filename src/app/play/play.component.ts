@@ -16,16 +16,33 @@ export class PlayComponent implements OnInit, OnDestroy {
   board:BoardState;
   actions:AvailableAction[];
   ACTION_NAMES = ACTION_NAMES;
+  inProgressTileSelection:AvailableAction = null;
 
   constructor(private gameManager:GameManagerService) { }
 
-  doAction(availableAction:AvailableAction) {
-    this.gameManager.doAction({type: availableAction.type});
+  doAction(action:AvailableAction) {
+    if (action.type === ActionType.Move || action.type === ActionType.ShoreUp) {
+      this.inProgressTileSelection = action;
+      return;
+    }
+
+    this.gameManager.doAction({type: action.type});
+  }
+
+  selectTile(id:number) {
+    const action:AvailableAction = this.inProgressTileSelection;
+    if (action && action.tiles.includes(id)) {
+      this.inProgressTileSelection = null;
+      this.gameManager.doAction({type: action.type, tile: id});
+    }
   }
 
   ngOnInit() {
     this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => this.board = board);
-    this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => this.actions = actions);
+    this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
+      this.actions = actions;
+      this.inProgressTileSelection = null;
+    });
   }
 
   ngOnDestroy() {
