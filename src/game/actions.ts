@@ -1,42 +1,35 @@
 import { CoordI } from './Coord';
 
-export interface ActionDef {
-    text:string;
+export interface AvailableAction {
+    type:ActionType;
+    tiles?:number[];
+    cards?:number[];
+    players?:number[];
 }
 
 export interface Action {
+    type:ActionType;
+    tile?:number;
+    card?:number;
+    player?:number;
 }
 
-export class DrawTreasureCardAction {
-    static text:string = "Draw Treasure Card";
+export enum ActionType {
+    DrawTreasureCard = "DrawTreasureCard",
+    DrawFloodCard = "DrawFloodCard",
+    Move = "Move",
+    ShoreUp = "ShoreUp",
+    GiveTreasureCard = "GiveTreasureCard",
+    CaptureTreasure = "CaptureTreasure",
+    Done = "Done"
 }
 
-export class DrawFloodCardAction {
-    static text:string = "Draw Flood Card";
-}
-
-export class MoveAction implements CoordI {
-    static text:string = "Move";
-
-    constructor(public x:number, public y:number) {}
-}
-
-export class ShoreUpAction implements CoordI {
-    static text:string = "Shore Up";
-
-    constructor(public x:number, public y:number) {}
-}
-
-export class GiveTreasureCardAction {
-    static text:string = "Give a Treasure Card";
-
-    constructor(public toPlayer:number) {}
-}
-
-export class CaptureTreasureAction {
-    static text:string = "Capture Treasure";
-}
-
-export class DoneAction {
-    static text:string = "Done";
+export const ACTION_NAMES = {
+    DrawTreasureCard: "Draw Treasure Card",
+    DrawFloodCard: "Draw Flood Card",
+    Move: "Move",
+    ShoreUp: "Shore Up",
+    GiveTreasureCard: "Give a Treasure Card",
+    CaptureTreasure: "Capture Treasure",
+    Done: "Done"
 }

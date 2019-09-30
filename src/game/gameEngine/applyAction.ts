@@ -1,9 +1,10 @@
 import BoardState from '../BoardState';
-import { Action, DrawFloodCardAction, DoneAction, DrawTreasureCardAction } from '../actions';
+import { Action, ActionType } from '../actions';
 import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS } from '../boardElements';
 
 export default function applyAction(board: BoardState, action: Action, player: number): BoardState {
-    if (action instanceof DrawFloodCardAction) {
+    console.log(action);
+    if (action.type === ActionType.DrawFloodCard) {
         const card: FloodCard = drawFloodCard();
         const tileIndex = board.tiles.findIndex(tile => tile && (tile.id === card.tile.id));
         if (!board.tiles[tileIndex].flooded) {
@@ -21,7 +22,7 @@ export default function applyAction(board: BoardState, action: Action, player: n
         if (board.floodCardsToDraw === 0) {
             nextPlayer();
         }
-    } else if (action instanceof DrawTreasureCardAction) {
+    } else if (action.type === ActionType.DrawTreasureCard) {
         const card: TreasureCard = drawTreasureCard();
         const player = board.players[board.currentPlayer];
 
@@ -34,7 +35,7 @@ export default function applyAction(board: BoardState, action: Action, player: n
         if (board.treasureCardsToDraw === 0) {
             startDrawFloodCardsPhase();
         }
-    } else if (action instanceof DoneAction) {
+    } else if (action.type === ActionType.Done) {
         startDrawTreasureCardsPhase();
     }
 

@@ -3,7 +3,7 @@ import BoardState from 'src/game/BoardState';
 import { BehaviorSubject } from 'rxjs';
 import { getInitialBoard, getValidActions } from 'src/game/gameEngine';
 import { applyAction } from "src/game/gameEngine";
-import { ActionDef, Action } from 'src/game/actions';
+import { Action, AvailableAction, ActionType } from 'src/game/actions';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ export class GameManagerService {
 
   readonly board$:BehaviorSubject<BoardState> = new BehaviorSubject(null);
   private _board:BoardState = null;
-  readonly actions$:BehaviorSubject<ActionDef[]> = new BehaviorSubject([]);
-  private _actions:ActionDef[] = [];
+  readonly actions$:BehaviorSubject<AvailableAction[]> = new BehaviorSubject([]);
+  private _actions:AvailableAction[] = [];
 
   constructor() {
     this.updateBoard(getInitialBoard(4, 1));
@@ -30,14 +30,12 @@ export class GameManagerService {
     return this._board;
   }
 
-  get actions():ActionDef[] {
+  get actions():AvailableAction[] {
     return this._actions;
   }
 
-  doAction(actionType:ActionDef, player:number = null):void {
+  doAction(action:Action, player:number = null):void {
     player = player === null ? this._board.currentPlayer : player;
-
-    let action:Action = new (<any>actionType)();
 
 
     const board = applyAction(this._board, action, player);

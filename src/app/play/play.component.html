@@ -7,7 +7,7 @@
                       [ngClass]="{current: i === board.currentPlayer}"></app-player-board>
     </div>
     <div class="actions">
-      <button *ngFor="let action of actions" (click)="doAction(action)">{{action.text}}</button>
+      <button *ngFor="let action of actions" (click)="doAction(action)">{{ACTION_NAMES[action.type]}}</button>
     </div>
   </div>
 </main>

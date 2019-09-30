@@ -3,7 +3,7 @@ import { GameManagerService } from '../game-manager.service';
 import BoardState from 'src/game/BoardState';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ActionDef } from 'src/game/actions';
+import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/game/actions';
 
 @Component({
   selector: 'app-play',
@@ -14,12 +14,13 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   private stop$ = new Subject();
   board:BoardState;
-  actions:ActionDef[];
+  actions:AvailableAction[];
+  ACTION_NAMES = ACTION_NAMES;
 
   constructor(private gameManager:GameManagerService) { }
 
-  doAction(actionType:ActionDef) {
-    this.gameManager.doAction(actionType);
+  doAction(availableAction:AvailableAction) {
+    this.gameManager.doAction({type: availableAction.type});
   }
 
   ngOnInit() {
