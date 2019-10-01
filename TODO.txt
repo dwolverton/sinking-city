@@ -1,1 +1,17 @@
-- tracked by
+- routing: new game form / game ID / list of games / delete a game
+- keyboard shortcuts for move (m) & shore up (s)
+- tests / remove tiles
+- game features
+  - waters rise
+  - piles run out
+  - give card
+  - too many cards in hand
+  - other players can discard at any time
+  - card disappears under a player
+  - lose conditions
+  - collect a treasure
+  - win condition
+  - sandbag
+  - helicopter lift
+  - special abilities
+- online play

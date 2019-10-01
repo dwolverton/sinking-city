@@ -3,7 +3,7 @@
   <div class="side">
     <app-dashboard [board]="board"></app-dashboard>
     <div class="players">
-      <app-player-board *ngFor="let player of board.players; index as i" [player]="player"
+      <app-player-board *ngFor="let player of board.players; index as i; trackBy itemId" [player]="player"
                       [ngClass]="{current: i === board.currentPlayer}"></app-player-board>
     </div>
     <div class="actions">

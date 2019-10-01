@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { PlayerState } from 'src/game/BoardState';
 import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElements';
 
@@ -7,7 +7,7 @@ import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElement
   templateUrl: './player-board.component.html',
   styleUrls: ['./player-board.component.css']
 })
-export class PlayerBoardComponent implements OnInit {
+export class PlayerBoardComponent implements OnInit, OnChanges {
 
   @Input()
   player:PlayerState;
@@ -18,7 +18,15 @@ export class PlayerBoardComponent implements OnInit {
 
   ngOnInit() {
     this.role = ROLES[this.player.role];
-    this.cards = this.player.cards.map(id => TREASURE_CARDS[id]);
+  }
+
+  ngOnChanges({player:playerChg}:SimpleChanges) {
+    if (playerChg) {
+      const { previousValue, currentValue } = playerChg;
+      if (!previousValue || currentValue.cards !== previousValue.cards) {
+        this.cards = this.player.cards.map(id => TREASURE_CARDS[id]);
+      }
+    }
   }
 
 }

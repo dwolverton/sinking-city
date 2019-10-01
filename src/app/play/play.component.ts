@@ -50,4 +50,6 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.stop$.unsubscribe();
   }
 
+  itemId(item) { return item.id; }
+
 }
