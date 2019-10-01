@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FloodCardComponent } from './flood-card/flood-card.component';
 import { NewGameComponent } from './new-game/new-game.component';
 import { GameListComponent } from './game-list/game-list.component';
+import { WindowComponent } from './window/window.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { GameListComponent } from './game-list/game-list.component';
     DashboardComponent,
     FloodCardComponent,
     NewGameComponent,
-    GameListComponent
+    GameListComponent,
+    WindowComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-- routing: new game form / game ID / list of games / delete a game
+- new game form / delete a game
 - keyboard shortcuts for move (m) & shore up (s)
 - tests / remove tiles
 - game features

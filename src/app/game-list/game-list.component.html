@@ -1,7 +1,9 @@
-<h1>Select a Game</h1>
-<ul>
-  <li *ngFor="let game of games">
-    <a routerLink="/game/{{game.id}}">#{{game.id}} - {{game.board.players.length}} players</a>
-  </li>
-</ul>
-<a routerLink="/new">New Game</a>
+<app-window>
+  <h1>Select a Game</h1>
+  <ul>
+    <li *ngFor="let game of games">
+      <a routerLink="/game/{{game.id}}">#{{game.id}} - {{game.board.players.length}} players</a>
+    </li>
+  </ul>
+  <a routerLink="/new">New Game</a>
+</app-window>
