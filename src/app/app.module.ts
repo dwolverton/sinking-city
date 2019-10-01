@@ -10,6 +10,8 @@ import { PlayerCardComponent } from './player-card/player-card.component';
 import { PlayComponent } from './play/play.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FloodCardComponent } from './flood-card/flood-card.component';
+import { NewGameComponent } from './new-game/new-game.component';
+import { GameListComponent } from './game-list/game-list.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { FloodCardComponent } from './flood-card/flood-card.component';
     PlayerCardComponent,
     PlayComponent,
     DashboardComponent,
-    FloodCardComponent
+    FloodCardComponent,
+    NewGameComponent,
+    GameListComponent
   ],
   imports: [
     BrowserModule,

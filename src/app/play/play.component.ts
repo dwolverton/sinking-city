@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GameManagerService } from '../game-manager.service';
 import BoardState from 'src/game/BoardState';
 import { Subject } from 'rxjs';
@@ -18,7 +19,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   ACTION_NAMES = ACTION_NAMES;
   inProgressTileSelection:AvailableAction = null;
 
-  constructor(private gameManager:GameManagerService) { }
+  constructor(private gameManager:GameManagerService, private route:ActivatedRoute) { }
 
   doAction(action:AvailableAction) {
     if (action.type === ActionType.Move || action.type === ActionType.ShoreUp) {
@@ -38,7 +39,11 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => this.board = board);
+    this.route.paramMap.subscribe(params => {
+      this.gameManager.loadGame(+params.get('gameId'));
+    });
+
+    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => {this.board = board; console.log(board);});
     this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
       this.actions = actions;
       this.inProgressTileSelection = null;
