@@ -13,6 +13,7 @@ import { FloodCardComponent } from './flood-card/flood-card.component';
 import { NewGameComponent } from './new-game/new-game.component';
 import { GameListComponent } from './game-list/game-list.component';
 import { WindowComponent } from './window/window.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { WindowComponent } from './window/window.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

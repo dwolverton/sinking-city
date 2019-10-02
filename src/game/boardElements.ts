@@ -133,3 +133,7 @@ export const ROLES:ReadonlyArray<Role> = [
 export const WATER_LEVELS:ReadonlyArray<number> = [
     2, 2, 3, 3, 3, 4, 4, 5, 5, 6
 ];
+
+export const DIFFICULTIES:ReadonlyArray<string> = [
+    "Novice", "Normal", "Elite", "Legendary"
+]

@@ -1,3 +1,18 @@
-<p>
-  new-game works!
-</p>
+<app-window>
+  <h1>New Game</h1>
+  <form [formGroup]="options" (submit)="onSubmit()">
+    <p>
+      <label for="playerCount">Players</label>
+      <input id="playerCount" formControlName="playerCount" type="number" min="2" max="4" step="1" required />
+    </p>
+    <p>
+      <label for="difficulty">Difficulty</label>
+      <select id="difficulty" formControlName="difficulty">
+        <option *ngFor="let dif of difficulties; let i = index" [value]="i">{{dif}}</option>
+      </select>
+    </p>
+    <p>
+      <button [disabled]="options.invalid">Start Game</button>
+    </p>
+  </form>
+</app-window>

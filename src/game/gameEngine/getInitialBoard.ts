@@ -3,7 +3,6 @@ import BoardState, { TileState } from '../BoardState';
 import shuffle from 'lodash/shuffle';
 import Coord from '../Coord';
 
-// Difficulties: 0=Novice, 1=Normal, 2=Elite, 3=Legendary
 export default function getInitialBoard(playerCount:number, difficulty:number):BoardState {
     const board:BoardState = {
         players: [],
