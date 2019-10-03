@@ -1,5 +1,5 @@
 <main *ngIf="board">
-  <app-board [board]="board" [highlightTiles]="inProgressTileSelection?.tiles" (clickTile)="selectTile($event)"></app-board>
+  <app-board [board]="board" [highlightLocations]="inProgressTileSelection?.locations" (clickTile)="selectTile($event)"></app-board>
   <div class="side">
     <app-dashboard [board]="board"></app-dashboard>
     <div class="players">

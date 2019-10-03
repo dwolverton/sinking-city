@@ -17,8 +17,7 @@ export interface PlayerState {
     readonly id:number;
     readonly role:number;
     name:string;
-    x:number;
-    y:number;
+    location:number;
     cards:number[];
 }
 

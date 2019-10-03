@@ -1,13 +1,13 @@
 export interface AvailableAction {
     type:ActionType;
-    tiles?:number[];
+    locations?:number[];
     cards?:number[];
     players?:number[];
 }
 
 export interface Action {
     type:ActionType;
-    tile?:number;
+    location?:number;
     card?:number;
     player?:number;
 }
@@ -19,6 +19,7 @@ export enum ActionType {
     ShoreUp = "ShoreUp",
     GiveTreasureCard = "GiveTreasureCard",
     CaptureTreasure = "CaptureTreasure",
+    Discard = "Discard",
     Done = "Done"
 }
 
@@ -29,5 +30,6 @@ export const ACTION_NAMES = {
     ShoreUp: "Shore Up",
     GiveTreasureCard: "Give a Treasure Card",
     CaptureTreasure: "Capture Treasure",
+    Discard: "Discard",
     Done: "Done"
 }

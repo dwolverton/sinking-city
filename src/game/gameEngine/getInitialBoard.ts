@@ -1,7 +1,6 @@
-import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial, FloodCard } from '../boardElements';
+import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
 import BoardState, { TileState } from '../BoardState';
 import shuffle from 'lodash/shuffle';
-import Coord from '../Coord';
 
 export default function getInitialBoard(playerCount:number, difficulty:number):BoardState {
     const board:BoardState = {
@@ -19,16 +18,6 @@ export default function getInitialBoard(playerCount:number, difficulty:number):B
         startupComplete: false
     };
     addPlayers(board, playerCount);
-
-    // Temp
-    // for (let i = 0; i < 5; i++) {
-    //     board.players[0].cards.push(drawNonWatersRiseTreasureCard(board).id);
-    // }
-    // board.currentPlayer = 1;
-    // board.tiles[7].flooded = true;
-    // board.treasureDiscard.push(drawTreasureCard(board).id);
-    // board.floodDiscard.push(drawFloodCard(board).id);
-
     return board;
 }
 
@@ -36,18 +25,17 @@ function addPlayers(board:BoardState, playerCount:number):void {
     const roles = createShuffledNumbersArray(ROLES.length);
 
     for (let i = 0; i < playerCount; i++) {
-        const player:any = {
+        const role = roles.pop();
+        const startingTile = ROLES[role].startingTile;
+        const location = board.tiles.findIndex(tile => tile && tile.id === startingTile);
+
+        board.players.push({
             id: i,
             name: "Player " + (i + 1),
-            role: roles.pop(),
+            role,
+            location,
             cards: [drawNonWatersRiseTreasureCard(board).id, drawNonWatersRiseTreasureCard(board).id]
-        };
-        const startingTile = ROLES[player.role].startingTile;
-        const startingTileIndex = board.tiles.findIndex(tile => tile && tile.id === startingTile);
-        const startingTileCoord = Coord.fromIndex(startingTileIndex);
-        player.x = startingTileCoord.x;
-        player.y = startingTileCoord.y;
-        board.players.push(player);
+        });
     }
 }
 

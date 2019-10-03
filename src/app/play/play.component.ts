@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameManagerService } from '../game-manager.service';
 import BoardState from 'src/game/BoardState';
@@ -14,27 +14,27 @@ import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/game/acti
 export class PlayComponent implements OnInit, OnDestroy {
 
   private stop$ = new Subject();
-  board:BoardState;
-  actions:AvailableAction[];
+  board: BoardState;
+  actions: AvailableAction[];
   ACTION_NAMES = ACTION_NAMES;
-  inProgressTileSelection:AvailableAction = null;
+  inProgressTileSelection: AvailableAction = null;
 
-  constructor(private gameManager:GameManagerService, private route:ActivatedRoute) { }
+  constructor(private gameManager: GameManagerService, private route: ActivatedRoute) { }
 
-  doAction(action:AvailableAction) {
+  doAction(action: AvailableAction) {
     if (action.type === ActionType.Move || action.type === ActionType.ShoreUp) {
       this.inProgressTileSelection = action;
       return;
     }
 
-    this.gameManager.doAction({type: action.type});
+    this.gameManager.doAction({ type: action.type });
   }
 
-  selectTile(id:number) {
-    const action:AvailableAction = this.inProgressTileSelection;
-    if (action && action.tiles.includes(id)) {
+  selectTile(location: number) {
+    const action: AvailableAction = this.inProgressTileSelection;
+    if (action && action.locations.includes(location)) {
       this.inProgressTileSelection = null;
-      this.gameManager.doAction({type: action.type, tile: id});
+      this.gameManager.doAction({ type: action.type, location });
     }
   }
 
@@ -43,11 +43,37 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.gameManager.loadGame(+params.get('gameId'));
     });
 
-    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => {this.board = board; console.log(board);});
+    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; console.log(board); });
     this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
       this.actions = actions;
       this.inProgressTileSelection = null;
     });
+  }
+
+  @HostListener("document:keydown.m")
+  moveActionShortcut() {
+    this.doActionIfAvailable(ActionType.Move);
+  }
+
+  @HostListener("document:keydown.s")
+  shoreUpActionShortcut() {
+    this.doActionIfAvailable(ActionType.ShoreUp);
+  }
+
+  @HostListener("document:keydown.d")
+  drawActionShortcut() {
+    if (this.actions[0].type === ActionType.DrawFloodCard || this.actions[0].type === ActionType.DrawTreasureCard) {
+      this.doAction(this.actions[0]);
+    }
+  }
+
+  doActionIfAvailable(type: ActionType) {
+    for (const action of this.actions) {
+      if (action.type === type) {
+        this.doAction(action);
+        break;
+      }
+    }
   }
 
   ngOnDestroy() {

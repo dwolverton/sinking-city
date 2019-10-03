@@ -3,7 +3,7 @@ import { Action, ActionType } from '../actions';
 import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS } from '../boardElements';
 import Coord from '../Coord';
 
-export default function applyAction(board: BoardState, action: Action, player: number): BoardState {
+export default function applyAction(board: BoardState, action: Action, playerId: number): BoardState {
     if (action.type === ActionType.DrawFloodCard) {
         const card: FloodCard = drawFloodCard();
         const tileIndex = board.tiles.findIndex(tile => tile && (tile.id === card.tile.id));
@@ -36,22 +36,21 @@ export default function applyAction(board: BoardState, action: Action, player: n
             startDrawFloodCardsPhase();
         }
     } else if (action.type === ActionType.Move) {
-        const dest = Coord.fromIndex(action.tile);
         const player = board.players[board.currentPlayer];
 
         board = { ...board, players: [
             ...board.players.slice(0, board.currentPlayer),
-            { ...player, x: dest.x, y: dest.y },
+            { ...player, location: action.location },
             ...board.players.slice(board.currentPlayer + 1),
         ]};
         useAction();
     } else if (action.type === ActionType.ShoreUp) {
-        const tile = board.tiles[action.tile];
+        const tile = board.tiles[action.location];
 
         board = { ...board, tiles: [
-            ...board.tiles.slice(0, action.tile),
+            ...board.tiles.slice(0, action.location),
             { ...tile, flooded: false },
-            ...board.tiles.slice(action.tile + 1),
+            ...board.tiles.slice(action.location + 1),
         ]};
         useAction();
     } else if (action.type === ActionType.Done) {

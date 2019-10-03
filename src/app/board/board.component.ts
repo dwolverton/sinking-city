@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from
 import { GameManagerService } from '../game-manager.service';
 import BoardState, { PlayerState } from 'src/game/BoardState';
 import { ROLES } from 'src/game/boardElements';
+import Coord from 'src/game/Coord';
 
 @Component({
   selector: 'app-board',
@@ -13,7 +14,7 @@ export class BoardComponent implements OnChanges {
   @Input()
   board:BoardState;
   @Input()
-  highlightTiles:number[];
+  highlightLocations:number[];
   @Output()
   clickTile = new EventEmitter<number>();
   pawns:any[];
@@ -38,10 +39,11 @@ export class BoardComponent implements OnChanges {
 function calcPawnPos(player:PlayerState) {
   const xOffset = (player.role % 3) * 4 - 4 - 1.5;
   const yOffset = Math.floor(player.role / 3) * 4 - 2 - 2.5;
+  const coord:Coord = Coord.fromIndex(player.location);
   
   return {
-    left: calcPawnAxis(player.x) + xOffset + "%",
-    top: calcPawnAxis(player.y) + yOffset + "%"
+    left: calcPawnAxis(coord.x) + xOffset + "%",
+    top: calcPawnAxis(coord.y) + yOffset + "%"
   }
 }
 

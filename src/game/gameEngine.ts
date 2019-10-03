@@ -4,25 +4,25 @@ import Coord, { ICoord, MAX_COORD } from './Coord';
 export { default as getInitialBoard } from './gameEngine/getInitialBoard';
 export { default as applyAction } from './gameEngine/applyAction';
 
-export function isValidAction(board:BoardState, action:Action, player:number):boolean {
-    return getValidActions(board, player).some(availableAction => availableAction.type === action.type);
+export function isValidAction(board:BoardState, action:Action, playerId:number):boolean {
+    return getValidActions(board, playerId).some(availableAction => availableAction.type === action.type);
 }
 
-export function getValidActions(board:BoardState, playerNum:number):AvailableAction[] {
+export function getValidActions(board:BoardState, playerId:number):AvailableAction[] {
     let actions:AvailableAction[] = [];
 
     if (board.floodCardsToDraw) {
-        if (board.currentPlayer === null || board.currentPlayer === playerNum) {
+        if (board.currentPlayer === null || board.currentPlayer === playerId) {
             actions.push({type: ActionType.DrawFloodCard });
         }
     } else if (board.treasureCardsToDraw) {
-        if (board.currentPlayer === playerNum) {
+        if (board.currentPlayer === playerId) {
             actions.push({type: ActionType.DrawTreasureCard });
         }
     } else {
         // current player only
-        if (board.currentPlayer === playerNum && board.actionsRemaining !== 0) {
-            const playerState:PlayerState = board.players[playerNum];
+        if (board.currentPlayer === playerId && board.actionsRemaining !== 0) {
+            const playerState:PlayerState = board.players[playerId];
             addMoveAction(playerState);
             addShoreUpAction(playerState);
             actions.push({type: ActionType.GiveTreasureCard });
@@ -34,23 +34,24 @@ export function getValidActions(board:BoardState, playerNum:number):AvailableAct
     }
 
     function addMoveAction(playerState:PlayerState) {
-        const tiles:number[] = filterToValidTiles(getAdjacentSpaces(playerState, false, false), board.tiles);
-        if (tiles.length !== 0) {
-            actions.push({type: ActionType.Move, tiles });
+        const locations:number[] = filterToValidTiles(getAdjacentSpaces(playerState.location, false, false), board.tiles);
+        if (locations.length !== 0) {
+            actions.push({type: ActionType.Move, locations });
         }
     }
 
     function addShoreUpAction(playerState:PlayerState) {
-        const tiles:number[] = filterToFloodedTiles(getAdjacentSpaces(playerState, true, false), board.tiles);
-        if (tiles.length !== 0) {
-            actions.push({type: ActionType.ShoreUp, tiles });
+        const locations:number[] = filterToFloodedTiles(getAdjacentSpaces(playerState.location, true, false), board.tiles);
+        if (locations.length !== 0) {
+            actions.push({type: ActionType.ShoreUp, locations });
         }
     }
 
     return actions;
 }
 
-function getAdjacentSpaces(coord:ICoord, self:boolean, diagonal:boolean):Coord[] {
+function getAdjacentSpaces(location:number, self:boolean, diagonal:boolean):Coord[] {
+    const coord:ICoord = Coord.fromIndex(location);
     let spaces:Coord[] = [
         new Coord(coord.x, coord.y - 1),
         new Coord(coord.x - 1, coord.y),

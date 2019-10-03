@@ -1,4 +1,3 @@
-- keyboard shortcuts for move (m) & shore up (s)
 - tests / remove tiles
 - game features
   - waters rise
