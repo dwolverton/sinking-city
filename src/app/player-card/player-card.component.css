@@ -1,14 +1,7 @@
+@import url('../../css/card.css');
+
 .card {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid black;
-    border-radius: 4px;
-    padding: 6px 0;
-    width: 78px;
-    height: 80px;
-    text-align: center;
     background-color: beige;
-    box-shadow: 1px 1px 2px black;
 }
 
 .special-treasure-card {
@@ -19,10 +12,4 @@
 .symbol {
     font-size: 30px;
     margin: 4px 0;
-}
-
-.card-empty {
-    background-color: transparent;
-    border-style: dashed;
-    box-shadow: none;
 }

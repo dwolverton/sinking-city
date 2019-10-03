@@ -1,6 +1,6 @@
-- tests / remove tiles
+- tests / waters rise
 - game features
-  - waters rise
+  - remove tiles
   - piles run out
   - give card
   - too many cards in hand
