@@ -10,8 +10,15 @@ export function isValidAction(board:BoardState, action:Action, playerId:number):
 
 export function getValidActions(board:BoardState, playerId:number):AvailableAction[] {
     let actions:AvailableAction[] = [];
+    let includeDone:boolean = false;
 
-    if (board.floodCardsToDraw) {
+    if (board.players.some(p => p.cards.length > 5)) {
+        // if any player has too many cards, they must discard before any player can take any action
+        if (board.players[playerId].cards.length > 5) {
+            actions.push({ type: ActionType.Discard, pickCard: true });
+        }
+        return actions;
+    } else if (board.floodCardsToDraw) {
         if (board.currentPlayer === null || board.currentPlayer === playerId) {
             actions.push({type: ActionType.DrawFloodCard });
         }
@@ -27,11 +34,21 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
             addShoreUpAction(playerState);
             actions.push({type: ActionType.GiveTreasureCard });
             actions.push({type: ActionType.CaptureTreasure });
-            actions.push({type: ActionType.Done });
+            includeDone = true;
         }
 
         // all players
     }
+
+    if (board.players[playerId].cards.length !== 0) {
+        actions.push({ type: ActionType.Discard, pickCard: true });
+    }
+
+    if (includeDone) {
+        // doing this here ensures that done is always the last action in order.
+        actions.push({type: ActionType.Done });
+    }
+
 
     function addMoveAction(playerState:PlayerState) {
         const locations:number[] = filterToValidTiles(getAdjacentSpaces(playerState.location, false, false), board.tiles);

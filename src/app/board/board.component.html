@@ -1,6 +1,6 @@
 
 <app-tile *ngFor="let tile of board.tiles; index as i" [tile]="tile" (click)="clickTile.emit(i)"
-      [class.highlight]="highlightLocations && highlightLocations.includes(i)"></app-tile>
+      [highlight]="highlightLocations && highlightLocations.includes(i)"></app-tile>
 <div class="pawn color--{{pawn.role.color}}" *ngFor="let pawn of pawns; index as i"
       [ngClass]="{current: i === board.currentPlayer}" [ngStyle]="pawn.position"></div>
 

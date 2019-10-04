@@ -1,9 +1,9 @@
+- animate drawing cards when not first card
 - game features
   - discard / require discard when too many cards - other players cannot act
   - give card
-  - too many cards in hand
   - other players can discard at any time
-  - card disappears under a player
+  - tile disappears under a player
   - lose conditions
   - collect a treasure
   - win condition

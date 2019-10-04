@@ -21,3 +21,7 @@ button:hover {
     transform: translate(-1px, -1px);
     box-shadow: 2px 2px 1px rgb(33, 61, 85);
 }
+
+button.active {
+    background-color: lightcoral;
+}

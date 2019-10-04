@@ -10,6 +10,8 @@ export class PlayerCardComponent implements OnInit {
 
   @Input()
   card:TreasureCard
+  @Input()
+  highlight:boolean
 
   constructor() { }
 

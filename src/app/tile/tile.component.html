@@ -1,4 +1,5 @@
-<div class="tile tile--present" *ngIf="tileState" [ngClass]="{landing: tile.landing, flooded: tileState.flooded}"
+<div class="tile tile--present" *ngIf="tileState"
+    [ngClass]="{landing: tile.landing, flooded: tileState.flooded, highlight: highlight}"
     (click)="click.emit()">
   {{ tile.name }}
   <span class="treasure" *ngIf="treasure" [title]="treasure.name">{{treasure.emoji}}</span>

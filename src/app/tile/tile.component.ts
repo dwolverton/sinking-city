@@ -15,6 +15,8 @@ export class TileComponent implements OnInit {
   tileState:TileState;
   tile:Tile;
   treasure:Treasure
+  @Input()
+  highlight:boolean;
 
   constructor() { }
 

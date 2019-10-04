@@ -5,6 +5,7 @@
     <span class="name">{{player.name}}</span>
   </div>
   <div class="player-cards">
-    <app-player-card *ngFor="let card of cards" [card]="card"></app-player-card>
+    <app-player-card *ngFor="let card of cards" [card]="card" [highlight]="cardSelectionEnabled"
+        (click)="cardClicked(card)"></app-player-card>
   </div>
 </div>

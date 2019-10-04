@@ -14,7 +14,7 @@
     justify-content: center;
 }
 
-:host.highlight .tile--present {
+.highlight {
     border: 4px solid crimson;
 }
 
@@ -31,4 +31,9 @@
     position: absolute;
     bottom: 3px;
     right: 3px;
+}
+
+.highlight .treasure {
+    bottom: 1px;
+    right: 1px;
 }

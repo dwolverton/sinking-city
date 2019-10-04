@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 import { PlayerState } from 'src/game/BoardState';
 import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElements';
 
@@ -9,8 +9,12 @@ import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElement
 })
 export class PlayerBoardComponent implements OnInit, OnChanges {
 
+  @Output()
+  cardClick:EventEmitter<TreasureCard> = new EventEmitter();
   @Input()
   player:PlayerState;
+  @Input()
+  cardSelectionEnabled:boolean;
   role:Role;
   cards:TreasureCard[];
 
@@ -27,6 +31,10 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
         this.cards = this.player.cards.map(id => TREASURE_CARDS[id]);
       }
     }
+  }
+
+  cardClicked(card:TreasureCard) {
+    this.cardClick.emit(card);
   }
 
 }

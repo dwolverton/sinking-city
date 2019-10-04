@@ -17,24 +17,32 @@ export class PlayComponent implements OnInit, OnDestroy {
   board: BoardState;
   actions: AvailableAction[];
   ACTION_NAMES = ACTION_NAMES;
-  inProgressTileSelection: AvailableAction = null;
+  inProgressAction: AvailableAction = null;
 
   constructor(private gameManager: GameManagerService, private route: ActivatedRoute) { }
 
   doAction(action: AvailableAction) {
-    if (action.type === ActionType.Move || action.type === ActionType.ShoreUp) {
-      this.inProgressTileSelection = action;
+    if (actionRequiresParams(action)) {
+      this.inProgressAction = action;
       return;
     }
 
     this.gameManager.doAction({ type: action.type });
   }
 
-  selectTile(location: number) {
-    const action: AvailableAction = this.inProgressTileSelection;
+  selectTile(location:number) {
+    const action: AvailableAction = this.inProgressAction;
     if (action && action.locations.includes(location)) {
-      this.inProgressTileSelection = null;
+      this.inProgressAction = null;
       this.gameManager.doAction({ type: action.type, location });
+    }
+  }
+
+  selectCard(cardId:number) {
+    const action: AvailableAction = this.inProgressAction;
+    if (action && action.pickCard && this.board.players[this.board.currentPlayer].cards.includes(cardId)) {
+      this.inProgressAction = null;
+      this.gameManager.doAction({ type: action.type, card: cardId });
     }
   }
 
@@ -46,7 +54,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; console.log(board); });
     this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
       this.actions = actions;
-      this.inProgressTileSelection = null;
+      this.inProgressAction = null;
     });
   }
 
@@ -67,6 +75,11 @@ export class PlayComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener("document:keydown.x")
+  doneActionShortcut() {
+    this.doActionIfAvailable(ActionType.Done);
+  }
+
   doActionIfAvailable(type: ActionType) {
     for (const action of this.actions) {
       if (action.type === type) {
@@ -83,4 +96,8 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   itemId(item) { return item.id; }
 
+}
+
+function actionRequiresParams(action:AvailableAction):boolean {
+  return !! (action && (action.locations || action.pickCard || action.players));
 }
