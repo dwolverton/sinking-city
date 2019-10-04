@@ -26,7 +26,7 @@ export class NewGameComponent implements OnInit {
   onSubmit() {
     if (this.options.valid) {
       const id:number = this.savedGameService.saveGame(
-        getInitialBoard(this.options.value.playerCount, this.options.value.difficulty));
+        getInitialBoard(parseInt(this.options.value.playerCount), parseInt(this.options.value.difficulty)));
       this.router.navigate(["/game", id]);
     }
   }

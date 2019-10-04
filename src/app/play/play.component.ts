@@ -50,7 +50,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     });
   }
 
-  @HostListener("document:keydown.m")
+  @HostListener("document:keydown.w")
   moveActionShortcut() {
     this.doActionIfAvailable(ActionType.Move);
   }

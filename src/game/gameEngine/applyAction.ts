@@ -2,6 +2,7 @@ import BoardState from '../BoardState';
 import { Action, ActionType } from '../actions';
 import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS } from '../boardElements';
 import Coord from '../Coord';
+import { shuffle } from 'lodash';
 
 export default function applyAction(board: BoardState, action: Action, playerId: number): BoardState {
     if (action.type === ActionType.DrawFloodCard) {
@@ -15,22 +16,28 @@ export default function applyAction(board: BoardState, action: Action, playerId:
                     ...board.tiles.slice(tileIndex + 1)
                 ]
             };
-        }
-        else {
-            // TODO remove tile and card
+        } else {
+            removeTile(tileIndex);
         }
         if (board.floodCardsToDraw === 0) {
             nextPlayer();
         }
     } else if (action.type === ActionType.DrawTreasureCard) {
         const card: TreasureCard = drawTreasureCard();
-        const player = board.players[board.currentPlayer];
 
-        board = { ...board, players: [
-            ...board.players.slice(0, board.currentPlayer),
-            { ...player, cards: [ ...player.cards, card.id ] },
-            ...board.players.slice(board.currentPlayer + 1)
-        ]};
+        if (card.special === TreasureCardSpecial.WATERS_RISE) {
+            board = { ...board, 
+                waterLevel: board.waterLevel + 1,
+                treasureDiscard: push(board.treasureDiscard, card.id),
+                floodStack: [ ...board.floodStack, ...shuffle(board.floodDiscard)],
+                floodDiscard: []
+            };
+        } else {
+            const player = board.players[board.currentPlayer];
+            board = { ...board,
+                players: replace(board.players, board.currentPlayer, { ...player, cards: push(player.cards, card.id) })
+            };
+        }
 
         if (board.treasureCardsToDraw === 0) {
             startDrawFloodCardsPhase();
@@ -38,27 +45,27 @@ export default function applyAction(board: BoardState, action: Action, playerId:
     } else if (action.type === ActionType.Move) {
         const player = board.players[board.currentPlayer];
 
-        board = { ...board, players: [
-            ...board.players.slice(0, board.currentPlayer),
-            { ...player, location: action.location },
-            ...board.players.slice(board.currentPlayer + 1),
-        ]};
+        board = { ...board,
+            players: replace(board.players, board.currentPlayer, { ...player, location: action.location })
+        };
         useAction();
     } else if (action.type === ActionType.ShoreUp) {
         const tile = board.tiles[action.location];
 
-        board = { ...board, tiles: [
-            ...board.tiles.slice(0, action.location),
-            { ...tile, flooded: false },
-            ...board.tiles.slice(action.location + 1),
-        ]};
+        board = { ...board, tiles: replace(board.tiles, action.location, { ...tile, flooded: false })};
         useAction();
     } else if (action.type === ActionType.Done) {
         startDrawTreasureCardsPhase();
     }
 
 
-
+    function removeTile(tileLocation:number) {
+        board = { ...board,
+            tiles: replace(board.tiles, tileLocation, null),
+            // it's always the top of the discard pile
+            floodDiscard: pop(board.floodDiscard)
+        }
+    }
     function startDrawTreasureCardsPhase():void {
         board = { ...board, actionsRemaining: 0, treasureCardsToDraw: 2 }
     }
@@ -82,26 +89,50 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         board = { ...board, currentPlayer, actionsRemaining: 3 };
     }
     function drawFloodCard(): FloodCard {
-        // TODO if deck is empty, shuffle discard pile and replace.
+        if (board.floodStack.length == 0) {
+            board = { ...board,
+                floodStack: shuffle(board.floodDiscard),
+                floodDiscard: []
+            };
+        }
+
         const id = board.floodStack[board.floodStack.length - 1];
         board = {
             ...board,
-            floodStack: board.floodStack.slice(0, board.floodStack.length - 1),
-            floodDiscard: [...board.floodDiscard, id],
+            floodStack: pop(board.floodStack),
+            floodDiscard: push(board.floodDiscard, id),
             floodCardsToDraw: board.floodCardsToDraw - 1
         };
         return FLOOD_CARDS[id];
     }
     function drawTreasureCard(): TreasureCard {
-        // TODO if deck is empty, shuffle discard pile and replace.
+        if (board.treasureStack.length == 0) {
+            board = { ...board,
+                treasureStack: shuffle(board.treasureDiscard),
+                treasureDiscard: []
+            };
+        }
+
         const id = board.treasureStack[board.treasureStack.length - 1];
         board = {
             ...board,
-            treasureStack: board.treasureStack.slice(0, board.treasureStack.length - 1),
+            treasureStack: pop(board.treasureStack),
             treasureCardsToDraw: board.treasureCardsToDraw - 1
         };
         return TREASURE_CARDS[id];
     }
     console.log(board);
     return board;
+}
+
+function pop<T>(array:T[]):T[] {
+    return array.slice(0, array.length - 1);
+}
+
+function push<T>(array:T[], item:T):T[] {
+    return [ ...array, item]
+}
+
+function replace<T>(array:T[], i:number, item:T):T[] {
+    return [ ...array.slice(0, i), item, ...array.slice(i + 1)];
 }

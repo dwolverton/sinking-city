@@ -1,7 +1,5 @@
-- tests / waters rise
 - game features
-  - remove tiles
-  - piles run out
+  - discard / require discard when too many cards - other players cannot act
   - give card
   - too many cards in hand
   - other players can discard at any time

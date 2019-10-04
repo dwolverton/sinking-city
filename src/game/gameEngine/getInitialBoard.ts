@@ -1,6 +1,6 @@
 import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
 import BoardState, { TileState } from '../BoardState';
-import shuffle from 'lodash/shuffle';
+import { shuffle } from 'lodash';
 
 export default function getInitialBoard(playerCount:number, difficulty:number):BoardState {
     const board:BoardState = {

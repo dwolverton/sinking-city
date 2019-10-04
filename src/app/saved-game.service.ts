@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import BoardState from 'src/game/BoardState';
 import Game from 'src/game/Game';
-import sortBy from 'lodash/sortBy';
+import { sortBy } from 'lodash';
 
 
 @Injectable({
