@@ -16,6 +16,7 @@
     width: 3.3%;
     border-radius: 50%;
     box-sizing: border-box;
+    transition: all 400ms;
 }
 
 .pawn.current {

@@ -33,20 +33,28 @@ export default function applyAction(board: BoardState, action: Action, playerId:
                 floodDiscard: []
             };
         } else {
-            const player = board.players[board.currentPlayer];
+            const player = board.players[playerId];
             board = { ...board,
-                players: replace(board.players, board.currentPlayer, { ...player, cards: push(player.cards, card.id) })
+                players: replace(board.players, playerId, { ...player, cards: push(player.cards, card.id) })
             };
         }
 
         if (board.treasureCardsToDraw === 0) {
             startDrawFloodCardsPhase();
         }
+    } else if (action.type === ActionType.Discard) {
+        const player = board.players[playerId];
+        board = { ...board,
+            players: replace(board.players, playerId,
+                { ...player, cards: player.cards.filter(card => card !== action.card) }),
+            treasureDiscard: push(board.treasureDiscard, action.card)
+        };
+    
     } else if (action.type === ActionType.Move) {
-        const player = board.players[board.currentPlayer];
+        const player = board.players[playerId];
 
         board = { ...board,
-            players: replace(board.players, board.currentPlayer, { ...player, location: action.location })
+            players: replace(board.players, playerId, { ...player, location: action.location })
         };
         useAction();
     } else if (action.type === ActionType.ShoreUp) {

@@ -34,6 +34,10 @@ export class BoardComponent implements OnChanges {
     }
   }
 
+  itemId(item) {
+    return item.id;
+  }
+
 }
 
 function calcPawnPos(player:PlayerState) {

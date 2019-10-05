@@ -1,6 +1,5 @@
 - animate drawing cards when not first card
 - game features
-  - discard / require discard when too many cards - other players cannot act
   - give card
   - other players can discard at any time
   - tile disappears under a player
