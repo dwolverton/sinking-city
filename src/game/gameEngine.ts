@@ -1,6 +1,7 @@
 import BoardState, { TileState, PlayerState } from './BoardState';
 import { Action, AvailableAction, ActionType } from './actions';
 import Coord, { ICoord, MAX_COORD } from './Coord';
+import { TILES, TREASURE_CARDS, Tile } from './boardElements';
 export { default as getInitialBoard } from './gameEngine/getInitialBoard';
 export { default as applyAction } from './gameEngine/applyAction';
 
@@ -32,8 +33,7 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
             const playerState:PlayerState = board.players[playerId];
             addMoveAction(playerState);
             addShoreUpAction(playerState);
-            actions.push({type: ActionType.GiveTreasureCard });
-            actions.push({type: ActionType.CaptureTreasure });
+            addGiveTreasureCardAction(playerState);
             includeDone = true;
         }
 
@@ -62,6 +62,36 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
         if (locations.length !== 0) {
             actions.push({type: ActionType.ShoreUp, locations });
         }
+    }
+
+    function addGiveTreasureCardAction(playerState:PlayerState) {
+        let colocatedPlayers:number[] = board.players
+            .filter(player => player.id !== playerState.id && player.location === playerState.location)
+            .map(player => player.id);
+        if (colocatedPlayers.length !== 0) {
+            actions.push({type: ActionType.GiveTreasureCard, players: colocatedPlayers });
+        }
+    }
+
+    function addCaptureTreasureAction(playerState:PlayerState) {
+        const tile:Tile = getTileAtLocation(playerState.location);
+        if (tile.treasure) {
+            const cardCount = playerState.cards.reduce((count:number, cardId:number) => 
+                TREASURE_CARDS[cardId].treasure.id === tile.treasure ? count + 1 : count,
+                0
+            )
+            if (cardCount >= 4) {
+                actions.push({type: ActionType.CaptureTreasure });
+            }
+        }
+    }
+
+    function getTileAtLocation(location:number):Tile {
+        const tileState:TileState = board.tiles[location];
+        if (tileState === null) {
+            return null;
+        }
+        return TILES[tileState.id];
     }
 
     return actions;

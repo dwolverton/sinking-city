@@ -1,10 +1,10 @@
-- animate drawing cards when not first card
+- save gaves to database.
 - game features
   - give card
   - other players can discard at any time
   - tile disappears under a player
   - lose conditions
-  - collect a treasure
+  - collect a treasure (untested available action)
   - win condition
   - sandbag
   - helicopter lift
