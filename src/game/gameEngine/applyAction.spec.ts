@@ -148,3 +148,37 @@ describe("applyAction:DrawFloodCard", () => {
   });
 
 });
+
+describe("applyAction:GiveTreasureCard", () => {
+
+  it("should remove card from current player", () => {
+    let board = { ...b1, currentPlayer: 1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [5, 6] }
+    ]};
+    board = applyAction(board, { type: ActionType.GiveTreasureCard, player: 2, card: 23 }, 1);
+    expect(board.players[1].cards).toEqual([ 9, 14 ]);
+  });
+
+  it("should add card to receiving player", () => {
+    let board = { ...b1, currentPlayer: 1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [5, 6] }
+    ]};
+    board = applyAction(board, { type: ActionType.GiveTreasureCard, player: 2, card: 23 }, 1);
+    expect(board.players[2].cards).toEqual([ 5, 6, 23 ]);
+  });
+
+  it("should take an action", () => {
+    let board = { ...b1, currentPlayer: 1, actionsRemaining: 3, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [5, 6] }
+    ]};
+    board = applyAction(board, { type: ActionType.GiveTreasureCard, player: 2, card: 23 }, 1);
+    expect(board.actionsRemaining).toEqual(2);
+  });
+
+});

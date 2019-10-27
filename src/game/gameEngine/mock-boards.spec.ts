@@ -137,7 +137,8 @@ export const b_start = {
   export const b1 = {
       players: [
         { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
-        { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+        { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] },
+        { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
       ],
       tiles: [
         null,
@@ -150,7 +151,7 @@ export const b_start = {
         { id: 21, flooded: false },
         { id: 12, flooded: false },
         { id: 22, flooded: false },
-        { id: 5, flooded: false },
+        { id: 5, flooded: false }, // 10 - Cafe 1923 (2 coffee)
         null,
         { id: 17, flooded: false },
         { id: 16, flooded: false },
@@ -158,8 +159,8 @@ export const b_start = {
         { id: 23, flooded: false },
         { id: 15, flooded: false },
         { id: 3, flooded: false },
-        { id: 4, flooded: false },
-        { id: 20, flooded: false },
+        { id: 4, flooded: false },  // 18 - Aladdin Sweets & Cafe (1 meal)
+        { id: 20, flooded: false }, // 19
         { id: 2, flooded: false },
         { id: 6, flooded: false },
         { id: 1, flooded: false },
@@ -178,7 +179,7 @@ export const b_start = {
         null
       ],
       currentPlayer: 0,
-      actionsRemaining: null,
+      actionsRemaining: 3,
       waterLevel: 0,
       treasureStack: [
         1,

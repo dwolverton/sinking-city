@@ -34,6 +34,7 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
             addMoveAction(playerState);
             addShoreUpAction(playerState);
             addGiveTreasureCardAction(playerState);
+            addCaptureTreasureAction(playerState);
             includeDone = true;
         }
 
@@ -65,19 +66,22 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
     }
 
     function addGiveTreasureCardAction(playerState:PlayerState) {
+        if (playerState.cards.length === 0) {
+            return;
+        }
         let colocatedPlayers:number[] = board.players
             .filter(player => player.id !== playerState.id && player.location === playerState.location)
             .map(player => player.id);
         if (colocatedPlayers.length !== 0) {
-            actions.push({type: ActionType.GiveTreasureCard, players: colocatedPlayers });
+            actions.push({type: ActionType.GiveTreasureCard, players: colocatedPlayers, pickCard: true });
         }
     }
 
     function addCaptureTreasureAction(playerState:PlayerState) {
         const tile:Tile = getTileAtLocation(playerState.location);
-        if (tile.treasure) {
+        if (tile && tile.treasure) {
             const cardCount = playerState.cards.reduce((count:number, cardId:number) => 
-                TREASURE_CARDS[cardId].treasure.id === tile.treasure ? count + 1 : count,
+                TREASURE_CARDS[cardId].treasure === tile.treasure ? count + 1 : count,
                 0
             )
             if (cardCount >= 4) {

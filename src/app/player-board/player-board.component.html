@@ -1,5 +1,6 @@
 <div class="player">
-  <div class="player-id color--{{role.color}}">
+  <div class="player-id color--{{role.color}}" [class.highlight]="highlightPlayers?.includes(player.id)"
+       (click)="playerClicked(player)">
     <span class="role">{{role.name}}</span>
     <span class="symbol"></span>
     <span class="name">{{player.name}}</span>

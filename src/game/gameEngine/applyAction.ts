@@ -62,6 +62,17 @@ export default function applyAction(board: BoardState, action: Action, playerId:
 
         board = { ...board, tiles: replace(board.tiles, action.location, { ...tile, flooded: false })};
         useAction();
+    } else if (action.type === ActionType.GiveTreasureCard) {
+        const players = board.players.concat();
+        let giver = players[playerId];
+        let receiver = players[action.player];
+        giver = { ...giver, cards: giver.cards.filter(card => card !== action.card)};
+        receiver = { ...receiver, cards: [...receiver.cards, action.card]};
+        players[playerId] = giver;
+        players[action.player] = receiver;
+
+        board = { ...board, players };
+        useAction();
     } else if (action.type === ActionType.Done) {
         startDrawTreasureCardsPhase();
     }

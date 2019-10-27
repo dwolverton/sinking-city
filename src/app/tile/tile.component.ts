@@ -14,7 +14,6 @@ export class TileComponent implements OnInit {
   @Input("tile")
   tileState:TileState;
   tile:Tile;
-  treasure:Treasure
   @Input()
   highlight:boolean;
 
@@ -22,7 +21,6 @@ export class TileComponent implements OnInit {
 
   ngOnInit() {
     this.tile = this.tileState ? TILES[this.tileState.id] : null;
-    this.treasure = this.tile && this.tile.treasure !== null ? TREASURES[this.tile.treasure] : null;
   }
 
 }

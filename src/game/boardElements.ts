@@ -2,7 +2,7 @@ export class Tile {
     constructor(
         readonly id:number,
         readonly name:string,
-        readonly treasure:number = null,
+        readonly treasure:Treasure = null,
         readonly landing:boolean = false
     ) {}
 }
@@ -60,14 +60,14 @@ export const TREASURES:ReadonlyArray<Treasure> = [
 idCtr = 0;
 export const TILES:ReadonlyArray<Tile> = [
     new Tile(idCtr++, "Exit 55", null, true), // pilot
-    new Tile(idCtr++, "Burk's Igloo", 0),
-    new Tile(idCtr++, "Detroit Donut", 0),
-    new Tile(idCtr++, "Sheeba Restaurant", 1),
-    new Tile(idCtr++, "Aladdin Sweets & Cafe", 1), // explorer
-    new Tile(idCtr++, "Cafe 1923", 2),
-    new Tile(idCtr++, "Oloman Cafe", 2),
-    new Tile(idCtr++, "City Hall", 3), // messenger
-    new Tile(idCtr++, "Fire Station", 3),
+    new Tile(idCtr++, "Burk's Igloo", TREASURES[0]),
+    new Tile(idCtr++, "Detroit Donut", TREASURES[0]),
+    new Tile(idCtr++, "Sheeba Restaurant", TREASURES[1]),
+    new Tile(idCtr++, "Aladdin Sweets & Cafe", TREASURES[1]), // explorer
+    new Tile(idCtr++, "Cafe 1923", TREASURES[2]),
+    new Tile(idCtr++, "Oloman Cafe", TREASURES[2]),
+    new Tile(idCtr++, "City Hall", TREASURES[3]), // messenger
+    new Tile(idCtr++, "Fire Station", TREASURES[3]),
     new Tile(idCtr++, "Detroit Zen Center"),
     new Tile(idCtr++, "Hamtramck Public Library"),
     new Tile(idCtr++, "Planet Ant Theatre"),

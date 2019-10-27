@@ -2,7 +2,7 @@
     [ngClass]="{landing: tile.landing, flooded: tileState.flooded, highlight: highlight}"
     (click)="click.emit()">
   {{ tile.name }}
-  <span class="treasure" *ngIf="treasure" [title]="treasure.name">{{treasure.emoji}}</span>
+  <span class="treasure" *ngIf="tile.treasure" [title]="tile.treasure.name">{{tile.treasure.emoji}}</span>
 </div>
 <div class="tile tile--empty" *ngIf="!tileState">
 </div>

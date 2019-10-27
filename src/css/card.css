@@ -3,17 +3,19 @@
     flex-direction: column;
     border: 2px solid black;
     border-radius: 4px;
-    padding: 6px 0;
-    width: 78px;
+    padding: 6px 2px;
+    width: 76px;
     height: 80px;
     justify-content: center;
     text-align: center;
     box-shadow: 1px 1px 2px black;
 }
 
-/* .card:not(.card-empty) {
-    animation: flyin 700ms ease-in;
-} */
+.card.highlight {
+    border: 4px solid crimson;
+    padding: 4px 0;
+}
+
 .card.flip1 {
     animation: flyin1 700ms ease-in;
 }
@@ -30,20 +32,16 @@
 @keyframes flyin1 {
     from {
         transform: translateY(10px) scale(1.4);
-        opacity: .8;
     }
     to {
         transform: none;
-        opacity: 1;
     }
 }
 @keyframes flyin2 {
     from {
         transform: translateY(10px) scale(1.4);
-        opacity: .8;
     }
     to {
         transform: none;
-        opacity: 1;
     }
 }

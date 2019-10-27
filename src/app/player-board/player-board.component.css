@@ -18,6 +18,11 @@
     transform-origin: right center;
 }
 
+.player-id.highlight {
+    border: 4px solid crimson;
+    padding: 4px;
+}
+
 :host.current .player-id {
     transform: scale(1.15) translateX(2px);
     /* background-color: lemonchiffon; */

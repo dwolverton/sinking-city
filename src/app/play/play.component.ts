@@ -18,12 +18,14 @@ export class PlayComponent implements OnInit, OnDestroy {
   actions: AvailableAction[];
   ACTION_NAMES = ACTION_NAMES;
   inProgressAction: AvailableAction = null;
+  inProgressSelection: { location?:number, player?:number, card?:number } = null;
 
   constructor(private gameManager: GameManagerService, private route: ActivatedRoute) { }
 
   doAction(action: AvailableAction) {
     if (actionRequiresParams(action)) {
       this.inProgressAction = action;
+      this.inProgressSelection = {};
       return;
     }
 
@@ -33,17 +35,52 @@ export class PlayComponent implements OnInit, OnDestroy {
   selectTile(location:number) {
     const action: AvailableAction = this.inProgressAction;
     if (action && action.locations.includes(location)) {
-      this.inProgressAction = null;
-      this.gameManager.doAction({ type: action.type, location });
+      this.inProgressSelection.location = location;
+      this.finishInProgressActionIfSatisfied();
     }
   }
 
   selectCard(cardId:number) {
     const action: AvailableAction = this.inProgressAction;
     if (action && action.pickCard && this.board.players[this.board.currentPlayer].cards.includes(cardId)) {
-      this.inProgressAction = null;
-      this.gameManager.doAction({ type: action.type, card: cardId });
+      this.inProgressSelection.card = cardId;
+      this.finishInProgressActionIfSatisfied();
     }
+  }
+
+  selectPlayer(playerId:number) {
+    const action: AvailableAction = this.inProgressAction;
+    if (action && action.players.includes(playerId)) {
+      this.inProgressSelection.player = playerId;
+      this.finishInProgressActionIfSatisfied();
+    }
+  }
+
+  finishInProgressActionIfSatisfied() {
+    if (this.isInProgressActionSatisfied()) {
+      this.finishInProgressAction();
+    }
+  }
+
+  isInProgressActionSatisfied() {
+    if (this.inProgressAction.locations && this.inProgressSelection.location === undefined) {
+      return false;
+    }
+    if (this.inProgressAction.players && this.inProgressSelection.player === undefined) {
+      return false;
+    }
+    if (this.inProgressAction.pickCard && this.inProgressSelection.card === undefined) {
+      return false;
+    }
+    return true;
+  }
+
+  finishInProgressAction() {
+    const action: AvailableAction = this.inProgressAction;
+    const selection = this.inProgressSelection;
+    this.inProgressAction = null;
+    this.inProgressSelection = null;
+    this.gameManager.doAction({ type: action.type, ...selection });
   }
 
   ngOnInit() {

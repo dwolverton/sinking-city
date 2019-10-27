@@ -11,10 +11,14 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
 
   @Output()
   cardClick:EventEmitter<TreasureCard> = new EventEmitter();
+  @Output()
+  playerClick:EventEmitter<PlayerState> = new EventEmitter();
   @Input()
   player:PlayerState;
   @Input()
   cardSelectionEnabled:boolean;
+  @Input()
+  highlightPlayers:number[];
   role:Role;
   cards:TreasureCard[];
 
@@ -25,6 +29,7 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges({player:playerChg}:SimpleChanges) {
+    console.log("hp", this.highlightPlayers);
     if (playerChg) {
       const { previousValue, currentValue } = playerChg;
       if (!previousValue || currentValue.cards !== previousValue.cards) {
@@ -35,6 +40,10 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
 
   cardClicked(card:TreasureCard) {
     this.cardClick.emit(card);
+  }
+
+  playerClicked(player:PlayerState) {
+    this.playerClick.emit(player);
   }
 
 }

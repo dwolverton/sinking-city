@@ -1,10 +1,10 @@
 - save gaves to database.
 - game features
-  - give card
+  - collect a treasure
   - other players can discard at any time
+  - display number of remaining actions
   - tile disappears under a player
   - lose conditions
-  - collect a treasure (untested available action)
   - win condition
   - sandbag
   - helicopter lift
