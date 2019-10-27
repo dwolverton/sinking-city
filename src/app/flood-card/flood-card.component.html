@@ -1,4 +1,4 @@
-<div class="card flood-card" *ngIf="card">
+<div class="card flood-card flip{{flip}}" *ngIf="card">
     {{ card.tile.name }}
 </div>
 <div class="card flood-card card-empty" *ngIf="!card">

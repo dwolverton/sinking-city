@@ -12,6 +12,8 @@ export class PlayerCardComponent implements OnInit {
   card:TreasureCard
   @Input()
   highlight:boolean
+  @Input()
+  flip:number = 0;
 
   constructor() { }
 

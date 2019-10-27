@@ -11,8 +11,14 @@
     box-shadow: 1px 1px 2px black;
 }
 
-.card:not(.card-empty) {
+/* .card:not(.card-empty) {
     animation: flyin 700ms ease-in;
+} */
+.card.flip1 {
+    animation: flyin1 700ms ease-in;
+}
+.card.flip0 {
+    animation: flyin2 700ms ease-in;
 }
 
 .card.card-empty {
@@ -21,7 +27,17 @@
     box-shadow: none;
 }
 
-@keyframes flyin {
+@keyframes flyin1 {
+    from {
+        transform: translateY(10px) scale(1.4);
+        opacity: .8;
+    }
+    to {
+        transform: none;
+        opacity: 1;
+    }
+}
+@keyframes flyin2 {
     from {
         transform: translateY(10px) scale(1.4);
         opacity: .8;

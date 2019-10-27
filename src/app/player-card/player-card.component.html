@@ -1,8 +1,8 @@
-<div class="card treasure-card" [class.highlight]="highlight" *ngIf="card && card.treasure">
+<div class="card flip{{flip}} treasure-card" [class.highlight]="highlight" *ngIf="card && card.treasure">
   <span class="title">Treasure</span>
   <span class="symbol">{{card.treasure.emoji}}</span>
 </div>
-<div class="card special-treasure-card" [class.highlight]="highlight" *ngIf="card && !card.treasure">
+<div class="card flip{{flip}} special-treasure-card" [class.highlight]="highlight" *ngIf="card && !card.treasure">
   <span class="symbol">{{card.special.emoji}}</span>
   <span class="name">{{card.special.name}}</span>
 </div>

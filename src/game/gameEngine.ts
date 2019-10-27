@@ -40,7 +40,7 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
         // all players
     }
 
-    if (board.players[playerId].cards.length !== 0) {
+    if (playerId !== null && board.players[playerId].cards.length !== 0) {
         actions.push({ type: ActionType.Discard, pickCard: true });
     }
 

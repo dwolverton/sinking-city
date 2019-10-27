@@ -12,6 +12,8 @@ export class FloodCardComponent implements OnInit {
   card:FloodCard;
   @Input()
   cardId:number;
+  @Input()
+  flip:number = 0;
 
   constructor() { }
 

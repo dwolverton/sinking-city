@@ -4,9 +4,9 @@
 </div>
 <div class="flood-discard">
   <label>Flood Discard ({{board.floodDiscard.length}})</label>
-  <app-flood-card [card]="floodDiscard"></app-flood-card>
+  <app-flood-card [card]="floodDiscard" [flip]="board.floodDiscard.length % 2"></app-flood-card>
 </div>
 <div class="treasure-discard">
   <label>Treasure Discard ({{board.treasureDiscard.length}})</label>
-  <app-player-card [card]="treasureDiscard"></app-player-card>
+  <app-player-card [card]="treasureDiscard" [flip]="board.treasureDiscard.length % 2"></app-player-card>
 </div>
