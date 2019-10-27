@@ -11,6 +11,7 @@ export default interface BoardState {
     floodDiscard:number[];
     floodCardsToDraw:number;
     startupComplete:boolean;
+    treasuresCaptured:boolean[];
 }
 
 export interface PlayerState {

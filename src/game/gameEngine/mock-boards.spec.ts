@@ -131,7 +131,8 @@ export const b_start = {
     ],
     floodDiscard: [],
     floodCardsToDraw: 6,
-    startupComplete: false
+    startupComplete: false,
+    treasuresCaptured: [ false, false, false, false ]
   };
   
   export const b1 = {
@@ -237,7 +238,8 @@ export const b_start = {
       ],
       floodDiscard: [],
       floodCardsToDraw: 0,
-      startupComplete: false
+      startupComplete: false,
+      treasuresCaptured: [ false, false, false, true ]
     };
   
   // console.log(JSON.stringify(getInitialBoard(2, 0)));

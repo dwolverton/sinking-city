@@ -15,7 +15,8 @@ export default function getInitialBoard(playerCount:number, difficulty:number):B
         floodStack: createShuffledNumbersArray(FLOOD_CARDS.length),
         floodDiscard: [],
         floodCardsToDraw: 6,
-        startupComplete: false
+        startupComplete: false,
+        treasuresCaptured: [ false, false, false, false ]
     };
     addPlayers(board, playerCount);
     return board;

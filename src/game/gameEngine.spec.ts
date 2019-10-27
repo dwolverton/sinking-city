@@ -109,4 +109,23 @@ describe("getValidActions:CaptureTreasure", () => {
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeUndefined();
   });
 
+  it("should be unavailable when the same treasure already captured", () => {
+    // treasure 2
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasuresCaptured: [false, false, true, false]}; 
+    let actions:AvailableAction[] = getValidActions(board, 0);
+    expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeUndefined();
+  });
+
+  it("should be available when all other treasures captured", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasuresCaptured: [true, true, false, true]}; 
+    let actions:AvailableAction[] = getValidActions(board, 0);
+    expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeDefined();
+  });
+
 });

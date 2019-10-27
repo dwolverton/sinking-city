@@ -1,6 +1,6 @@
 - save gaves to database.
 - game features
-  - collect a treasure
+  - see captured treasures
   - other players can discard at any time
   - display number of remaining actions
   - tile disappears under a player

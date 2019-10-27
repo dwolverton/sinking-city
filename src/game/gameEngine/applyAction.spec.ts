@@ -182,3 +182,67 @@ describe("applyAction:GiveTreasureCard", () => {
   });
 
 });
+
+describe("applyAction:CaptureTreasure", () => {
+
+  it("should set correct treasure to true", () => {
+    // treasure 2
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasuresCaptured: [true, false, false, true]}; 
+    board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
+    expect(board.treasuresCaptured).toEqual([true, false, true, true]);
+  });
+
+  it("should remove four cards of same treasure type and add them to discard pile", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasureDiscard: [3]}; 
+    board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
+    expect(board.players[0].cards).toEqual([]);
+    expect(board.treasureDiscard).toEqual([3, 10, 11, 12, 13]);
+  });
+
+  it("should remove four cards of same treasure type and add them to discard pile (mixed w/ other card)", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 13, 11, 0, 14] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasureDiscard: [3]}; 
+    board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
+    expect(board.players[0].cards).toEqual([0]);
+    expect(board.treasureDiscard).toEqual([3, 10, 13, 11, 14]);
+  });
+
+  it("should remove four cards of same treasure type and add them to discard pile (mixed with special card)", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [24, 12, 13, 11, 14] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasureDiscard: []}; 
+    board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
+    expect(board.players[0].cards).toEqual([24]);
+    expect(board.treasureDiscard).toEqual([12, 13, 11, 14]);
+  });
+
+  it("should remove ONLY four cards of same treasure type and add them to discard pile", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13, 14] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], treasureDiscard: [3]}; 
+    board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
+    expect(board.players[0].cards).toEqual([14]);
+    expect(board.treasureDiscard).toEqual([3, 10, 11, 12, 13]);
+  });
+
+  it("should take an action", () => {
+    // treasure 2
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+    ], actionsRemaining: 2}; 
+    board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
+    expect(board.actionsRemaining).toEqual(1);
+  });
+
+});

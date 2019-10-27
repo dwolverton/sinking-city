@@ -1,6 +1,6 @@
 import BoardState from '../BoardState';
 import { Action, ActionType } from '../actions';
-import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS } from '../boardElements';
+import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS, TILES, Treasure } from '../boardElements';
 import Coord from '../Coord';
 import { shuffle } from 'lodash';
 
@@ -72,6 +72,18 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         players[action.player] = receiver;
 
         board = { ...board, players };
+        useAction();
+    } else if (action.type === ActionType.CaptureTreasure) {
+        const player = board.players[playerId];
+        const tileId:number = board.tiles[player.location].id;
+        const treasure:Treasure = TILES[tileId].treasure;
+        const cards = player.cards.filter(card => TREASURE_CARDS[card].treasure === treasure).slice(0, 4);
+        board = { ...board,
+            players: replace(board.players, playerId,
+                { ...player, cards: player.cards.filter(card => !cards.includes(card)) }),
+            treasureDiscard: [ ...board.treasureDiscard, ...cards],
+            treasuresCaptured: replace(board.treasuresCaptured, treasure.id, true)
+        };
         useAction();
     } else if (action.type === ActionType.Done) {
         startDrawTreasureCardsPhase();

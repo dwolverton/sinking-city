@@ -80,6 +80,9 @@ export function getValidActions(board:BoardState, playerId:number):AvailableActi
     function addCaptureTreasureAction(playerState:PlayerState) {
         const tile:Tile = getTileAtLocation(playerState.location);
         if (tile && tile.treasure) {
+            if (board.treasuresCaptured[tile.treasure.id]) {
+                return; // already captured
+            }
             const cardCount = playerState.cards.reduce((count:number, cardId:number) => 
                 TREASURE_CARDS[cardId].treasure === tile.treasure ? count + 1 : count,
                 0
