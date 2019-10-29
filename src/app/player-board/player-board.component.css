@@ -1,7 +1,25 @@
 .player {
-    display: flex;
-    padding: 4px 4px 4px 0;
+    padding: 4px 4px 2px 0;
 }
+.top-row {
+    display: flex;
+    margin-bottom: 2px;
+}
+.actions {
+    margin-bottom: -4px;
+}
+
+:host.current .player {
+    border: 2px solid white;
+    border-right: none;
+    background-color: rgba(255, 255, 255, .7);
+    border-radius: 8px 0 0 8px;
+    margin-left: -4px;
+    padding-left: 4px;
+    padding-bottom: 4px;
+}
+
+
 .player-id {
     display: flex;
     flex-direction: column;
@@ -23,13 +41,9 @@
     padding: 4px;
 }
 
-:host.current .player-id {
-    transform: scale(1.15) translateX(2px);
-    /* background-color: lemonchiffon; */
-}
-
 :host.current .symbol {
     box-shadow: 0 0 2px 2px dodgerblue;
+    transform:scale(1.3)
 }
 
 .role {
@@ -74,4 +88,23 @@
 
 app-player-card {
     margin-left: 2px;
+}
+
+/* actions */
+button {
+    border: 1px solid black;
+    margin: 0 6px 5px 0;
+    font-size: 120%;
+    padding: 4px 12px;
+    box-shadow: 1px 1px 1px rgb(33, 61, 85);
+}
+
+button:hover {
+    background-color: lightsteelblue;
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 1px rgb(33, 61, 85);
+}
+
+button.active {
+    background-color: lightcoral;
 }

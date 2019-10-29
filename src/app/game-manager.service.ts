@@ -15,8 +15,8 @@ export class GameManagerService {
   private gameId:number;
   readonly board$:BehaviorSubject<BoardState> = new BehaviorSubject(null);
   private _board:BoardState = null;
-  readonly actions$:BehaviorSubject<AvailableAction[]> = new BehaviorSubject([]);
-  private _actions:AvailableAction[] = [];
+  readonly actions$:BehaviorSubject<AvailableAction[][]> = new BehaviorSubject([]);
+  private _actions:AvailableAction[][] = [];
 
   constructor(private savedGameService:SavedGameService) {
   }
@@ -32,7 +32,7 @@ export class GameManagerService {
   private updateBoard(board:BoardState) {
     this._board = board;
     this.board$.next(board);
-    this._actions = getValidActions(board, board.currentPlayer);
+    this._actions = getValidActions(board);
     this.actions$.next(this._actions);
     console.log("Available", this._actions);
   }
@@ -41,7 +41,7 @@ export class GameManagerService {
     return this._board;
   }
 
-  get actions():AvailableAction[] {
+  get actions():AvailableAction[][] {
     return this._actions;
   }
 

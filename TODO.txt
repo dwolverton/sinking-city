@@ -1,8 +1,7 @@
-- save gaves to database.
 - game features
   - see captured treasures
-  - other players can discard at any time
   - display number of remaining actions
+  - refactor actions for multiple players
   - tile disappears under a player
   - lose conditions
   - win condition

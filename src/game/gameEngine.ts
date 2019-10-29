@@ -6,10 +6,18 @@ export { default as getInitialBoard } from './gameEngine/getInitialBoard';
 export { default as applyAction } from './gameEngine/applyAction';
 
 export function isValidAction(board:BoardState, action:Action, playerId:number):boolean {
-    return getValidActions(board, playerId).some(availableAction => availableAction.type === action.type);
+    return getValidActionsForPlayer(board, playerId).some(availableAction => availableAction.type === action.type);
 }
 
-export function getValidActions(board:BoardState, playerId:number):AvailableAction[] {
+export function getValidActions(board:BoardState):AvailableAction[][] {
+    const actions:AvailableAction[][] = [];
+    for (let i = 0; i < board.players.length; i++) {
+        actions[i] = getValidActionsForPlayer(board, i);
+    }
+    return actions;
+}
+
+function getValidActionsForPlayer(board:BoardState, playerId:number):AvailableAction[] {
     let actions:AvailableAction[] = [];
     let includeDone:boolean = false;
 

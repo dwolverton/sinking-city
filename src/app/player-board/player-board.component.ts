@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 import { PlayerState } from 'src/game/BoardState';
 import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElements';
+import { ACTION_NAMES, AvailableAction } from 'src/game/actions';
 
 @Component({
   selector: 'app-player-board',
@@ -13,14 +14,21 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   cardClick:EventEmitter<TreasureCard> = new EventEmitter();
   @Output()
   playerClick:EventEmitter<PlayerState> = new EventEmitter();
+  @Output()
+  doAction:EventEmitter<AvailableAction> = new EventEmitter();
   @Input()
   player:PlayerState;
   @Input()
   cardSelectionEnabled:boolean;
   @Input()
   highlightPlayers:number[];
+  @Input()
+  actions:AvailableAction[];
+  @Input()
+  inProgressAction:AvailableAction;
   role:Role;
   cards:TreasureCard[];
+  ACTION_NAMES = ACTION_NAMES;
 
   constructor() { }
 
@@ -29,7 +37,6 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges({player:playerChg}:SimpleChanges) {
-    console.log("hp", this.highlightPlayers);
     if (playerChg) {
       const { previousValue, currentValue } = playerChg;
       if (!previousValue || currentValue.cards !== previousValue.cards) {
@@ -44,6 +51,10 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
 
   playerClicked(player:PlayerState) {
     this.playerClick.emit(player);
+  }
+
+  actionClicked(action:AvailableAction) {
+    this.doAction.emit(action);
   }
 
 }

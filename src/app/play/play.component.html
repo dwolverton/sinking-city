@@ -4,15 +4,15 @@
     <app-dashboard [board]="board"></app-dashboard>
     <div class="players">
       <app-player-board *ngFor="let player of board.players; index as i; trackBy itemId" [player]="player"
-                      [ngClass]="{current: i === board.currentPlayer}"
-                      [cardSelectionEnabled]="inProgressAction?.pickCard && i === board.currentPlayer"
+                      [class.current]="i === board.currentPlayer"
+                      [cardSelectionEnabled]="inProgressAction?.pickCard && i === inProgressActionPlayerId"
                       [highlightPlayers]="inProgressAction?.players"
                       (cardClick)="selectCard($event.id)"
                       (playerClick)="selectPlayer($event.id)"
+                      [actions]="actions[i]"
+                      (doAction)="doAction($event, i)"
+                      [inProgressAction]="inProgressAction"
                       ></app-player-board>
-    </div>
-    <div class="actions">
-      <button *ngFor="let action of actions" (click)="doAction(action)" [class.active]="action === inProgressAction">{{ACTION_NAMES[action.type]}}</button>
     </div>
   </div>
 </main>

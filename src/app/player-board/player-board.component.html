@@ -1,12 +1,17 @@
 <div class="player">
-  <div class="player-id color--{{role.color}}" [class.highlight]="highlightPlayers?.includes(player.id)"
-       (click)="playerClicked(player)">
-    <span class="role">{{role.name}}</span>
-    <span class="symbol"></span>
-    <span class="name">{{player.name}}</span>
+  <div class="top-row">
+    <div class="player-id color--{{role.color}}" [class.highlight]="highlightPlayers?.includes(player.id)"
+        (click)="playerClicked(player)">
+      <span class="role">{{role.name}}</span>
+      <span class="symbol"></span>
+      <span class="name">{{player.name}}</span>
+    </div>
+    <div class="player-cards">
+      <app-player-card *ngFor="let card of cards" [card]="card" [highlight]="cardSelectionEnabled"
+          (click)="cardClicked(card)"></app-player-card>
+    </div>
   </div>
-  <div class="player-cards">
-    <app-player-card *ngFor="let card of cards" [card]="card" [highlight]="cardSelectionEnabled"
-        (click)="cardClicked(card)"></app-player-card>
+  <div class="actions">
+    <button *ngFor="let action of actions" (click)="actionClicked(action)" [class.active]="action === inProgressAction">{{ACTION_NAMES[action.type]}}</button>
   </div>
 </div>

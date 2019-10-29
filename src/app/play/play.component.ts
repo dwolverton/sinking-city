@@ -15,21 +15,22 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   private stop$ = new Subject();
   board: BoardState;
-  actions: AvailableAction[];
-  ACTION_NAMES = ACTION_NAMES;
+  actions: AvailableAction[][];
   inProgressAction: AvailableAction = null;
   inProgressSelection: { location?:number, player?:number, card?:number } = null;
+  inProgressActionPlayerId:number = null;
 
   constructor(private gameManager: GameManagerService, private route: ActivatedRoute) { }
 
-  doAction(action: AvailableAction) {
+  doAction(action:AvailableAction, playerId:number) {
     if (actionRequiresParams(action)) {
       this.inProgressAction = action;
       this.inProgressSelection = {};
+      this.inProgressActionPlayerId = playerId;
       return;
     }
 
-    this.gameManager.doAction({ type: action.type });
+    this.gameManager.doAction({ type: action.type }, playerId);
   }
 
   selectTile(location:number) {
@@ -42,7 +43,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   selectCard(cardId:number) {
     const action: AvailableAction = this.inProgressAction;
-    if (action && action.pickCard && this.board.players[this.board.currentPlayer].cards.includes(cardId)) {
+    if (action && action.pickCard && this.board.players[this.inProgressActionPlayerId].cards.includes(cardId)) {
       this.inProgressSelection.card = cardId;
       this.finishInProgressActionIfSatisfied();
     }
@@ -78,9 +79,11 @@ export class PlayComponent implements OnInit, OnDestroy {
   finishInProgressAction() {
     const action: AvailableAction = this.inProgressAction;
     const selection = this.inProgressSelection;
+    const playerId = this.inProgressActionPlayerId;
     this.inProgressAction = null;
     this.inProgressSelection = null;
-    this.gameManager.doAction({ type: action.type, ...selection });
+    this.inProgressActionPlayerId = null;
+    this.gameManager.doAction({ type: action.type, ...selection }, playerId);
   }
 
   ngOnInit() {
@@ -107,8 +110,12 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   @HostListener("document:keydown.d")
   drawActionShortcut() {
-    if (this.actions[0].type === ActionType.DrawFloodCard || this.actions[0].type === ActionType.DrawTreasureCard) {
-      this.doAction(this.actions[0]);
+    const playerId = this.board.currentPlayer;
+    if (playerId !== null && this.actions[playerId][0].type === ActionType.DrawFloodCard || this.actions[playerId][0].type === ActionType.DrawTreasureCard) {
+      this.doAction(this.actions[playerId][0], playerId);
+    } else if (playerId === null && this.actions[0][0].type === ActionType.DrawFloodCard) {
+      // doesn't really matter who draws the flood card.
+      this.doAction(this.actions[0][0], 0);
     }
   }
 
@@ -117,11 +124,13 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.doActionIfAvailable(ActionType.Done);
   }
 
-  doActionIfAvailable(type: ActionType) {
-    for (const action of this.actions) {
-      if (action.type === type) {
-        this.doAction(action);
-        break;
+  doActionIfAvailable(type: ActionType, playerId:number = this.board.currentPlayer) {
+    if (playerId !== null) {
+      for (const action of this.actions[playerId]) {
+        if (action.type === type) {
+          this.doAction(action, playerId);
+          break;
+        }
       }
     }
   }
