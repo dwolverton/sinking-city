@@ -10,3 +10,10 @@
   <label>Treasure Discard ({{board.treasureDiscard.length}})</label>
   <app-player-card [card]="treasureDiscard" [flip]="board.treasureDiscard.length % 2"></app-player-card>
 </div>
+<div class="captured-treasures">
+  <label>Captured Treasures</label>
+  <div class="captured-treasures-grid">
+    <div class="captured-treasure" *ngFor="let treasure of treasures"
+      [class.captured]="treasure.captured">{{treasure.emoji}}</div>
+  </div>
+</div>

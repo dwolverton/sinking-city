@@ -24,3 +24,40 @@ label {
     display: block;
     font-weight: bold;
 }
+
+.captured-treasures-grid {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.captured-treasure {
+    box-sizing: border-box;
+    border: 1px solid white;
+    border-radius: 6px;
+    background-color: pink;
+    height: 50%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 200%;
+    opacity: .4;
+    position: relative;
+}
+
+.captured-treasure.captured {
+    background-color: #95da95;
+    opacity: 1;
+}
+
+.captured-treasure.captured::after {
+    content: '✔';
+    position: absolute;
+    opacity: .8;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
