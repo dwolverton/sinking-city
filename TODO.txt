@@ -1,6 +1,4 @@
 - game features
-  - see captured treasures
-  - display number of remaining actions
   - refactor actions for multiple players
   - tile disappears under a player
   - lose conditions

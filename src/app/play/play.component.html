@@ -12,6 +12,7 @@
                       [actions]="actions[i]"
                       (doAction)="doAction($event, i)"
                       [inProgressAction]="inProgressAction"
+                      [actionsRemaining]="i === board.currentPlayer ? board.actionsRemaining : null"
                       ></app-player-board>
     </div>
   </div>

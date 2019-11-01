@@ -90,6 +90,24 @@ app-player-card {
     margin-left: 2px;
 }
 
+.action-count {
+    display: flex;
+    height: 4px;
+    width: 100%;
+    /* justify-content: stretch; */
+    align-items: stretch;
+}
+.action-count > * {
+    flex-grow: 1;
+    margin-right: 3px;
+}
+.action-count > *:last-child {
+    margin-right: 0;
+}
+.available {
+    background-color: gray;
+}
+
 /* actions */
 button {
     border: 1px solid black;

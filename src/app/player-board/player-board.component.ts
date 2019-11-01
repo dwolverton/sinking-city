@@ -26,6 +26,8 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   actions:AvailableAction[];
   @Input()
   inProgressAction:AvailableAction;
+  @Input()
+  actionsRemaining:number;
   role:Role;
   cards:TreasureCard[];
   ACTION_NAMES = ACTION_NAMES;

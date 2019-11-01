@@ -5,6 +5,11 @@
       <span class="role">{{role.name}}</span>
       <span class="symbol"></span>
       <span class="name">{{player.name}}</span>
+      <span class="action-count" *ngIf="actionsRemaining !== null">
+        <span [class.available]="actionsRemaining > 0"></span>
+        <span [class.available]="actionsRemaining > 1"></span>
+        <span [class.available]="actionsRemaining > 2"></span>
+      </span>
     </div>
     <div class="player-cards">
       <app-player-card *ngFor="let card of cards" [card]="card" [highlight]="cardSelectionEnabled"
