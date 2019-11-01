@@ -1,79 +1,79 @@
 import BoardState, { TileState, PlayerState } from './BoardState';
-import { Action, AvailableAction, ActionType } from './actions';
+import { Action, AvailableAction, ActionType, ACTION_ORDER } from './actions';
 import Coord, { ICoord, MAX_COORD } from './Coord';
 import { TILES, TREASURE_CARDS, Tile } from './boardElements';
 export { default as getInitialBoard } from './gameEngine/getInitialBoard';
 export { default as applyAction } from './gameEngine/applyAction';
 
 export function isValidAction(board:BoardState, action:Action, playerId:number):boolean {
-    return getValidActionsForPlayer(board, playerId).some(availableAction => availableAction.type === action.type);
+    return getValidActions(board)[playerId].some(availableAction => availableAction.type === action.type);
 }
 
 export function getValidActions(board:BoardState):AvailableAction[][] {
-    const actions:AvailableAction[][] = [];
-    for (let i = 0; i < board.players.length; i++) {
-        actions[i] = getValidActionsForPlayer(board, i);
+    const actions:AvailableAction[][] = board.players.map(() => []);
+    let disallowOtherActions = false;
+
+    if (board.floodCardsToDraw && board.currentPlayer === null) {
+        // at beginning of game, anyone can draw the initial cards
+        const action = {type: ActionType.DrawFloodCard };
+        for (let player of board.players) {
+            actions[player.id].push(action);
+        }
+        return actions;
     }
+    
+    for (let player of board.players) {
+        if (board.tiles[player.location] == null) {
+            addMoveAction(board, player, actions[player.id]);
+            disallowOtherActions = true;
+        }
+    }
+    if (disallowOtherActions) {
+        return actions;
+    }
+
+    for (let player of board.players) {
+        if (player.cards.length > 0) {
+            actions[player.id].push({ type: ActionType.Discard, pickCard: true });
+            if (player.cards.length > 5) {
+                disallowOtherActions = true;
+            }
+        }
+    }
+    if (disallowOtherActions) {
+        return actions;
+    }
+
+    addValidActionsForCurrentPlayer(board, board.players[board.currentPlayer], actions[board.currentPlayer]);
+
+    for (const acts of actions) {
+        acts.sort(actionSort);
+    }
+
     return actions;
 }
 
-function getValidActionsForPlayer(board:BoardState, playerId:number):AvailableAction[] {
-    let actions:AvailableAction[] = [];
-    let includeDone:boolean = false;
-
-    if (board.players.some(p => p.cards.length > 5)) {
-        // if any player has too many cards, they must discard before any player can take any action
-        if (board.players[playerId].cards.length > 5) {
-            actions.push({ type: ActionType.Discard, pickCard: true });
-        }
-        return actions;
-    } else if (board.floodCardsToDraw) {
-        if (board.currentPlayer === null || board.currentPlayer === playerId) {
-            actions.push({type: ActionType.DrawFloodCard });
-        }
+function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerState, actions:AvailableAction[]):void {
+    if (board.floodCardsToDraw) {
+        actions.push({type: ActionType.DrawFloodCard });
     } else if (board.treasureCardsToDraw) {
-        if (board.currentPlayer === playerId) {
-            actions.push({type: ActionType.DrawTreasureCard });
-        }
+        actions.push({type: ActionType.DrawTreasureCard });
     } else {
-        // current player only
-        if (board.currentPlayer === playerId && board.actionsRemaining !== 0) {
-            const playerState:PlayerState = board.players[playerId];
-            addMoveAction(playerState);
-            addShoreUpAction(playerState);
-            addGiveTreasureCardAction(playerState);
-            addCaptureTreasureAction(playerState);
-            includeDone = true;
-        }
-
-        // all players
-    }
-
-    if (playerId !== null && board.players[playerId].cards.length !== 0) {
-        actions.push({ type: ActionType.Discard, pickCard: true });
-    }
-
-    if (includeDone) {
-        // doing this here ensures that done is always the last action in order.
+        addMoveAction(board, playerState, actions);
+        addShoreUpAction();
+        addGiveTreasureCardAction();
+        addCaptureTreasureAction();
         actions.push({type: ActionType.Done });
     }
 
-
-    function addMoveAction(playerState:PlayerState) {
-        const locations:number[] = filterToValidTiles(getAdjacentSpaces(playerState.location, false, false), board.tiles);
-        if (locations.length !== 0) {
-            actions.push({type: ActionType.Move, locations });
-        }
-    }
-
-    function addShoreUpAction(playerState:PlayerState) {
+    function addShoreUpAction() {
         const locations:number[] = filterToFloodedTiles(getAdjacentSpaces(playerState.location, true, false), board.tiles);
         if (locations.length !== 0) {
             actions.push({type: ActionType.ShoreUp, locations });
         }
     }
 
-    function addGiveTreasureCardAction(playerState:PlayerState) {
+    function addGiveTreasureCardAction() {
         if (playerState.cards.length === 0) {
             return;
         }
@@ -85,7 +85,7 @@ function getValidActionsForPlayer(board:BoardState, playerId:number):AvailableAc
         }
     }
 
-    function addCaptureTreasureAction(playerState:PlayerState) {
+    function addCaptureTreasureAction() {
         const tile:Tile = getTileAtLocation(playerState.location);
         if (tile && tile.treasure) {
             if (board.treasuresCaptured[tile.treasure.id]) {
@@ -108,8 +108,13 @@ function getValidActionsForPlayer(board:BoardState, playerId:number):AvailableAc
         }
         return TILES[tileState.id];
     }
+}
 
-    return actions;
+function addMoveAction(board:BoardState, playerState:PlayerState, actions:AvailableAction[]) {
+    const locations:number[] = filterToValidTiles(getAdjacentSpaces(playerState.location, false, false), board.tiles);
+    if (locations.length !== 0) {
+        actions.push({type: ActionType.Move, locations });
+    }
 }
 
 function getAdjacentSpaces(location:number, self:boolean, diagonal:boolean):Coord[] {
@@ -140,4 +145,8 @@ function filterToValidTiles(coords:Coord[], tiles:TileState[]):number[] {
 
 function filterToFloodedTiles(coords:Coord[], tiles:TileState[]):number[] {
     return filterToValidTiles(coords, tiles).filter(i => tiles[i].flooded);
+}
+
+function actionSort(a:AvailableAction, b:AvailableAction):number {
+    return ACTION_ORDER[a.type] - ACTION_ORDER[b.type];
 }

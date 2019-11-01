@@ -1,9 +1,7 @@
 - game features
-  - refactor actions for multiple players
-  - tile disappears under a player
+  - sandbag
   - lose conditions
   - win condition
-  - sandbag
   - helicopter lift
   - special abilities
 - online play

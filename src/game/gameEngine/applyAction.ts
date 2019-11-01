@@ -52,11 +52,14 @@ export default function applyAction(board: BoardState, action: Action, playerId:
     
     } else if (action.type === ActionType.Move) {
         const player = board.players[playerId];
+        const moveFromRemovedTile = board.tiles[player.location] === null;
 
         board = { ...board,
             players: replace(board.players, playerId, { ...player, location: action.location })
         };
-        useAction();
+        if (!moveFromRemovedTile) {
+            useAction();
+        }
     } else if (action.type === ActionType.ShoreUp) {
         const tile = board.tiles[action.location];
 

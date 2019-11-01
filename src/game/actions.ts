@@ -33,3 +33,14 @@ export const ACTION_NAMES = {
     Discard: "Discard",
     Done: "Done"
 }
+
+export const ACTION_ORDER = {
+    DrawTreasureCard: 0,
+    DrawFloodCard: 1,
+    Move: 2,
+    ShoreUp: 3,
+    GiveTreasureCard: 4,
+    CaptureTreasure: 5,
+    Discard: 6,
+    Done: 7
+}
