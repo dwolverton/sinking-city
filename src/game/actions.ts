@@ -19,6 +19,8 @@ export enum ActionType {
     ShoreUp = "ShoreUp",
     GiveTreasureCard = "GiveTreasureCard",
     CaptureTreasure = "CaptureTreasure",
+    Sandbags = "Sandbags",
+    HelicopterLift = "HelicopterLift",
     Discard = "Discard",
     Done = "Done"
 }
@@ -30,6 +32,8 @@ export const ACTION_NAMES = {
     ShoreUp: "Shore Up",
     GiveTreasureCard: "Give a Treasure Card",
     CaptureTreasure: "Capture Treasure",
+    Sandbags: "Use Sandbags",
+    HelicopterLift: "Use Helicopter Lift",
     Discard: "Discard",
     Done: "Done"
 }
@@ -41,6 +45,8 @@ export const ACTION_ORDER = {
     ShoreUp: 3,
     GiveTreasureCard: 4,
     CaptureTreasure: 5,
-    Discard: 6,
-    Done: 7
+    Sandbags: 6,
+    HelicopterLift: 7,
+    Discard: 8,
+    Done: 9
 }

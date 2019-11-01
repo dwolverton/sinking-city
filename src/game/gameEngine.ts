@@ -1,7 +1,7 @@
 import BoardState, { TileState, PlayerState } from './BoardState';
 import { Action, AvailableAction, ActionType, ACTION_ORDER } from './actions';
 import Coord, { ICoord, MAX_COORD } from './Coord';
-import { TILES, TREASURE_CARDS, Tile } from './boardElements';
+import { TILES, TREASURE_CARDS, Tile, TreasureCardSpecial } from './boardElements';
 export { default as getInitialBoard } from './gameEngine/getInitialBoard';
 export { default as applyAction } from './gameEngine/applyAction';
 
@@ -34,6 +34,12 @@ export function getValidActions(board:BoardState):AvailableAction[][] {
 
     for (let player of board.players) {
         if (player.cards.length > 0) {
+            if (player.cards.some(card => TREASURE_CARDS[card].special === TreasureCardSpecial.SANDBAGS)) {
+                actions[player.id].push({ type: ActionType.Sandbags, locations: findAllFloodedLocations(board) });
+            }
+            if (player.cards.some(card => TREASURE_CARDS[card].special === TreasureCardSpecial.HELICOPTER_LIFT)) {
+                actions[player.id].push({ type: ActionType.HelicopterLift });
+            }
             actions[player.id].push({ type: ActionType.Discard, pickCard: true });
             if (player.cards.length > 5) {
                 disallowOtherActions = true;
@@ -149,4 +155,8 @@ function filterToFloodedTiles(coords:Coord[], tiles:TileState[]):number[] {
 
 function actionSort(a:AvailableAction, b:AvailableAction):number {
     return ACTION_ORDER[a.type] - ACTION_ORDER[b.type];
+}
+
+function findAllFloodedLocations(board:BoardState) {
+    return board.tiles.map((tile, loc) => tile && tile.flooded ? loc : null).filter(loc => loc !== null);
 }

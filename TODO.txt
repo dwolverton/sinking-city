@@ -1,5 +1,4 @@
 - game features
-  - sandbag
   - lose conditions
   - win condition
   - helicopter lift

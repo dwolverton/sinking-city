@@ -43,13 +43,7 @@ export default function applyAction(board: BoardState, action: Action, playerId:
             startDrawFloodCardsPhase();
         }
     } else if (action.type === ActionType.Discard) {
-        const player = board.players[playerId];
-        board = { ...board,
-            players: replace(board.players, playerId,
-                { ...player, cards: player.cards.filter(card => card !== action.card) }),
-            treasureDiscard: push(board.treasureDiscard, action.card)
-        };
-    
+        discard(action.card);
     } else if (action.type === ActionType.Move) {
         const player = board.players[playerId];
         const moveFromRemovedTile = board.tiles[player.location] === null;
@@ -65,6 +59,12 @@ export default function applyAction(board: BoardState, action: Action, playerId:
 
         board = { ...board, tiles: replace(board.tiles, action.location, { ...tile, flooded: false })};
         useAction();
+    } else if (action.type === ActionType.Sandbags) {
+        const tile = board.tiles[action.location];
+        const cardId = board.players[playerId].cards.find(cardId => TREASURE_CARDS[cardId].special === TreasureCardSpecial.SANDBAGS);
+
+        board = { ...board, tiles: replace(board.tiles, action.location, { ...tile, flooded: false })};
+        discard(cardId);
     } else if (action.type === ActionType.GiveTreasureCard) {
         const players = board.players.concat();
         let giver = players[playerId];
@@ -92,6 +92,15 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         startDrawTreasureCardsPhase();
     }
 
+
+    function discard(cardId:number) {
+        const player = board.players[playerId];
+        board = { ...board,
+            players: replace(board.players, playerId,
+                { ...player, cards: player.cards.filter(card => card !== cardId) }),
+            treasureDiscard: push(board.treasureDiscard, cardId)
+        };
+    }
 
     function removeTile(tileLocation:number) {
         board = { ...board,
@@ -165,6 +174,10 @@ function pop<T>(array:T[]):T[] {
 
 function push<T>(array:T[], item:T):T[] {
     return [ ...array, item]
+}
+
+function removeIndex<T>(array:T[], i:number):T[] {
+    return [ ...array.slice(0, 1), ...array.slice(i + 1)];
 }
 
 function replace<T>(array:T[], i:number, item:T):T[] {
