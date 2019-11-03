@@ -17,16 +17,23 @@ export class PlayComponent implements OnInit, OnDestroy {
   board: BoardState;
   actions: AvailableAction[][];
   inProgressAction: AvailableAction = null;
-  inProgressSelection: { location?:number, player?:number, card?:number } = null;
+  inProgressSelection: { location?:number, players:number[], card?:number } = null;
   inProgressActionPlayerId:number = null;
+  highlightPlayers:number[] = null;
 
   constructor(private gameManager: GameManagerService, private route: ActivatedRoute) { }
 
   doAction(action:AvailableAction, playerId:number) {
     if (actionRequiresParams(action)) {
       this.inProgressAction = action;
-      this.inProgressSelection = {};
+      this.inProgressSelection = { players: [] };
       this.inProgressActionPlayerId = playerId;
+      if (action.players) {
+        this.highlightPlayers = action.players;
+      } else if (action.playerCombos) {
+        // initially all players are possible
+        this.highlightPlayers = action.playerCombos.map((_, i) => i);
+      }
       return;
     }
 
@@ -51,9 +58,25 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   selectPlayer(playerId:number) {
     const action: AvailableAction = this.inProgressAction;
-    if (action && action.players.includes(playerId)) {
-      this.inProgressSelection.player = playerId;
+    if (action && action.players && action.players.includes(playerId)) {
+      this.inProgressSelection.players = [ playerId ];
       this.finishInProgressActionIfSatisfied();
+    } else if (action && action.playerCombos && this.highlightPlayers.includes(playerId)) {
+      let i = this.inProgressSelection.players.indexOf(playerId);
+      // toggle player selection
+      if (i === -1) {
+        this.inProgressSelection.players.push(playerId);
+      } else {
+        this.inProgressSelection.players.splice(i, 1);
+        if (this.inProgressSelection.players.length === 0) {
+          // return to all if unselected
+          this.highlightPlayers = action.playerCombos.map((_, i) => i);
+        }
+      }
+      if (this.inProgressSelection.players.length == 1) {
+        // after first pick, highlight valid combos
+        this.highlightPlayers = action.playerCombos[playerId];
+      }
     }
   }
 
@@ -67,7 +90,10 @@ export class PlayComponent implements OnInit, OnDestroy {
     if (this.inProgressAction.locations && this.inProgressSelection.location === undefined) {
       return false;
     }
-    if (this.inProgressAction.players && this.inProgressSelection.player === undefined) {
+    if (this.inProgressAction.players && this.inProgressSelection.players.length !== 1) {
+      return false;
+    }
+    if (this.inProgressAction.playerCombos && this.inProgressSelection.players.length === 0) {
       return false;
     }
     if (this.inProgressAction.pickCard && this.inProgressSelection.card === undefined) {
@@ -78,11 +104,18 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   finishInProgressAction() {
     const action: AvailableAction = this.inProgressAction;
-    const selection = this.inProgressSelection;
+    const selection:any = this.inProgressSelection;
     const playerId = this.inProgressActionPlayerId;
     this.inProgressAction = null;
     this.inProgressSelection = null;
     this.inProgressActionPlayerId = null;
+    this.highlightPlayers = null;
+    if (action.players) {
+      // for single-player-selection actions, use single player, not array
+      selection.player = selection.players[0];
+      delete selection.players;
+    }
+
     this.gameManager.doAction({ type: action.type, ...selection }, playerId);
   }
 

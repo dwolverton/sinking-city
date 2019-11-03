@@ -35,7 +35,8 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
                 actions[player.id].push({ type: ActionType.Sandbags, locations: findAllFloodedLocations(board) });
             }
             if (player.cards.some(card => TREASURE_CARDS[card].special === TreasureCardSpecial.HELICOPTER_LIFT)) {
-                actions[player.id].push({ type: ActionType.HelicopterLift });
+                actions[player.id].push(getHelicopterAction(board));
+                console.log(actions);
                 if (isWin()) {
                     actions[player.id].push({ type: ActionType.Win });
                 }
@@ -131,6 +132,15 @@ function addMoveAction(board:BoardState, playerState:PlayerState, actions:Availa
     }
 }
 
+function getHelicopterAction(board:BoardState):AvailableAction {
+    const locations = findAllUnsunkLocations(board);
+    const playerCombos = [];
+    for (const player of board.players) {
+        playerCombos[player.id] = board.players.filter(p => p.location === player.location).map(p => p.id);
+    }
+    return { type: ActionType.HelicopterLift, locations, playerCombos }
+}
+
 export function findLocationsForMove(board:BoardState, player:PlayerState):number[] {
     return filterToValidTiles(getAdjacentSpaces(player.location, false, false), board.tiles);
 }
@@ -167,6 +177,10 @@ function filterToFloodedTiles(coords:Coord[], tiles:TileState[]):number[] {
 
 function actionSort(a:AvailableAction, b:AvailableAction):number {
     return ACTION_ORDER[a.type] - ACTION_ORDER[b.type];
+}
+
+function findAllUnsunkLocations(board:BoardState) {
+    return board.tiles.map((tile, loc) => tile ? loc : null).filter(loc => loc !== null);
 }
 
 function findAllFloodedLocations(board:BoardState) {

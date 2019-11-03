@@ -3,6 +3,7 @@ export interface AvailableAction {
     locations?:number[];
     pickCard?:boolean;
     players?:number[];
+    playerCombos?:number[][];
 }
 
 export interface Action {
@@ -10,6 +11,7 @@ export interface Action {
     location?:number;
     card?:number;
     player?:number;
+    players?:number[];
 }
 
 export enum ActionType {

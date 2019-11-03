@@ -23,6 +23,8 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   @Input()
   highlightPlayers:number[];
   @Input()
+  selectedPlayers:number[];
+  @Input()
   actions:AvailableAction[];
   @Input()
   inProgressAction:AvailableAction;

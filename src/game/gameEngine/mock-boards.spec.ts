@@ -106,7 +106,7 @@ export const b_start:BoardState = {
     treasuresCaptured: [ false, false, false, false ]
   };
 
-  export const HELICOPTER_LIFT_CARD = 24;
+  export const HELICOPTER_LIFT_CARD = 24; // 23 - 25
   export const EXIT_LOCATION = 14;
   
   export const b1:BoardState = {
@@ -115,7 +115,7 @@ export const b_start:BoardState = {
         { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] },
         { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
       ],
-      tiles: [
+      tiles: [ // [10, 11, 21, 12, 22, 5, 17, 16, 0, 23, 15]
         null,
         null,
         { id: 10, flooded: false },
@@ -131,24 +131,24 @@ export const b_start:BoardState = {
         { id: 17, flooded: false },
         { id: 16, flooded: false },
         { id: 0, flooded: false }, // 14 - Exit 55
-        { id: 23, flooded: false },
-        { id: 15, flooded: false },
+        null, // 15 - Sunk 23
+        null, // 16 - sunk 15
         { id: 3, flooded: false },  // 17 (1 meal)
         { id: 4, flooded: false },  // 18 - Aladdin Sweets & Cafe (1 meal)
         { id: 20, flooded: false }, // 19
         { id: 2, flooded: false },  // 20 (0 treat)
-        { id: 6, flooded: false },  // 21 (2 coffee)
+        { id: 6, flooded: true },  // 21 (2 coffee)
         { id: 1, flooded: false },  // 22 (0 treat)
         { id: 18, flooded: false },
         null,
-        { id: 7, flooded: false },
-        { id: 8, flooded: false },
+        { id: 7, flooded: false }, // 25
+        { id: 8, flooded: true },
         { id: 19, flooded: false },
         { id: 14, flooded: false },
         null,
         null,
         null,
-        { id: 13, flooded: false },
+        { id: 13, flooded: true },
         { id: 9, flooded: false },
         null,
         null
@@ -186,11 +186,10 @@ export const b_start:BoardState = {
       treasureCardsToDraw: 0,
       floodStack: [ 
         7,
-        15,
         3,
         18,
         12,
-        16,
+        0,
         8,
         22,
         6,
@@ -201,14 +200,13 @@ export const b_start:BoardState = {
         19,
         14,
         17,
-        11,
+        1,
         20,
         9,
-        0,
+        16,
         4,
         10,
-        1,
-        23
+        11
       ],
       floodDiscard: [],
       floodCardsToDraw: 0,

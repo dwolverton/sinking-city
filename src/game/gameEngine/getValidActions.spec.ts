@@ -207,3 +207,62 @@ describe("getValidActions:Win", () => {
   });
 
 });
+
+describe("getValidActions:HelicopterLift", () => {
+
+  it("should be available when player has helicopter lift card", () => {
+    let board = { ... b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+    ]};
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.HelicopterLift)).toBeDefined();
+  });
+
+  it("should be available even when no players turn", () => {
+    let board = { ... b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, HELICOPTER_LIFT_CARD, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+    ]};
+    let actions:AvailableAction[] = getValidActions(board)[1];
+    expect(actions.find(ac => ac.type === ActionType.HelicopterLift)).toBeDefined();
+  });
+
+  it("should not be available when player does not have helicopter lift card", () => {
+    let board = { ... b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+    ]};
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.HelicopterLift)).toBeUndefined();
+  });
+
+  it("should have all unsunk tiles as locations", () => {
+    let board = { ... b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+    ]};
+    let action:AvailableAction = getValidActions(board)[0].find(ac => ac.type === ActionType.HelicopterLift);
+    expect(action.locations.length).toEqual(22);
+    expect(action.locations.includes(25)).toBeTruthy(); // unflooded tile
+    expect(action.locations.includes(17)).toBeTruthy(); // flooded tile
+    expect(action.locations.includes(15)).toBeFalsy(); // a sunk tile
+  });
+
+  it("should have combinations of all players on the same tiles", () => {
+    let board = { ... b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+    ]};
+    let action:AvailableAction = getValidActions(board)[0].find(ac => ac.type === ActionType.HelicopterLift);
+    expect(action.playerCombos[0]).toEqual([0]);
+    expect(action.playerCombos[1]).toEqual([1, 2]);
+    expect(action.playerCombos[2]).toEqual([1, 2]);
+  });
+
+});

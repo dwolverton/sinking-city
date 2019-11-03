@@ -1,6 +1,8 @@
 <div class="player">
   <div class="top-row">
-    <div class="player-id color--{{role.color}}" [class.highlight]="highlightPlayers?.includes(player.id)"
+    <div class="player-id color--{{role.color}}"
+        [class.highlight]="highlightPlayers?.includes(player.id)"
+        [class.selected]="selectedPlayers?.includes(player.id)"
         (click)="playerClicked(player)">
       <span class="role">{{role.name}}</span>
       <span class="symbol"></span>
