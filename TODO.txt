@@ -1,5 +1,7 @@
 - game features
-  - win condition
   - helicopter lift
   - special abilities
 - online play
+  - share a game
+  - see shared games
+  - join a shared game

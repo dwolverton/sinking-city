@@ -1,7 +1,9 @@
 import BoardState, { PlayerState } from "../BoardState";
 import { getValidActions } from '../gameEngine';
-import { b1 } from './mock-boards.spec';
+import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
 import { AvailableAction, ActionType } from '../actions';
+
+
 
 describe("getValidActions:GiveTreasureCard", () => {
 
@@ -126,6 +128,82 @@ describe("getValidActions:CaptureTreasure", () => {
     ], treasuresCaptured: [true, true, false, true]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeDefined();
+  });
+
+});
+
+describe("getValidActions:Win", () => {
+
+  it("should be available when player has Helicopter lift card & all players on exit & all treasures captured", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+    ], treasuresCaptured: [ true, true, true, true ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeDefined();
+  });
+
+  it("does not have to be current player", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, HELICOPTER_LIFT_CARD] }
+    ], treasuresCaptured: [ true, true, true, true ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[1];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeDefined();
+  });
+
+  it("should not be available if no Helicopter lift", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+    ], treasuresCaptured: [ true, true, true, true ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
+  });
+
+  it("should not be available if not all treasures captured", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+    ], treasuresCaptured: [ false, true, true, true ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
+  });
+
+  it("should not be available if not all treasures captured ..2", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+    ], treasuresCaptured: [ true, true, false, false ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
+  });
+
+  it("should not be available if not all treasures captured ..3", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+    ], treasuresCaptured: [ false, false, false, false ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
+  });
+
+  it("should not be available not all on exit", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [19, 14] }
+    ], treasuresCaptured: [ true, true, true, true ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
+  });
+
+  it("should not be available not all on exit ..2", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 18, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [19, 14] }
+    ], treasuresCaptured: [ true, true, true, true ]}; 
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
   });
 
 });

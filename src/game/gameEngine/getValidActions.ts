@@ -36,6 +36,9 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
             }
             if (player.cards.some(card => TREASURE_CARDS[card].special === TreasureCardSpecial.HELICOPTER_LIFT)) {
                 actions[player.id].push({ type: ActionType.HelicopterLift });
+                if (isWin()) {
+                    actions[player.id].push({ type: ActionType.Win });
+                }
             }
             actions[player.id].push({ type: ActionType.Discard, pickCard: true });
             if (player.cards.length > 5) {
@@ -54,6 +57,14 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
     }
 
     return actions;
+
+    function isWin() {
+        return board.treasuresCaptured.every(captured => captured) &&
+        board.players.every(player => {
+            const tile = board.tiles[player.location];
+            return tile && tile.id === 0;
+        });
+    }
 }
 
 function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerState, actions:AvailableAction[]):void {

@@ -1,9 +1,7 @@
 import BoardState, { PlayerState, Outcome } from "../BoardState";
-import getInitialBoard from "./getInitialBoard";
 import applyAction from './applyAction';
 import { ActionType } from '../actions';
-import { b1 } from './mock-boards.spec';
-import { WATER_LEVELS } from '../boardElements';
+import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
 
 const WATERS_RISE_CARD:number = 20;
 
@@ -305,4 +303,16 @@ describe("applyAction indicates loss", () => {
     expect(board.outcome).toEqual(Outcome.NONE);
   });
 
+});
+
+describe("applyAction:Win", () => {
+
+  it("should be available when player has Helicopter lift card & all players on exit & all treasures captured", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+    ], treasuresCaptured: [ true, true, true, true ]}; 
+    board = applyAction(board, { type: ActionType.Win}, 0);
+    expect(board.outcome).toEqual(Outcome.WIN);
+  });
 });

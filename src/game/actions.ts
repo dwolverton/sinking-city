@@ -13,6 +13,7 @@ export interface Action {
 }
 
 export enum ActionType {
+    Win = "Win",
     DrawTreasureCard = "DrawTreasureCard",
     DrawFloodCard = "DrawFloodCard",
     Move = "Move",
@@ -26,6 +27,7 @@ export enum ActionType {
 }
 
 export const ACTION_NAMES = {
+    Win: "Lift Your Team to WIN",
     DrawTreasureCard: "Draw Treasure Card",
     DrawFloodCard: "Draw Flood Card",
     Move: "Move",
@@ -39,6 +41,7 @@ export const ACTION_NAMES = {
 }
 
 export const ACTION_ORDER = {
+    Win: -1,
     DrawTreasureCard: 0,
     DrawFloodCard: 1,
     Move: 2,

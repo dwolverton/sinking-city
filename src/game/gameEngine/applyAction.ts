@@ -91,12 +91,14 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         useAction();
     } else if (action.type === ActionType.Done) {
         startDrawTreasureCardsPhase();
+    } else if (action.type === ActionType.Win) {
+        return { ...board, outcome: Outcome.WIN };
     }
 
     if (isLoss()) {
         board = { ...board, outcome: Outcome.LOSE };
     }
-
+    return board;
 
     function discard(cardId:number) {
         const player = board.players[playerId];
@@ -198,9 +200,6 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         }
         return false;
     }
-
-    console.log(board);
-    return board;
 }
 
 function pop<T>(array:T[]):T[] {

@@ -105,6 +105,9 @@ export const b_start:BoardState = {
     outcome: Outcome.NONE,
     treasuresCaptured: [ false, false, false, false ]
   };
+
+  export const HELICOPTER_LIFT_CARD = 24;
+  export const EXIT_LOCATION = 14;
   
   export const b1:BoardState = {
       players: [
