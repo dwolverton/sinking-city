@@ -1,5 +1,5 @@
 import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
-import BoardState, { TileState } from '../BoardState';
+import BoardState, { TileState, Outcome } from '../BoardState';
 import { shuffle } from 'lodash';
 
 export default function getInitialBoard(playerCount:number, difficulty:number):BoardState {
@@ -15,7 +15,7 @@ export default function getInitialBoard(playerCount:number, difficulty:number):B
         floodStack: createShuffledNumbersArray(FLOOD_CARDS.length),
         floodDiscard: [],
         floodCardsToDraw: 6,
-        startupComplete: false,
+        outcome: Outcome.NONE,
         treasuresCaptured: [ false, false, false, false ]
     };
     addPlayers(board, playerCount);

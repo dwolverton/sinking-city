@@ -14,6 +14,7 @@ import { NewGameComponent } from './new-game/new-game.component';
 import { GameListComponent } from './game-list/game-list.component';
 import { WindowComponent } from './window/window.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EndModalComponent } from './end-modal/end-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FloodCardComponent,
     NewGameComponent,
     GameListComponent,
-    WindowComponent
+    WindowComponent,
+    EndModalComponent
   ],
   imports: [
     BrowserModule,

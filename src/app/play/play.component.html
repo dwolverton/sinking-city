@@ -16,4 +16,5 @@
                       ></app-player-board>
     </div>
   </div>
+  <app-end-modal *ngIf="board.outcome" [outcome]="board.outcome"></app-end-modal>
 </main>

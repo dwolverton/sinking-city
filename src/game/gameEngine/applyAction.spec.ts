@@ -1,4 +1,4 @@
-import BoardState, { PlayerState } from "../BoardState";
+import BoardState, { PlayerState, Outcome } from "../BoardState";
 import getInitialBoard from "./getInitialBoard";
 import applyAction from './applyAction';
 import { ActionType } from '../actions';
@@ -243,6 +243,66 @@ describe("applyAction:CaptureTreasure", () => {
     ], actionsRemaining: 2}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.actionsRemaining).toEqual(1);
+  });
+
+});
+
+describe("applyAction indicates loss", () => {
+
+  it("LOSS when water level too high", () => {
+    let board = { ...b1, floodCardsToDraw: 2, waterLevel: 9};
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("NOT LOSS when water level okay", () => {
+    let board = { ...b1, floodCardsToDraw: 2, waterLevel: 8};
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
+  });
+
+  it("LOSS when exit sunk", () => {
+    let board = { ...b1, floodCardsToDraw: 2,
+    tiles: b1.tiles.filter((_, i) => i !== 14)}; // remove exit tile
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("LOSS when no tiles left for uncaptured treasure", () => {
+    let board = { ...b1, floodCardsToDraw: 2, treasuresCaptured: [true, true, false, true],
+    tiles: b1.tiles.filter((_, i) => i !== 10 && i !== 21)}; // remove both coffee tiles
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("NOT LOSS when one tiles left for uncaptured treasure", () => {
+    let board = { ...b1, floodCardsToDraw: 2, treasuresCaptured: [true, true, false, true],
+    tiles: b1.tiles.filter((_, i) => i !== 10)}; // remove both coffee tiles
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
+  });
+
+  it("NOT LOSS when no tiles left for captured treasure", () => {
+    let board = { ...b1, floodCardsToDraw: 2, treasuresCaptured: [true, false, true, true],
+    tiles: b1.tiles.filter((_, i) => i !== 10 && i !== 21)}; // remove both coffee tiles
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
+  });
+
+  it("LOSS when player in water and can't move", () => {
+    let board = { ...b1, floodCardsToDraw: 2,
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 0 } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("NOT LOSS when player in water and can move", () => {
+    let board = { ...b1, floodCardsToDraw: 2,
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 1 } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
   });
 
 });

@@ -10,7 +10,7 @@ export default interface BoardState {
     floodStack:number[];
     floodDiscard:number[];
     floodCardsToDraw:number;
-    startupComplete:boolean;
+    outcome:Outcome;
     treasuresCaptured:boolean[];
 }
 
@@ -25,5 +25,11 @@ export interface PlayerState {
 export interface TileState {
     readonly id:number,
     flooded:boolean
+}
+
+export enum Outcome {
+    NONE = 0,
+    LOSE = 1,
+    WIN = 2
 }
 

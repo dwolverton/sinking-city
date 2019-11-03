@@ -1,5 +1,4 @@
 - game features
-  - lose conditions
   - win condition
   - helicopter lift
   - special abilities

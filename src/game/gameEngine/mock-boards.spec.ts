@@ -1,35 +1,6 @@
-// const p1:PlayerState = {
-//     id: 0,
-//     name: "Player 1",
-//     role: 0,
-//     location: 2,
-//     cards: []
-// };
+import BoardState, { Outcome } from '../BoardState';
 
-// const p2:PlayerState = {
-//     id: 1,
-//     name: "Player 2",
-//     role: 1,
-//     location: 3,
-//     cards: []
-// };
-
-// const b1:BoardState = {
-//     players: [ p1, p2 ],
-//     currentPlayer: 0,
-//     actionsRemaining: 3,
-//     tiles: [],
-//     waterLevel: 0,
-//     treasureStack: [],
-//     treasureDiscard:number[];
-//     treasureCardsToDraw:number;
-//     floodStack:number[];
-//     floodDiscard:number[];
-//     floodCardsToDraw:number;
-//     startupComplete:boolean;
-// }
-
-export const b_start = {
+export const b_start:BoardState = {
     players: [
       { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
       { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
@@ -122,20 +93,20 @@ export const b_start = {
       17,
       11,
       4,
-      10,
-      1,
-      23,
       20,
       9,
-      0
+      0,
+      10,
+      1,
+      23
     ],
     floodDiscard: [],
     floodCardsToDraw: 6,
-    startupComplete: false,
+    outcome: Outcome.NONE,
     treasuresCaptured: [ false, false, false, false ]
   };
   
-  export const b1 = {
+  export const b1:BoardState = {
       players: [
         { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
         { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] },
@@ -156,15 +127,15 @@ export const b_start = {
         null,
         { id: 17, flooded: false },
         { id: 16, flooded: false },
-        { id: 0, flooded: false },
+        { id: 0, flooded: false }, // 14 - Exit 55
         { id: 23, flooded: false },
         { id: 15, flooded: false },
-        { id: 3, flooded: false },
+        { id: 3, flooded: false },  // 17 (1 meal)
         { id: 4, flooded: false },  // 18 - Aladdin Sweets & Cafe (1 meal)
         { id: 20, flooded: false }, // 19
-        { id: 2, flooded: false },
-        { id: 6, flooded: false },
-        { id: 1, flooded: false },
+        { id: 2, flooded: false },  // 20 (0 treat)
+        { id: 6, flooded: false },  // 21 (2 coffee)
+        { id: 1, flooded: false },  // 22 (0 treat)
         { id: 18, flooded: false },
         null,
         { id: 7, flooded: false },
@@ -228,17 +199,17 @@ export const b_start = {
         14,
         17,
         11,
+        20,
+        9,
+        0,
         4,
         10,
         1,
-        23,
-        20,
-        9,
-        0
+        23
       ],
       floodDiscard: [],
       floodCardsToDraw: 0,
-      startupComplete: false,
+      outcome: Outcome.NONE,
       treasuresCaptured: [ false, false, false, true ]
     };
   

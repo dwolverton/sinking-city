@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameManagerService } from '../game-manager.service';
-import BoardState from 'src/game/BoardState';
+import BoardState, { Outcome } from 'src/game/BoardState';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/game/actions';
@@ -111,7 +111,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   @HostListener("document:keydown.d")
   drawActionShortcut() {
     const playerId = this.board.currentPlayer;
-    if (playerId !== null && this.actions[playerId][0].type === ActionType.DrawFloodCard || this.actions[playerId][0].type === ActionType.DrawTreasureCard) {
+    if (playerId !== null && (this.actions[playerId][0].type === ActionType.DrawFloodCard || this.actions[playerId][0].type === ActionType.DrawTreasureCard)) {
       this.doAction(this.actions[playerId][0], playerId);
     } else if (playerId === null && this.actions[0][0].type === ActionType.DrawFloodCard) {
       // doesn't really matter who draws the flood card.

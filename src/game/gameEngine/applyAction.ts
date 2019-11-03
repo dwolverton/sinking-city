@@ -1,8 +1,9 @@
-import BoardState from '../BoardState';
+import BoardState, { Outcome } from '../BoardState';
 import { Action, ActionType } from '../actions';
 import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS, TILES, Treasure } from '../boardElements';
 import Coord from '../Coord';
 import { shuffle } from 'lodash';
+import { findLocationsForMove } from './getValidActions';
 
 export default function applyAction(board: BoardState, action: Action, playerId: number): BoardState {
     if (action.type === ActionType.DrawFloodCard) {
@@ -92,6 +93,10 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         startDrawTreasureCardsPhase();
     }
 
+    if (isLoss()) {
+        board = { ...board, outcome: Outcome.LOSE };
+    }
+
 
     function discard(cardId:number) {
         const player = board.players[playerId];
@@ -164,6 +169,36 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         };
         return TREASURE_CARDS[id];
     }
+
+    function isLoss():boolean {
+        // water level too high
+        if (board.waterLevel >= 9) {
+            return true;
+        }
+        // exit tile is sunk (0 is exit)
+        if (!board.tiles.some(card => card && card.id === 0)) {
+            return true;
+        }
+        // all of a necessary treasure tile are sunk
+        for (let i = 0; i < 4; i++) {
+            if (!board.treasuresCaptured[i]) {
+                // 2 tiles for each treasure
+                const cardA = i * 2 + 1;
+                const cardB = i * 2 + 2;
+                if (!board.tiles.some(card => card && (card.id === cardA || card.id === cardB))) {
+                    return true;
+                }
+            }
+        }
+        // player in water and can't move
+        for (const player of board.players) {
+            if (board.tiles[player.location] === null && findLocationsForMove(board, player).length === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     console.log(board);
     return board;
 }
