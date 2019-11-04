@@ -11,10 +11,11 @@
 .modal {
   position: absolute;
   z-index: 101;
-  top: 0;
+  top: -50px;
   left: 0;
   right: 0;
   text-align: center;
+  animation: slideUp 800ms ease-out;
 }
 
 img {
@@ -27,4 +28,15 @@ img {
   font-size: 120%;
   padding: 4px 12px;
   box-shadow: 1px 1px 1px rgb(33, 61, 85);
+}
+
+@keyframes slideUp {
+  0% {
+    top: 50px;
+    opacity: .2;
+  }
+  100% {
+    top: -50px;
+    opacity: 1;
+  }
 }

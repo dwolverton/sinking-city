@@ -17,7 +17,7 @@ export class EndModalComponent implements OnInit {
 
   ngOnInit() {
     if (this.outcome === Outcome.WIN) {
-      this.text = "You saved the treasures of Hamtramck. You Win!!!!"
+      this.text = "You saved the treasures of Hamtramck! You Win!!!!"
       this.imageUrl = "assets/win.gif";
     } else {
       this.text = "Alas, you lose! The city sank beneath the waves. You return with nothing."

@@ -66,6 +66,14 @@ export default function applyAction(board: BoardState, action: Action, playerId:
 
         board = { ...board, tiles: replace(board.tiles, action.location, { ...tile, flooded: false })};
         discard(cardId);
+    } else if (action.type === ActionType.HelicopterLift) {
+        const players = board.players.map(p => action.players.includes(p.id) ? {
+            ...p, location: action.location
+        } : p);
+        board = { ...board, players }
+
+        const cardId = board.players[playerId].cards.find(cardId => TREASURE_CARDS[cardId].special === TreasureCardSpecial.HELICOPTER_LIFT);
+        discard(cardId);
     } else if (action.type === ActionType.GiveTreasureCard) {
         const players = board.players.concat();
         let giver = players[playerId];
