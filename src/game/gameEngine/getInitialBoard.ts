@@ -2,7 +2,12 @@ import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial }
 import BoardState, { TileState, Outcome } from '../BoardState';
 import { shuffle } from 'lodash';
 
-export default function getInitialBoard(playerCount:number, difficulty:number):BoardState {
+export interface PlayerOptions {
+    name:string|null;
+    role:number|null;
+}
+
+export default function getInitialBoard(playerOptions:PlayerOptions[], difficulty:number):BoardState {
     const board:BoardState = {
         players: [],
         tiles: createTiles(),
@@ -18,21 +23,28 @@ export default function getInitialBoard(playerCount:number, difficulty:number):B
         outcome: Outcome.NONE,
         treasuresCaptured: [ false, false, false, false ]
     };
-    addPlayers(board, playerCount);
+    addPlayers(board, playerOptions);
     return board;
 }
 
-function addPlayers(board:BoardState, playerCount:number):void {
-    const roles = createShuffledNumbersArray(ROLES.length);
+function addPlayers(board:BoardState, playerOptions:PlayerOptions[]):void {
+    let availableRoles = createShuffledNumbersArray(ROLES.length);
+    // remove roles that selected
+    availableRoles = availableRoles.filter(role => !playerOptions.some(p => p.role === role));
 
-    for (let i = 0; i < playerCount; i++) {
-        const role = roles.pop();
+    for (let i = 0; i < playerOptions.length; i++) {
+        let role:number;
+        if (playerOptions[i].role === null) {
+            role = availableRoles.pop();
+        } else {
+            role = playerOptions[i].role;
+        }
         const startingTile = ROLES[role].startingTile;
         const location = board.tiles.findIndex(tile => tile && tile.id === startingTile);
 
         board.players.push({
             id: i,
-            name: "Player " + (i + 1),
+            name: playerOptions[i].name || "Player " + (i + 1),
             role,
             location,
             cards: [drawNonWatersRiseTreasureCard(board).id, drawNonWatersRiseTreasureCard(board).id]

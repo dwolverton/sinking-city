@@ -2,15 +2,32 @@
   <h1>New Game</h1>
   <form [formGroup]="options" (submit)="onSubmit()">
     <p>
-      <label for="playerCount">Players</label>
-      <input id="playerCount" formControlName="playerCount" type="number" min="2" max="4" step="1" required />
-    </p>
-    <p>
       <label for="difficulty">Difficulty</label>
       <select id="difficulty" formControlName="difficulty">
         <option *ngFor="let dif of difficulties; let i = index" [value]="i">{{dif}}</option>
       </select>
     </p>
+    
+    <h3>Players <button type="button" class="add-player" (click)="addPlayer()" [disabled]="players.controls.length === 4">Add Player</button></h3>
+    <div>
+      <div class="player" formArrayName="players"
+          *ngFor="let formGroup of players.controls; index as i" >
+        <ng-container [formGroupName]="i">
+          <p>
+            <label for="player-name{{i}}">Name</label>
+            <input id="player-name{{i}}" formControlName="name" placeholder="Player {{i + 1}}" />
+            <button type="button" (click)="removePlayer(i)" class="remove-player" [disabled]="players.controls.length === 2">Remove Player</button>
+          </p>
+          <p>
+            <label for="player-role{{i}}">Role</label>
+            <select id="player-role{{i}}" formControlName="role">
+              <option value="">- Random -</option>
+              <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
+            </select>
+          </p>
+        </ng-container>
+      </div>
+    </div>
     <p>
       <button [disabled]="options.invalid">Start Game</button>
     </p>

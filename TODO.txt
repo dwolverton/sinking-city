@@ -2,6 +2,7 @@
   - visual indicators for locations & card selections
   - special abilities
 - online play
+  - delete a game
   - share a game
   - see shared games
   - join a shared game

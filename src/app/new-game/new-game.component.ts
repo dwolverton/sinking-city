@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SavedGameService } from '../saved-game.service';
 import { getInitialBoard } from 'src/game/gameEngine';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { DIFFICULTIES } from 'src/game/boardElements';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { DIFFICULTIES, ROLES } from 'src/game/boardElements';
+import { PlayerOptions } from 'src/game/gameEngine/getInitialBoard';
 
 @Component({
   selector: 'app-new-game',
@@ -13,20 +14,45 @@ import { DIFFICULTIES } from 'src/game/boardElements';
 export class NewGameComponent implements OnInit {
 
   difficulties = DIFFICULTIES;
+  roles = ROLES;
+  players:FormArray = new FormArray([
+    this.generatePlayerFormGroup(), this.generatePlayerFormGroup()
+  ])
   options = new FormGroup({
-    playerCount: new FormControl('2', [Validators.required, Validators.pattern(/^\d$/), Validators.min(2), Validators.max(4)]),
-    difficulty: new FormControl('1', [Validators.required, Validators.pattern(/^\d$/), Validators.min(0), Validators.max(DIFFICULTIES.length - 1)])
+    difficulty: new FormControl('1', [Validators.required, Validators.pattern(/^\d$/), Validators.min(0), Validators.max(DIFFICULTIES.length - 1)]),
+    players: this.players
   });
 
   constructor(private savedGameService:SavedGameService, private router:Router) { }
 
   ngOnInit() {
+    
+  }
+
+  generatePlayerFormGroup() {
+    return new FormGroup({
+      name: new FormControl('', Validators.maxLength(20)),
+      role: new FormControl('')
+    });
+  }
+
+  addPlayer() {
+    this.players.push(this.generatePlayerFormGroup());
+  }
+
+  removePlayer(i:number) {
+    this.players.removeAt(i);
   }
 
   onSubmit() {
-    if (this.options.valid) {
+    if (this.options.valid && this.players.length >= 2 && this.players.length <= 4) {
+      const playerOptions:PlayerOptions[] = this.players.controls.map((group:FormGroup) => ({
+        name: group.controls.name.value,
+        role: parseInt(group.controls.role.value) || null
+      }));
+
       const id:number = this.savedGameService.saveGame(
-        getInitialBoard(parseInt(this.options.value.playerCount), parseInt(this.options.value.difficulty)));
+        getInitialBoard(playerOptions, parseInt(this.options.value.difficulty)));
       this.router.navigate(["/game", id]);
     }
   }
