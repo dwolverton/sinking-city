@@ -1,7 +1,7 @@
 import BoardState, { TileState, PlayerState, Outcome } from '../BoardState';
 import { Action, AvailableAction, ActionType, ACTION_ORDER } from '../actions';
 import Coord, { ICoord, MAX_COORD } from '../Coord';
-import { TILES, TREASURE_CARDS, Tile, TreasureCardSpecial } from '../boardElements';
+import { TILES, TREASURE_CARDS, Tile, TreasureCardSpecial, ROLES, Role } from '../boardElements';
 
 export default function getValidActions(board:BoardState):AvailableAction[][] {
     const actions:AvailableAction[][] = board.players.map(() => []);
@@ -36,7 +36,6 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
             }
             if (player.cards.some(card => TREASURE_CARDS[card].special === TreasureCardSpecial.HELICOPTER_LIFT)) {
                 actions[player.id].push(getHelicopterAction(board));
-                console.log(actions);
                 if (isWin()) {
                     actions[player.id].push({ type: ActionType.Win });
                 }
@@ -82,7 +81,8 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
     }
 
     function addShoreUpAction() {
-        const locations:number[] = filterToFloodedTiles(getAdjacentSpaces(playerState.location, true, false), board.tiles);
+        const locations:number[] = filterToFloodedTiles(
+            getAdjacentSpaces(playerState.location, true, allowDiagonal(playerState)), board.tiles);
         if (locations.length !== 0) {
             actions.push({type: ActionType.ShoreUp, locations });
         }
@@ -142,7 +142,11 @@ function getHelicopterAction(board:BoardState):AvailableAction {
 }
 
 export function findLocationsForMove(board:BoardState, player:PlayerState):number[] {
-    return filterToValidTiles(getAdjacentSpaces(player.location, false, false), board.tiles);
+    if (player.role === Role.DIVER) {
+        return getDiverMoves(player.location, board.tiles);
+    } else {
+        return filterToValidTiles(getAdjacentSpaces(player.location, false, allowDiagonal(player)), board.tiles);
+    }
 }
 
 function getAdjacentSpaces(location:number, self:boolean, diagonal:boolean):Coord[] {
@@ -185,4 +189,32 @@ function findAllUnsunkLocations(board:BoardState) {
 
 function findAllFloodedLocations(board:BoardState) {
     return board.tiles.map((tile, loc) => tile && tile.flooded ? loc : null).filter(loc => loc !== null);
+}
+
+function allowDiagonal(player:PlayerState):boolean {
+    return player.role === Role.EXPLORER;
+}
+
+function getDiverMoves(location:number, tiles:TileState[]):number[] {
+    const moves:number[] = [];
+    addDiverMove(moves, location, -1, 0, tiles);
+    addDiverMove(moves, location, 1, 0, tiles);
+    addDiverMove(moves, location, 0, -1, tiles);
+    addDiverMove(moves, location, 0, 1, tiles);
+    return moves;
+}
+
+function addDiverMove(moves:number[], location:number, dx:number, dy:number, tiles:TileState[]) {
+    let coord:Coord = Coord.fromIndex(location);
+    do {
+        coord.x += dx;
+        coord.y += dy;
+        if (!coord.isInBounds()) {
+            return;
+        }
+        location = coord.toIndex();
+        if (tiles[location]) {
+            moves.push(location);
+        }
+    } while (!tiles[location] || tiles[location].flooded);
 }

@@ -1,6 +1,11 @@
 - game features
   - visual indicators for locations & card selections
   - special abilities
+    - pilot - 1 fly per turn
+    - engineer - two shores for 1 action
+    - messenger - give treasure card to anyone (not just same space)
+    - navigator
+  - may not give special action cards
 - online play
   - delete a game
   - share a game

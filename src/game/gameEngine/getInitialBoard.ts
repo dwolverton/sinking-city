@@ -1,6 +1,7 @@
 import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
 import BoardState, { TileState, Outcome } from '../BoardState';
 import { shuffle } from 'lodash';
+import { create } from 'domain';
 
 export interface PlayerOptions {
     name:string|null;
@@ -72,8 +73,20 @@ function drawNonWatersRiseTreasureCard(board:BoardState):TreasureCard {
 }
 
 function createTiles():TileState[] {
+    const spaces:TileState[] = createBlankMap();
+
+    const tiles = createShuffledNumbersArray(24);
+    for (let i = 2; i < 34; i++) {
+        if (spaces[i] === undefined) {
+            spaces[i] = { id: tiles.pop(), flooded: false };
+        }
+    }
+    return spaces;
+}
+
+export function createBlankMap():TileState[] {
     const spaces:TileState[] = [];
-    // block of empty tiles
+    // block off empty tiles
     spaces[0] = null;
     spaces[1] = null;
     spaces[4] = null;
@@ -86,13 +99,6 @@ function createTiles():TileState[] {
     spaces[31] = null;
     spaces[34] = null;
     spaces[35] = null;
-
-    const tiles = createShuffledNumbersArray(24);
-    for (let i = 2; i < 34; i++) {
-        if (spaces[i] === undefined) {
-            spaces[i] = { id: tiles.pop(), flooded: false };
-        }
-    }
     return spaces;
 }
 

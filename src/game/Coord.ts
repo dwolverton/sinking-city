@@ -1,8 +1,12 @@
 export default class Coord implements ICoord {
     constructor(public x:number = 0, public y:number = 0) {}
 
-    toIndex() {
+    toIndex():number {
         return this.y * 6 + this.x;
+    }
+
+    isInBounds():boolean {
+        return this.x >= 0 && this.x < 6 && this.y >= 0 && this.y < 6;
     }
 
     static fromIndex(index:number):Coord {

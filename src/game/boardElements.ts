@@ -39,6 +39,12 @@ export class Role {
         readonly color:string,
         readonly startingTile:number
     ) {}
+    static readonly EXPLORER:number = 0;
+    static readonly PILOT:number = 1;
+    static readonly ENGINEER:number = 2;
+    static readonly DIVER:number = 3;
+    static readonly MESSENGER:number = 4;
+    static readonly NAVIGAGOR:number = 5;
 }
 
 export class Treasure {

@@ -1,9 +1,295 @@
-import BoardState, { PlayerState } from "../BoardState";
+import BoardState, { PlayerState, TileState } from "../BoardState";
 import { getValidActions } from '../gameEngine';
 import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
 import { AvailableAction, ActionType } from '../actions';
+import { createBlankMap } from './getInitialBoard';
+import { Tile, Role } from '../boardElements';
 
+describe("getValidActions:Move Diver", () => {
+  it("should allow normal moves", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    ******
+    *-**-*
+     **.*
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 8, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([2, 7, 9, 14]);
+  });
 
+  it("should allow normal moves at edge", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    ******
+    *-**-*
+     **.*
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 7, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([8, 13]);
+  });
+
+  it("should be able to move over one sunken tile", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    ***.**
+    **.*.*
+     **.*
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 21, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([9, 19, 23, 33]);
+  });
+
+  it("should be able to move over multiple sunken tiles", () => {
+    let tiles = mockBoard(`
+      **
+     **.*
+    ***.**
+    ***.**
+     *.**
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([3, 25, 28, 33]);
+  });
+
+  it("should be able to move over multiple sunken tiles (2)", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    *....*
+    ******
+     ****
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 12, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([17, 18]);
+  });
+
+  it("should be able to move over one flooded tile", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    ***-**
+    **-*-*
+     **-*
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 21, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([9, 15, 19, 20, 22, 23, 27, 33]);
+  });
+
+  it("should be able to move over multiple flooded tiles", () => {
+    let tiles = mockBoard(`
+      **
+     **-*
+    ***-**
+    ***-**
+     *-**
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([3, 9, 15, 21, 25, 26, 28, 33]);
+  });
+
+  it("should be able to move over multiple flooded tiles (2)", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    *----*
+    ******
+     ****
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 12, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([13, 14, 15, 16, 17, 18]);
+  });
+
+  it("should be able to move over multiple flooded & sunken tiles", () => {
+    let tiles = mockBoard(`
+      **
+     **.*
+    ***-**
+    ***-**
+     *-**
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([3, 15, 21, 25, 26, 28, 33]);
+  });
+
+  it("should be able to move over multiple flooded & sunken tiles (2)", () => {
+    let tiles = mockBoard(`
+      **
+     ****
+    *.-.-*
+    ******
+     ****
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 12, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([14, 16, 17, 18]);
+  });
+
+  it("should be able to move over multiple flooded & sunken tiles to flooded edge", () => {
+    let tiles = mockBoard(`
+      *-
+     **-*
+    -..-.-
+    ***.**
+     **.*
+      *-
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 15, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([3, 9, 12, 17, 33]);
+  });
+
+  it("should be able to move off of sunken tile", () => {
+    let tiles = mockBoard(`
+      .*
+     -.**
+    .....*
+    --..-*
+     *--*
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 14, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([17, 26, 32]);
+  });
+
+  it("should not be available if nowhere to go", () => {
+    let tiles = mockBoard(`
+      .*
+     -.**
+    ..-...
+    --..-*
+     *.-*
+      .*
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 14, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeUndefined();
+  });
+  
+  it("should not affect other roles", () => {
+    let tiles = mockBoard(`
+      **
+     **-*
+    ***-**
+    ***.**
+     *-**
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 27, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([26, 28, 33]);
+  });
+
+  it("should not apply to shore up", () => {
+    let tiles = mockBoard(`
+      **
+     **-*
+    ***-**
+    ***.**
+     *-**
+      **
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    let action:AvailableAction = actions.find(ac => ac.type === ActionType.ShoreUp);
+    action.locations.sort((a,b) => a - b);
+    expect(action.locations).toEqual([26]);
+  });
+
+});
 
 describe("getValidActions:GiveTreasureCard", () => {
 
@@ -266,3 +552,25 @@ describe("getValidActions:HelicopterLift", () => {
   });
 
 });
+
+function mockBoard(string:string):TileState[] {
+  let locations = createBlankMap();
+  let nextTile = 0;
+  let tiles = string.replace(/\s/g, '').split('').map(char => {
+    if (char === '.') {
+      return null;
+    } else {
+      return {
+        id: nextTile++,
+        flooded: char === '-'
+      }
+    }
+  });
+  let tileI = 0;
+  for (let i = 0; i < locations.length; i++) {
+    if (locations[i] !== null) {
+      locations[i] = tiles[tileI++];
+    }
+  }
+  return locations;
+}
