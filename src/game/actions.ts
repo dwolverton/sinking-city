@@ -25,7 +25,8 @@ export enum ActionType {
     Sandbags = "Sandbags",
     HelicopterLift = "HelicopterLift",
     Discard = "Discard",
-    Done = "Done"
+    Done = "Done",
+    Undo = "Undo"
 }
 
 export const ACTION_NAMES = {
@@ -39,7 +40,8 @@ export const ACTION_NAMES = {
     Sandbags: "Use Sandbags",
     HelicopterLift: "Use Helicopter Lift",
     Discard: "Discard",
-    Done: "Done"
+    Done: "Done",
+    Undo: "Undo"
 }
 
 export const ACTION_ORDER = {
@@ -53,5 +55,6 @@ export const ACTION_ORDER = {
     Sandbags: 6,
     HelicopterLift: 7,
     Discard: 8,
-    Done: 9
+    Done: 9,
+    Undo: 10
 }

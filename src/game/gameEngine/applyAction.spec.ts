@@ -1,4 +1,4 @@
-import BoardState, { PlayerState, Outcome } from "../BoardState";
+import BoardState, { Outcome } from "../BoardState";
 import applyAction from './applyAction';
 import { ActionType } from '../actions';
 import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';

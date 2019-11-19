@@ -12,6 +12,7 @@ export default interface BoardState {
     floodCardsToDraw:number;
     outcome:Outcome;
     treasuresCaptured:boolean[];
+    undo:BoardState;
 }
 
 export interface PlayerState {

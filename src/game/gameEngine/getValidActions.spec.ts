@@ -1,5 +1,5 @@
 import BoardState, { PlayerState, TileState } from "../BoardState";
-import { getValidActions } from '../gameEngine';
+import getValidActions from './getValidActions';
 import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
 import { AvailableAction, ActionType } from '../actions';
 import { createBlankMap } from './getInitialBoard';

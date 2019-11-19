@@ -1,5 +1,5 @@
 import BoardState, { TileState, PlayerState, Outcome } from '../BoardState';
-import { Action, AvailableAction, ActionType, ACTION_ORDER } from '../actions';
+import { AvailableAction, ActionType, ACTION_ORDER } from '../actions';
 import Coord, { ICoord, MAX_COORD } from '../Coord';
 import { TILES, TREASURE_CARDS, Tile, TreasureCardSpecial, ROLES, Role } from '../boardElements';
 
@@ -17,6 +17,12 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
             actions[player.id].push(action);
         }
         return actions;
+    }
+
+    if (board.undo) {
+        for (let player of board.players) {
+            actions[player.id].push({type: ActionType.Undo});
+        }
     }
     
     for (let player of board.players) {

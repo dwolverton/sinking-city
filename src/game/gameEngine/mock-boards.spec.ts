@@ -103,7 +103,8 @@ export const b_start:BoardState = {
     floodDiscard: [],
     floodCardsToDraw: 6,
     outcome: Outcome.NONE,
-    treasuresCaptured: [ false, false, false, false ]
+    treasuresCaptured: [ false, false, false, false ],
+    undo: null
   };
 
   export const HELICOPTER_LIFT_CARD = 24; // 23 - 25
@@ -211,7 +212,8 @@ export const b_start:BoardState = {
       floodDiscard: [],
       floodCardsToDraw: 0,
       outcome: Outcome.NONE,
-      treasuresCaptured: [ false, false, false, true ]
+      treasuresCaptured: [ false, false, false, true ],
+      undo: null
     };
   
   // console.log(JSON.stringify(getInitialBoard(2, 0)));

@@ -1,7 +1,6 @@
 import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
 import BoardState, { TileState, Outcome } from '../BoardState';
 import { shuffle } from 'lodash';
-import { create } from 'domain';
 
 export interface PlayerOptions {
     name:string|null;
@@ -22,7 +21,8 @@ export default function getInitialBoard(playerOptions:PlayerOptions[], difficult
         floodDiscard: [],
         floodCardsToDraw: 6,
         outcome: Outcome.NONE,
-        treasuresCaptured: [ false, false, false, false ]
+        treasuresCaptured: [ false, false, false, false ],
+        undo:null
     };
     addPlayers(board, playerOptions);
     return board;

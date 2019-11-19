@@ -1,22 +1,24 @@
 import BoardState, { Outcome } from '../BoardState';
 import { Action, ActionType } from '../actions';
 import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS, TILES, Treasure } from '../boardElements';
-import Coord from '../Coord';
 import { shuffle } from 'lodash';
 import { findLocationsForMove } from './getValidActions';
 
 export default function applyAction(board: BoardState, action: Action, playerId: number): BoardState {
-    if (action.type === ActionType.DrawFloodCard) {
+    board = { ...board, undo: board };
+    if (action.type === ActionType.Undo) {
+        console.log(board);
+        return board.undo.undo;
+    } else if (action.type === ActionType.DrawFloodCard) {
+        board.undo = null;
         const card: FloodCard = drawFloodCard();
         const tileIndex = board.tiles.findIndex(tile => tile && (tile.id === card.tile.id));
         if (!board.tiles[tileIndex].flooded) {
-            board = {
-                ...board, tiles: [
-                    ...board.tiles.slice(0, tileIndex),
-                    { ...board.tiles[tileIndex], flooded: true },
-                    ...board.tiles.slice(tileIndex + 1)
-                ]
-            };
+            board.tiles = [
+                ...board.tiles.slice(0, tileIndex),
+                { ...board.tiles[tileIndex], flooded: true },
+                ...board.tiles.slice(tileIndex + 1)
+            ];
         } else {
             removeTile(tileIndex);
         }
@@ -24,6 +26,7 @@ export default function applyAction(board: BoardState, action: Action, playerId:
             nextPlayer();
         }
     } else if (action.type === ActionType.DrawTreasureCard) {
+        board.undo = null;
         const card: TreasureCard = drawTreasureCard();
 
         if (card.special === TreasureCardSpecial.WATERS_RISE) {
@@ -35,9 +38,7 @@ export default function applyAction(board: BoardState, action: Action, playerId:
             };
         } else {
             const player = board.players[playerId];
-            board = { ...board,
-                players: replace(board.players, playerId, { ...player, cards: push(player.cards, card.id) })
-            };
+            board.players = replace(board.players, playerId, { ...player, cards: push(player.cards, card.id) });
         }
 
         if (board.treasureCardsToDraw === 0) {
@@ -49,16 +50,14 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         const player = board.players[playerId];
         const moveFromRemovedTile = board.tiles[player.location] === null;
 
-        board = { ...board,
-            players: replace(board.players, playerId, { ...player, location: action.location })
-        };
+        board.players = replace(board.players, playerId, { ...player, location: action.location });
         if (!moveFromRemovedTile) {
             useAction();
         }
     } else if (action.type === ActionType.ShoreUp) {
         const tile = board.tiles[action.location];
 
-        board = { ...board, tiles: replace(board.tiles, action.location, { ...tile, flooded: false })};
+        board.tiles = replace(board.tiles, action.location, { ...tile, flooded: false });
         useAction();
     } else if (action.type === ActionType.Sandbags) {
         const tile = board.tiles[action.location];
