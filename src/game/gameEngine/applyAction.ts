@@ -1,6 +1,6 @@
-import BoardState, { Outcome } from '../BoardState';
+import BoardState, { Outcome, PlayerState } from '../BoardState';
 import { Action, ActionType } from '../actions';
-import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS, TILES, Treasure } from '../boardElements';
+import { TreasureCard, TREASURE_CARDS, FloodCard, FLOOD_CARDS, TreasureCardSpecial, WATER_LEVELS, TILES, Treasure, Role } from '../boardElements';
 import { shuffle } from 'lodash';
 import { findLocationsForMove } from './getValidActions';
 
@@ -46,12 +46,16 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         }
     } else if (action.type === ActionType.Discard) {
         discard(action.card);
-    } else if (action.type === ActionType.Move) {
-        const player = board.players[playerId];
+    } else if (action.type === ActionType.Move || action.type === ActionType.Fly) {
+        const player = { ...board.players[playerId] };
         const moveFromRemovedTile = board.tiles[player.location] === null;
+        player.location = action.location;
 
-        board.players = replace(board.players, playerId, { ...player, location: action.location });
+        board.players = replace(board.players, playerId, player);
         if (!moveFromRemovedTile) {
+            if (action.type === ActionType.Fly) {
+                player.special = true;
+            }
             useAction();
         }
     } else if (action.type === ActionType.ShoreUp) {
@@ -132,9 +136,19 @@ export default function applyAction(board: BoardState, action: Action, playerId:
     }
     function useAction() {
         if (board.actionsRemaining <= 1) {
+            clearSpecial();
             startDrawTreasureCardsPhase();
         } else {
             board = { ...board, actionsRemaining: board.actionsRemaining - 1 };
+        }
+    }
+
+    function clearSpecial():void {
+        let currentPlayer:PlayerState = board.players[board.currentPlayer];
+        if (currentPlayer && currentPlayer.special) {
+            currentPlayer = { ...currentPlayer };
+            delete currentPlayer.special;
+            board.players = replace(board.players, board.currentPlayer, currentPlayer);
         }
     }
 
@@ -201,7 +215,7 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         }
         // player in water and can't move
         for (const player of board.players) {
-            if (board.tiles[player.location] === null && findLocationsForMove(board, player).length === 0) {
+            if (board.tiles[player.location] === null && player.role !== Role.PILOT && findLocationsForMove(board, player).length === 0) {
                 return true;
             }
         }

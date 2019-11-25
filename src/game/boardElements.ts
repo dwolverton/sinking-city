@@ -44,7 +44,7 @@ export class Role {
     static readonly ENGINEER:number = 2;
     static readonly DIVER:number = 3;
     static readonly MESSENGER:number = 4;
-    static readonly NAVIGAGOR:number = 5;
+    static readonly NAVIGATOR:number = 5;
 }
 
 export class Treasure {

@@ -81,6 +81,7 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
     } else {
         addMoveAction(board, playerState, actions);
         addShoreUpAction();
+        addPilotFlyAction();
         addGiveTreasureCardAction();
         addCaptureTreasureAction();
         actions.push({type: ActionType.Done });
@@ -91,6 +92,12 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
             getAdjacentSpaces(playerState.location, true, allowDiagonal(playerState)), board.tiles);
         if (locations.length !== 0) {
             actions.push({type: ActionType.ShoreUp, locations });
+        }
+    }
+
+    function addPilotFlyAction() {
+        if (playerState.role === Role.PILOT && !playerState.special) {
+            actions.push({type: ActionType.Fly, locations: findAllUnsunkLocations(board)});
         }
     }
 

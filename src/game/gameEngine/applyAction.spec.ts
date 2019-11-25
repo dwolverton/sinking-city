@@ -1,7 +1,8 @@
 import BoardState, { Outcome } from "../BoardState";
 import applyAction from './applyAction';
 import { ActionType } from '../actions';
-import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
+import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
+import { Role } from '../boardElements';
 
 const WATERS_RISE_CARD:number = 20;
 
@@ -273,7 +274,7 @@ describe("applyAction indicates loss", () => {
     expect(board.outcome).toEqual(Outcome.LOSE);
   });
 
-  it("NOT LOSS when one tiles left for uncaptured treasure", () => {
+  it("NOT LOSS when one tile left for uncaptured treasure", () => {
     let board = { ...b1, floodCardsToDraw: 2, treasuresCaptured: [true, true, false, true],
     tiles: b1.tiles.filter((_, i) => i !== 10)}; // remove both coffee tiles
     board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
@@ -303,6 +304,102 @@ describe("applyAction indicates loss", () => {
     expect(board.outcome).toEqual(Outcome.NONE);
   });
 
+  it("LOSS when player in water and cannot move diagonally, swim, or fly", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ***...
+    ..**..
+     -...
+      ..
+    `);
+    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 16, role: Role.NAVIGATOR } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("NOT LOSS when explorer in water and can move diagonally", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ***...
+    ..**..
+     -...
+      ..
+    `);
+    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 16, role: Role.EXPLORER } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
+  });
+
+  it("LOSS when explorer in water and cannot move diagonally", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ***...
+    ..**..
+     -...
+      ..
+    `);
+    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 17, role: Role.EXPLORER } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("NOT LOSS when diver in water and can swim to safety", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ***...
+    ..**..
+     -...
+      ..
+    `);
+    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 17, role: Role.DIVER } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
+  });
+
+  it("LOSS when diver in water and can not swim to safety", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ***...
+    .-**..
+     ....
+      ..
+    `);
+    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 28, role: Role.DIVER } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.LOSE);
+  });
+
+  it("NOT LOSS when pilot in water", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ***...
+    .-**..
+     ....
+      ..
+    `);
+    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
+      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 28, role: Role.PILOT } ]
+    };
+    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
+    expect(board.outcome).toEqual(Outcome.NONE);
+  });
+
 });
 
 describe("applyAction:Win", () => {
@@ -314,5 +411,41 @@ describe("applyAction:Win", () => {
     ], treasuresCaptured: [ true, true, true, true ]}; 
     board = applyAction(board, { type: ActionType.Win}, 0);
     expect(board.outcome).toEqual(Outcome.WIN);
+  });
+});
+
+describe("applyAction:Fly", () => {
+
+  it("should set location and special", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] }
+    ]};
+    board = applyAction(board, { type: ActionType.Fly, location: 2 }, 0);
+    expect(board.players[0].location).toBe(2);
+    expect(board.players[0].special).toBe(true);
+  });
+
+  it("should set location but not special when escaping sunk tile", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 15, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] }
+    ]};
+    board = applyAction(board, { type: ActionType.Fly, location: 2 }, 0);
+    expect(board.players[0].location).toBe(2);
+    expect(board.players[0].special).toBeUndefined();
+  });
+
+});
+
+describe("applyAction end turn", () => {
+
+  it("should clear special for diver", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13], special: true },
+      { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
+    ], actionsRemaining: 1}; 
+    board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
+    expect(board.players[0].special).toBeUndefined();
   });
 });

@@ -1,13 +1,12 @@
-import BoardState, { PlayerState, TileState } from "../BoardState";
+import BoardState from "../BoardState";
 import getValidActions from './getValidActions';
-import { b1, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
+import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
 import { AvailableAction, ActionType } from '../actions';
-import { createBlankMap } from './getInitialBoard';
 import { Tile, Role } from '../boardElements';
 
 describe("getValidActions:Move Diver", () => {
   it("should allow normal moves", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     ******
@@ -26,7 +25,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should allow normal moves at edge", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     ******
@@ -45,7 +44,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over one sunken tile", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     ***.**
@@ -64,7 +63,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple sunken tiles", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      **.*
     ***.**
@@ -83,7 +82,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple sunken tiles (2)", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     *....*
@@ -102,7 +101,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over one flooded tile", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     ***-**
@@ -121,7 +120,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple flooded tiles", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      **-*
     ***-**
@@ -140,7 +139,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple flooded tiles (2)", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     *----*
@@ -159,7 +158,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple flooded & sunken tiles", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      **.*
     ***-**
@@ -178,7 +177,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple flooded & sunken tiles (2)", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      ****
     *.-.-*
@@ -197,7 +196,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move over multiple flooded & sunken tiles to flooded edge", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       *-
      **-*
     -..-.-
@@ -216,7 +215,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should be able to move off of sunken tile", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       .*
      -.**
     .....*
@@ -235,7 +234,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should not be available if nowhere to go", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       .*
      -.**
     ..-...
@@ -252,7 +251,7 @@ describe("getValidActions:Move Diver", () => {
   });
   
   it("should not affect other roles", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      **-*
     ***-**
@@ -271,7 +270,7 @@ describe("getValidActions:Move Diver", () => {
   });
 
   it("should not apply to shore up", () => {
-    let tiles = mockBoard(`
+    let tiles = mockTiles(`
       **
      **-*
     ***-**
@@ -287,6 +286,62 @@ describe("getValidActions:Move Diver", () => {
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.ShoreUp);
     action.locations.sort((a,b) => a - b);
     expect(action.locations).toEqual([26]);
+  });
+
+});
+
+describe("getValidActions:Fly", () => {
+
+  it("should be unavailable when not pilot", () => {
+    let board = b1;
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
+  });
+
+  it("should be available when pilot not used yet", () => {
+    let board = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Fly)).toBeDefined();
+  });
+
+  it("should be unavailable when pilot already used this turn", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6], special: true },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
+  });
+
+  it("should be unavailable when not pilot's turn", () => {
+    let board:BoardState = { ...b1, currentPlayer: 1, players: [
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
+  });
+
+  it("includes all unsunk locations", () => {
+    let tiles = mockTiles(`
+      **
+     ---.
+    ......
+    ..**..
+     -...
+      ..
+    `);
+    let board = { ...b1, tiles, players: [
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 3, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 9, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Fly).locations).toEqual([
+      2, 3, 7, 8, 9, 20, 21, 25
+    ]);
   });
 
 });
@@ -552,25 +607,3 @@ describe("getValidActions:HelicopterLift", () => {
   });
 
 });
-
-function mockBoard(string:string):TileState[] {
-  let locations = createBlankMap();
-  let nextTile = 0;
-  let tiles = string.replace(/\s/g, '').split('').map(char => {
-    if (char === '.') {
-      return null;
-    } else {
-      return {
-        id: nextTile++,
-        flooded: char === '-'
-      }
-    }
-  });
-  let tileI = 0;
-  for (let i = 0; i < locations.length; i++) {
-    if (locations[i] !== null) {
-      locations[i] = tiles[tileI++];
-    }
-  }
-  return locations;
-}

@@ -21,6 +21,10 @@ export interface PlayerState {
     name:string;
     location:number;
     cards:number[];
+    /*
+     * Pilot - is fly used yet this turn
+     */
+    special?:any;
 }
 
 export interface TileState {
