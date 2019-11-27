@@ -105,11 +105,19 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
         if (!includesNonSpecialTreasureCards(playerState.cards)) {
             return;
         }
-        let colocatedPlayers:number[] = board.players
-            .filter(player => player.id !== playerState.id && player.location === playerState.location)
-            .map(player => player.id);
+        let colocatedPlayers:PlayerState[];
+        if (playerState.role === Role.MESSENGER) {
+            colocatedPlayers = board.players.filter(player => player.id !== playerState.id);
+        } else {
+            colocatedPlayers = board.players
+                .filter(player => player.id !== playerState.id && player.location === playerState.location);
+        }
         if (colocatedPlayers.length !== 0) {
-            actions.push({type: ActionType.GiveTreasureCard, players: colocatedPlayers, cards: filterNonSpecialTreasureCards(playerState.cards) });
+            actions.push({
+                type: ActionType.GiveTreasureCard,
+                players: colocatedPlayers.map(player => player.id),
+                cards: filterNonSpecialTreasureCards(playerState.cards)
+            });
         }
     }
 

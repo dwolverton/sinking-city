@@ -398,6 +398,16 @@ describe("getValidActions:GiveTreasureCard", () => {
     expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard).players).toEqual([1, 2]);
   });
 
+  it("should be available to messenger regardless of other player locations", () => {
+    let board = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.MESSENGER, location: 3, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: 2, location: 10, cards: [23, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 12, cards: [] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard).players).toEqual([1, 2]);
+  });
+
 });
 
 describe("getValidActions:CaptureTreasure", () => {
