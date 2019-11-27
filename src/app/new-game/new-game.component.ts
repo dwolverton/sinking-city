@@ -48,7 +48,7 @@ export class NewGameComponent implements OnInit {
     if (this.options.valid && this.players.length >= 2 && this.players.length <= 4) {
       const playerOptions:PlayerOptions[] = this.players.controls.map((group:FormGroup) => ({
         name: group.controls.name.value,
-        role: parseInt(group.controls.role.value) || null
+        role: group.controls.role.value === "" ? null : parseInt(group.controls.role.value)
       }));
 
       const id:number = this.savedGameService.saveGame(
