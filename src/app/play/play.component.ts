@@ -50,7 +50,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   selectCard(cardId:number) {
     const action: AvailableAction = this.inProgressAction;
-    if (action && action.pickCard && this.board.players[this.inProgressActionPlayerId].cards.includes(cardId)) {
+    if (action && action.cards && action.cards.includes(cardId)) {
       this.inProgressSelection.card = cardId;
       this.finishInProgressActionIfSatisfied();
     }
@@ -96,7 +96,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     if (this.inProgressAction.playerCombos && this.inProgressSelection.players.length === 0) {
       return false;
     }
-    if (this.inProgressAction.pickCard && this.inProgressSelection.card === undefined) {
+    if (this.inProgressAction.cards && this.inProgressSelection.card === undefined) {
       return false;
     }
     return true;
@@ -124,7 +124,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.gameManager.loadGame(+params.get('gameId'));
     });
 
-    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; console.log(board); });
+    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; /*console.log(board);*/ });
     this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
       this.actions = actions;
       this.inProgressAction = null;
@@ -178,5 +178,5 @@ export class PlayComponent implements OnInit, OnDestroy {
 }
 
 function actionRequiresParams(action:AvailableAction):boolean {
-  return !! (action && (action.locations || action.pickCard || action.players));
+  return !! (action && (action.locations || action.cards || action.players));
 }

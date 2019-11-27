@@ -5,7 +5,7 @@
     <div class="players">
       <app-player-board *ngFor="let player of board.players; index as i; trackBy itemId" [player]="player"
                       [class.current]="i === board.currentPlayer"
-                      [cardSelectionEnabled]="inProgressAction?.pickCard && i === inProgressActionPlayerId"
+                      [highlightCards]="inProgressAction?.cards"
                       [highlightPlayers]="highlightPlayers"
                       [selectedPlayers]="inProgressSelection?.players"
                       (cardClick)="selectCard($event.id)"

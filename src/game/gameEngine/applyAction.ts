@@ -7,7 +7,6 @@ import { findLocationsForMove } from './getValidActions';
 export default function applyAction(board: BoardState, action: Action, playerId: number): BoardState {
     board = { ...board, undo: board };
     if (action.type === ActionType.Undo) {
-        console.log(board);
         return board.undo.undo;
     } else if (action.type === ActionType.DrawFloodCard) {
         board.undo = null;

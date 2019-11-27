@@ -360,16 +360,26 @@ describe("getValidActions:GiveTreasureCard", () => {
     expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard)).toBeUndefined();
   });
 
+  it("should be unavailable when player has only special cards", () => {
+    let board = { ...b1, players: [
+      { id: 0, name: "Player 1", role: 5, location: 10, cards: [24, 20] },
+      { id: 1, name: "Player 2", role: 2, location: 10, cards: [23, 14] },
+      { id: 2, name: "Player 3", role: 1, location: 10, cards: [] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard)).toBeUndefined();
+  });
+
   it("should be available when other player on same tile and player has cards", () => {
     let board = { ...b1, currentPlayer: 1 };
     let actions:AvailableAction[] = getValidActions(board)[1];
     expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard)).toBeDefined();
   });
 
-  it("should be have pickCard true", () => {
+  it("should have non-special cards selectable", () => {
     let board = { ...b1, currentPlayer: 1 };
     let actions:AvailableAction[] = getValidActions(board)[1];
-    expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard).pickCard).toBe(true);
+    expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard).cards).toEqual([ 14, 3 ]);
   });
 
   it("should include id of other player on same tile", () => {

@@ -14,7 +14,7 @@
       </span>
     </div>
     <div class="player-cards">
-      <app-player-card *ngFor="let card of cards" [card]="card" [highlight]="cardSelectionEnabled"
+      <app-player-card *ngFor="let card of cards" [card]="card" [highlight]="highlightCards?.includes(card.id)"
           (click)="cardClicked(card)"></app-player-card>
     </div>
   </div>

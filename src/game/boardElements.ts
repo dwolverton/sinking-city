@@ -113,7 +113,7 @@ export const TREASURE_CARDS:ReadonlyArray<TreasureCard> = [
     new TreasureCard(idCtr++, TREASURES[3]),
     new TreasureCard(idCtr++, TREASURES[3]),
     new TreasureCard(idCtr++, TREASURES[3]),
-    new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE),
+    new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE), // 20
     new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE),
     new TreasureCard(idCtr++, null, TreasureCardSpecial.WATERS_RISE),
     new TreasureCard(idCtr++, null, TreasureCardSpecial.HELICOPTER_LIFT),

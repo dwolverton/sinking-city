@@ -1,7 +1,7 @@
 export interface AvailableAction {
     type:ActionType;
     locations?:number[];
-    pickCard?:boolean;
+    cards?:number[];
     players?:number[];
     playerCombos?:number[][];
 }

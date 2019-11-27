@@ -115,7 +115,7 @@ export const EXIT_LOCATION = 14;
 export const b1:BoardState = {
   players: [
     { id: 0, name: "Player 1", role: Role.NAVIGATOR, location: 19, cards: [19, 6] },
-    { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14] },
+    { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] },
     { id: 2, name: "Player 3", role: Role.ENGINEER, location: 18, cards: [] }
   ],
   tiles: [ // [10, 11, 21, 12, 22, 5, 17, 16, 0, 23, 15]

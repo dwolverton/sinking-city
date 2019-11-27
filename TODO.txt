@@ -5,7 +5,6 @@
     - engineer - two shores for 1 action
     - messenger - give treasure card to anyone (not just same space)
     - navigator
-  - may not give special action cards
 - online play
   - delete a game
   - share a game

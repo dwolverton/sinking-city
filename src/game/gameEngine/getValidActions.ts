@@ -46,7 +46,7 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
                     actions[player.id].push({ type: ActionType.Win });
                 }
             }
-            actions[player.id].push({ type: ActionType.Discard, pickCard: true });
+            actions[player.id].push({ type: ActionType.Discard, cards: player.cards });
             if (player.cards.length > 5) {
                 disallowOtherActions = true;
             }
@@ -102,14 +102,14 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
     }
 
     function addGiveTreasureCardAction() {
-        if (playerState.cards.length === 0) {
+        if (!includesNonSpecialTreasureCards(playerState.cards)) {
             return;
         }
         let colocatedPlayers:number[] = board.players
             .filter(player => player.id !== playerState.id && player.location === playerState.location)
             .map(player => player.id);
         if (colocatedPlayers.length !== 0) {
-            actions.push({type: ActionType.GiveTreasureCard, players: colocatedPlayers, pickCard: true });
+            actions.push({type: ActionType.GiveTreasureCard, players: colocatedPlayers, cards: filterNonSpecialTreasureCards(playerState.cards) });
         }
     }
 
@@ -230,4 +230,12 @@ function addDiverMove(moves:number[], location:number, dx:number, dy:number, til
             moves.push(location);
         }
     } while (!tiles[location] || tiles[location].flooded);
+}
+
+function filterNonSpecialTreasureCards(cards:number[]):number[] {
+    return cards.filter(card => card < 20);
+}
+
+function includesNonSpecialTreasureCards(cards:number[]):boolean {
+    return cards.some(card => card < 20);
 }

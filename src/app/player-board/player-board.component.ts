@@ -19,7 +19,7 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   @Input()
   player:PlayerState;
   @Input()
-  cardSelectionEnabled:boolean;
+  highlightCards:number[];
   @Input()
   highlightPlayers:number[];
   @Input()
