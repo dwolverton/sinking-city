@@ -423,7 +423,7 @@ describe("applyAction:Fly", () => {
     ]};
     board = applyAction(board, { type: ActionType.Fly, location: 2 }, 0);
     expect(board.players[0].location).toBe(2);
-    expect(board.players[0].special).toBe(true);
+    expect(board.roleSpecial).toBe(true);
   });
 
   it("should set location but not special when escaping sunk tile", () => {
@@ -433,7 +433,7 @@ describe("applyAction:Fly", () => {
     ]};
     board = applyAction(board, { type: ActionType.Fly, location: 2 }, 0);
     expect(board.players[0].location).toBe(2);
-    expect(board.players[0].special).toBeUndefined();
+    expect(board.roleSpecial).toBeUndefined();
   });
 
 });
@@ -442,10 +442,80 @@ describe("applyAction end turn", () => {
 
   it("should clear special for diver", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13], special: true },
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13] },
       { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
-    ], actionsRemaining: 1}; 
+    ], actionsRemaining: 1, roleSpecial: true}; 
     board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
-    expect(board.players[0].special).toBeUndefined();
+    expect(board.roleSpecial).toBeUndefined();
+  });
+});
+
+describe("applyAction:ShoreUp for Engineer", () => {
+
+  it("should flip tile & use action", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 2 };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 0);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(1);
+    expect(board.roleSpecial).toBeUndefined();
+  });
+
+  it("should flip tile & use last action", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 1 };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 0);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(0);
+    expect(board.treasureCardsToDraw).toBe(2);
+    expect(board.roleSpecial).toBeUndefined();
+  });
+
+  it("should flip tile, use action, and set special for Engineer", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 2, currentPlayer: 2 };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 2);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(1);
+    expect(board.roleSpecial).toBe(true);
+  });
+
+  it("should flip tile, unset special, but not use action for Engineer's free second shore up", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 2, currentPlayer: 2, roleSpecial: true };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 2);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(2); // still 2
+    expect(board.roleSpecial).toBeUndefined(); // unset
+  });
+
+  it("should flip tile, unset special, but not use action near end for Engineer", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 1, currentPlayer: 2, roleSpecial: true };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 2);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(1);
+    expect(board.treasureCardsToDraw).toBe(0);
+    expect(board.roleSpecial).toBeUndefined();
+  });
+
+  it("should flip tile, use action, and set special, but not end turn for Engineer", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 1, currentPlayer: 2 };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 2);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(0);
+    expect(board.treasureCardsToDraw).toBe(0); // not over yet
+    expect(board.roleSpecial).toBe(true);
+  });
+
+  it("should flip tile, unset special and end turn at end for Engineer", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 0, currentPlayer: 2, roleSpecial: true };
+    expect(board.tiles[19].flooded).toBe(true);
+    board = applyAction(board, { type: ActionType.ShoreUp, location: 19}, 2);
+    expect(board.tiles[19].flooded).toBe(false);
+    expect(board.actionsRemaining).toBe(0);
+    expect(board.treasureCardsToDraw).toBe(2); // over
+    expect(board.roleSpecial).toBeUndefined();
   });
 });

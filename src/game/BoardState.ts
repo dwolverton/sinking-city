@@ -13,6 +13,11 @@ export default interface BoardState {
     outcome:Outcome;
     treasuresCaptured:boolean[];
     undo:BoardState;
+    /*
+     * Pilot - is fly used yet this turn
+     * Engineer - is second free shore up available
+     */
+    roleSpecial?:any;
 }
 
 export interface PlayerState {
@@ -21,10 +26,6 @@ export interface PlayerState {
     name:string;
     location:number;
     cards:number[];
-    /*
-     * Pilot - is fly used yet this turn
-     */
-    special?:any;
 }
 
 export interface TileState {

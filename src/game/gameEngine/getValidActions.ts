@@ -74,10 +74,16 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
 }
 
 function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerState, actions:AvailableAction[]):void {
+    
     if (board.floodCardsToDraw) {
         actions.push({type: ActionType.DrawFloodCard });
     } else if (board.treasureCardsToDraw) {
         actions.push({type: ActionType.DrawTreasureCard });
+    } else if (board.actionsRemaining === 0) {
+        if (playerState.role === Role.ENGINEER && board.roleSpecial) {
+            addShoreUpAction();
+            actions.push({type: ActionType.Done });
+        }
     } else {
         addMoveAction(board, playerState, actions);
         addShoreUpAction();
@@ -96,7 +102,7 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
     }
 
     function addPilotFlyAction() {
-        if (playerState.role === Role.PILOT && !playerState.special) {
+        if (playerState.role === Role.PILOT && !board.roleSpecial) {
             actions.push({type: ActionType.Fly, locations: findAllUnsunkLocations(board)});
         }
     }

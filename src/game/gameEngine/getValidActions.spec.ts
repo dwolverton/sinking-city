@@ -309,9 +309,9 @@ describe("getValidActions:Fly", () => {
 
   it("should be unavailable when pilot already used this turn", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6], special: true },
+      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6] },
       { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
-    ] };
+    ], roleSpecial: true };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
   });
@@ -626,4 +626,77 @@ describe("getValidActions:HelicopterLift", () => {
     expect(action.playerCombos[2]).toEqual([1, 2]);
   });
 
+});
+
+describe("getValidActions:Engineer", () => {
+  it("has normal actions including shore up", () => {
+    let board = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Done)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Discard)).toBeDefined();
+  });
+  it("has normal actions including shore up, after using one shore up", () => {
+    let board:BoardState = { ...b1, roleSpecial: true, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Done)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Discard)).toBeDefined();
+  });
+  it("has shore up only when 0 actions after using one shore up", () => {
+    let board:BoardState = { ...b1, roleSpecial: true, actionsRemaining: 0, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Done)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Discard)).toBeDefined();
+  });
+  it("does not have shore up when 0 actions not after using one shore up", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 0, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Done)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Discard)).toBeDefined();
+  });
+  it("does allow drawing cards when 0 action not after using one shore up", () => {
+    let board:BoardState = { ...b1, actionsRemaining: 0, treasureCardsToDraw: 2, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Done)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.DrawTreasureCard)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Discard)).toBeDefined();
+  });
+  it("final extra shore-up action not available unless engineer", () => {
+    // first verify shore up is ordinarily available to this player
+    let board:BoardState = { ...b1, currentPlayer: 0 };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeDefined();
+
+    // then verify it's not in this case
+    board  = { ...b1, currentPlayer: 0, roleSpecial: true, actionsRemaining: 0 };
+    actions = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeUndefined();
+    expect(actions.find(ac => ac.type === ActionType.Done)).toBeUndefined();
+  });
 });

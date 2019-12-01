@@ -124,7 +124,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.gameManager.loadGame(+params.get('gameId'));
     });
 
-    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; /*console.log(board);*/ });
+    this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; console.log(board); });
     this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
       this.actions = actions;
       this.inProgressAction = null;

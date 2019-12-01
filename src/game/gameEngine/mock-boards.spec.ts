@@ -138,7 +138,7 @@ export const b1:BoardState = {
     null, // 16 - sunk 15
     { id: 3, flooded: false },  // 17 (1 meal)
     { id: 4, flooded: false },  // 18 - Aladdin Sweets & Cafe (1 meal)
-    { id: 20, flooded: false }, // 19
+    { id: 20, flooded: true }, // 19
     { id: 2, flooded: false },  // 20 (0 treat)
     { id: 6, flooded: true },  // 21 (2 coffee)
     { id: 1, flooded: false },  // 22 (0 treat)

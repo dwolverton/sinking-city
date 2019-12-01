@@ -53,7 +53,7 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         board.players = replace(board.players, playerId, player);
         if (!moveFromRemovedTile) {
             if (action.type === ActionType.Fly) {
-                player.special = true;
+                board.roleSpecial = true;
             }
             useAction();
         }
@@ -61,7 +61,20 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         const tile = board.tiles[action.location];
 
         board.tiles = replace(board.tiles, action.location, { ...tile, flooded: false });
-        useAction();
+        if (board.players[playerId].role === Role.ENGINEER) {
+            if (board.roleSpecial) {
+                // This one's free, but could be final action.
+                board.actionsRemaining++;
+                delete board.roleSpecial;
+                useAction();
+            } else {
+                // use action, but enable free shore up.
+                board.actionsRemaining--;
+                board.roleSpecial = true;
+            }
+        } else {
+            useAction();
+        }
     } else if (action.type === ActionType.Sandbags) {
         const tile = board.tiles[action.location];
         const cardId = board.players[playerId].cards.find(cardId => TREASURE_CARDS[cardId].special === TreasureCardSpecial.SANDBAGS);
@@ -127,6 +140,7 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         }
     }
     function startDrawTreasureCardsPhase():void {
+        delete board.roleSpecial;
         board = { ...board, actionsRemaining: 0, treasureCardsToDraw: 2 }
     }
 
@@ -135,19 +149,9 @@ export default function applyAction(board: BoardState, action: Action, playerId:
     }
     function useAction() {
         if (board.actionsRemaining <= 1) {
-            clearSpecial();
             startDrawTreasureCardsPhase();
         } else {
-            board = { ...board, actionsRemaining: board.actionsRemaining - 1 };
-        }
-    }
-
-    function clearSpecial():void {
-        let currentPlayer:PlayerState = board.players[board.currentPlayer];
-        if (currentPlayer && currentPlayer.special) {
-            currentPlayer = { ...currentPlayer };
-            delete currentPlayer.special;
-            board.players = replace(board.players, board.currentPlayer, currentPlayer);
+            board.actionsRemaining--;
         }
     }
 
