@@ -12,6 +12,7 @@ export class EndModalComponent implements OnInit {
   outcome:Outcome;
   text:string;
   imageUrl:string;
+  open:boolean = true;
 
   constructor() { }
 
@@ -23,6 +24,10 @@ export class EndModalComponent implements OnInit {
       this.text = "Alas, you lose! The city sank beneath the waves. You return with nothing."
       this.imageUrl = "assets/lose.gif";
     }
+  }
+
+  close() {
+    this.open = !this.open;
   }
 
 }

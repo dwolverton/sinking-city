@@ -1,8 +1,10 @@
 <div class="overlay"></div>
-<div class="modal">
+<div class="modal" *ngIf="open">
   <app-window>
     <h2>{{text}}</h2>
     <img [src]="imageUrl" />
-    <button class="done" routerLink="/">Done</button>
+    <button class="done" routerLink="/">To Game List</button>
+    <button class="done" routerLink="/new">New Game</button>
+    <button class="done" (click)="close()">Close</button>
   </app-window>
 </div>

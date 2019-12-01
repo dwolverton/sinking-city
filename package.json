@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod && cd dist/sinking-city && mv index.html 200.html && surge . --domain sinking-city.surge.sh"
+    "deploy": "ng build --prod && cd dist/sinking-city && mv index.html 200.html && surge . --domain https://sinking-city.surge.sh"
   },
   "private": true,
   "dependencies": {
