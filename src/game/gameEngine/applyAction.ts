@@ -65,7 +65,6 @@ export default function applyAction(board: BoardState, action: Action, playerId:
             if (board.roleSpecial) {
                 // This one's free, but could be final action.
                 board.actionsRemaining++;
-                delete board.roleSpecial;
                 useAction();
             } else {
                 // use action, but enable free shore up.
@@ -148,6 +147,9 @@ export default function applyAction(board: BoardState, action: Action, playerId:
         board = { ...board, treasureCardsToDraw: 0, floodCardsToDraw: WATER_LEVELS[board.waterLevel] }
     }
     function useAction() {
+        if (board.players[board.currentPlayer].role === Role.ENGINEER) {
+            delete board.roleSpecial;
+        }
         if (board.actionsRemaining <= 1) {
             startDrawTreasureCardsPhase();
         } else {

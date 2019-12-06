@@ -1,10 +1,13 @@
 - game features
   - visual indicators for locations & card selections
+  - water level indicator
   - visual indication of engineer's free second shore up
   - special abilities
     - navigator
+  - to game list link
 - online play
   - delete a game
-  - share a game
-  - see shared games
+  - additional game data in list screen (start date & time, players, win/loss)
+  - share a game & see shared games
+  - play shared game
   - join a shared game

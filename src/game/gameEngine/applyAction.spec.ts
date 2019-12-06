@@ -438,15 +438,33 @@ describe("applyAction:Fly", () => {
 
 });
 
-describe("applyAction end turn", () => {
+describe("applyAction special", () => {
 
-  it("should clear special for diver", () => {
+  it("should clear special for diver at end of turn", () => {
     let board:BoardState = { ...b1, players: [
       { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13] },
       { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
     ], actionsRemaining: 1, roleSpecial: true}; 
     board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
     expect(board.roleSpecial).toBeUndefined();
+  });
+
+  it("should clear special for engineer for any action", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 20, cards: [10, 13] },
+      { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
+    ], actionsRemaining: 2, roleSpecial: true}; 
+    board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
+    expect(board.roleSpecial).toBeUndefined();
+  });
+
+  it("should not clear special for diver for any action", () => {
+    let board:BoardState = { ...b1, players: [
+      { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13] },
+      { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
+    ], actionsRemaining: 2, roleSpecial: true}; 
+    board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
+    expect(board.roleSpecial).toBe(true);
   });
 });
 
