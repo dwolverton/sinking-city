@@ -1,8 +1,12 @@
 <app-window>
   <h1>Select a Game</h1>
   <ul>
-    <li *ngFor="let game of games">
-      <a routerLink="/game/{{game.id}}">#{{game.id}} - {{game.board.players.length}} players</a>
+    <li *ngFor="let game of games" class="game">
+      <a routerLink="/game/{{game.id}}">#{{game.id}}</a>
+      {{game.startTime | date:'MMM d, yyyy h:mma'}} -
+        Difficulty: {{difficultyDisplay(game.difficulty)}}, 
+        Players... <span class="player" *ngFor="let player of game.players">{{player.name}} as {{roleDisplay(player.role)}}</span>
+      
     </li>
   </ul>
   <a routerLink="/new">New Game</a>

@@ -4,6 +4,7 @@
     <app-dashboard [board]="board"></app-dashboard>
     <div class="players">
       <app-player-board *ngFor="let player of board.players; index as i; trackBy itemId" [player]="player"
+                      [playerMetadata]="game.players[i]"
                       [class.current]="i === board.currentPlayer"
                       [highlightCards]="inProgressAction?.cards"
                       [highlightPlayers]="highlightPlayers"

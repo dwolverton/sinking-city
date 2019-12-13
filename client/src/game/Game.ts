@@ -1,6 +1,7 @@
 import BoardState from './BoardState';
+import GameMetadata from './GameMetadata';
 
 export default interface Game {
-    id:number;
+    metadata:GameMetadata
     board:BoardState;
 }

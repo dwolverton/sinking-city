@@ -152,9 +152,9 @@ describe("applyAction:GiveTreasureCard", () => {
 
   it("should remove card from current player", () => {
     let board = { ...b1, currentPlayer: 1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [5, 6] }
+      { id: 0, role: 5, location: 19, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 23, 14] },
+      { id: 2, role: 1, location: 18, cards: [5, 6] }
     ]};
     board = applyAction(board, { type: ActionType.GiveTreasureCard, player: 2, card: 23 }, 1);
     expect(board.players[1].cards).toEqual([ 9, 14 ]);
@@ -162,9 +162,9 @@ describe("applyAction:GiveTreasureCard", () => {
 
   it("should add card to receiving player", () => {
     let board = { ...b1, currentPlayer: 1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [5, 6] }
+      { id: 0, role: 5, location: 19, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 23, 14] },
+      { id: 2, role: 1, location: 18, cards: [5, 6] }
     ]};
     board = applyAction(board, { type: ActionType.GiveTreasureCard, player: 2, card: 23 }, 1);
     expect(board.players[2].cards).toEqual([ 5, 6, 23 ]);
@@ -172,9 +172,9 @@ describe("applyAction:GiveTreasureCard", () => {
 
   it("should take an action", () => {
     let board = { ...b1, currentPlayer: 1, actionsRemaining: 3, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [5, 6] }
+      { id: 0, role: 5, location: 19, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 23, 14] },
+      { id: 2, role: 1, location: 18, cards: [5, 6] }
     ]};
     board = applyAction(board, { type: ActionType.GiveTreasureCard, player: 2, card: 23 }, 1);
     expect(board.actionsRemaining).toEqual(2);
@@ -187,8 +187,8 @@ describe("applyAction:CaptureTreasure", () => {
   it("should set correct treasure to true", () => {
     // treasure 2
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasuresCaptured: [true, false, false, true]}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.treasuresCaptured).toEqual([true, false, true, true]);
@@ -196,8 +196,8 @@ describe("applyAction:CaptureTreasure", () => {
 
   it("should remove four cards of same treasure type and add them to discard pile", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasureDiscard: [3]}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.players[0].cards).toEqual([]);
@@ -206,8 +206,8 @@ describe("applyAction:CaptureTreasure", () => {
 
   it("should remove four cards of same treasure type and add them to discard pile (mixed w/ other card)", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 13, 11, 0, 14] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 13, 11, 0, 14] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasureDiscard: [3]}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.players[0].cards).toEqual([0]);
@@ -216,8 +216,8 @@ describe("applyAction:CaptureTreasure", () => {
 
   it("should remove four cards of same treasure type and add them to discard pile (mixed with special card)", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [24, 12, 13, 11, 14] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [24, 12, 13, 11, 14] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasureDiscard: []}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.players[0].cards).toEqual([24]);
@@ -226,8 +226,8 @@ describe("applyAction:CaptureTreasure", () => {
 
   it("should remove ONLY four cards of same treasure type and add them to discard pile", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13, 14] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13, 14] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasureDiscard: [3]}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.players[0].cards).toEqual([14]);
@@ -237,8 +237,8 @@ describe("applyAction:CaptureTreasure", () => {
   it("should take an action", () => {
     // treasure 2
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], actionsRemaining: 2}; 
     board = applyAction(board, { type: ActionType.CaptureTreasure }, 0);
     expect(board.actionsRemaining).toEqual(1);
@@ -406,8 +406,8 @@ describe("applyAction:Win", () => {
 
   it("should be available when player has Helicopter lift card & all players on exit & all treasures captured", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, 14] }
     ], treasuresCaptured: [ true, true, true, true ]}; 
     board = applyAction(board, { type: ActionType.Win}, 0);
     expect(board.outcome).toEqual(Outcome.WIN);
@@ -418,8 +418,8 @@ describe("applyAction:Fly", () => {
 
   it("should set location and special", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] }
+      { id: 0, role: Role.PILOT, location: 19, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 23, 14] }
     ]};
     board = applyAction(board, { type: ActionType.Fly, location: 2 }, 0);
     expect(board.players[0].location).toBe(2);
@@ -428,8 +428,8 @@ describe("applyAction:Fly", () => {
 
   it("should set location but not special when escaping sunk tile", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 15, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 23, 14] }
+      { id: 0, role: Role.PILOT, location: 15, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 23, 14] }
     ]};
     board = applyAction(board, { type: ActionType.Fly, location: 2 }, 0);
     expect(board.players[0].location).toBe(2);
@@ -442,8 +442,8 @@ describe("applyAction special", () => {
 
   it("should clear special for diver at end of turn", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13] },
-      { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: Role.DIVER, location: 20, cards: [10, 13] },
+      { id: 1, role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
     ], actionsRemaining: 1, roleSpecial: true}; 
     board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
     expect(board.roleSpecial).toBeUndefined();
@@ -451,8 +451,8 @@ describe("applyAction special", () => {
 
   it("should clear special for engineer for any action", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 20, cards: [10, 13] },
-      { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: Role.ENGINEER, location: 20, cards: [10, 13] },
+      { id: 1, role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
     ], actionsRemaining: 2, roleSpecial: true}; 
     board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
     expect(board.roleSpecial).toBeUndefined();
@@ -460,8 +460,8 @@ describe("applyAction special", () => {
 
   it("should not clear special for diver for any action", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 20, cards: [10, 13] },
-      { id: 1, name: "Player 2", role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: Role.DIVER, location: 20, cards: [10, 13] },
+      { id: 1, role: Role.NAVIGATOR, location: EXIT_LOCATION, cards: [19, 14] }
     ], actionsRemaining: 2, roleSpecial: true}; 
     board = applyAction(board, { type: ActionType.Move, location: 21}, 0);
     expect(board.roleSpecial).toBe(true);

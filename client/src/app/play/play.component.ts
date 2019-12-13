@@ -5,6 +5,7 @@ import BoardState, { Outcome } from 'src/game/BoardState';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/game/actions';
+import GameMetadata from 'src/game/GameMetadata';
 
 @Component({
   selector: 'app-play',
@@ -14,6 +15,7 @@ import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/game/acti
 export class PlayComponent implements OnInit, OnDestroy {
 
   private stop$ = new Subject();
+  game: GameMetadata;
   board: BoardState;
   actions: AvailableAction[][];
   inProgressAction: AvailableAction = null;
@@ -121,9 +123,10 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.gameManager.loadGame(+params.get('gameId'));
+      this.gameManager.loadGame(params.get('gameId'));
     });
 
+    this.gameManager.game$.pipe(takeUntil(this.stop$)).subscribe(game => { this.game = game });
     this.gameManager.board$.pipe(takeUntil(this.stop$)).subscribe(board => { this.board = board; console.log(board); });
     this.gameManager.actions$.pipe(takeUntil(this.stop$)).subscribe(actions => {
       this.actions = actions;

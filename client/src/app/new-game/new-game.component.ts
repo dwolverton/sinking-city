@@ -4,7 +4,8 @@ import { getInitialBoard } from 'src/game/gameEngine';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { DIFFICULTIES, ROLES } from 'src/game/boardElements';
-import { PlayerOptions } from 'src/game/gameEngine/getInitialBoard';
+import GameMetadata, { PlayerOptions, initGame } from 'src/game/GameMetadata';
+import BoardState from 'src/game/BoardState';
 
 @Component({
   selector: 'app-new-game',
@@ -50,9 +51,12 @@ export class NewGameComponent implements OnInit {
         name: group.controls.name.value,
         role: group.controls.role.value === "" ? null : parseInt(group.controls.role.value)
       }));
+      const difficulty = parseInt(this.options.value.difficulty);
 
-      const id:number = this.savedGameService.saveGame(
-        getInitialBoard(playerOptions, parseInt(this.options.value.difficulty)));
+
+      const game:GameMetadata = initGame(difficulty, playerOptions);
+      const board:BoardState = getInitialBoard(game);
+      const id:string = this.savedGameService.newGame(game, board);
       this.router.navigate(["/game", id]);
     }
   }

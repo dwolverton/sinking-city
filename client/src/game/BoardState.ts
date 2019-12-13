@@ -23,7 +23,6 @@ export default interface BoardState {
 export interface PlayerState {
     readonly id:number;
     readonly role:number;
-    name:string;
     location:number;
     cards:number[];
 }
@@ -38,4 +37,3 @@ export enum Outcome {
     LOSE = 1,
     WIN = 2
 }
-

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitte
 import { PlayerState } from 'src/game/BoardState';
 import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElements';
 import { ACTION_NAMES, AvailableAction } from 'src/game/actions';
+import { PlayerMetadata } from 'src/game/GameMetadata';
 
 @Component({
   selector: 'app-player-board',
@@ -18,6 +19,8 @@ export class PlayerBoardComponent implements OnInit, OnChanges {
   doAction:EventEmitter<AvailableAction> = new EventEmitter();
   @Input()
   player:PlayerState;
+  @Input()
+  playerMetadata:PlayerMetadata;
   @Input()
   highlightCards:number[];
   @Input()

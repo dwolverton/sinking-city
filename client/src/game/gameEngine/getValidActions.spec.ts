@@ -15,8 +15,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 8, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 8, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -34,8 +34,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 7, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 7, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -53,8 +53,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 21, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 21, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -72,8 +72,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -91,8 +91,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 12, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 12, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -110,8 +110,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 21, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 21, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -129,8 +129,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -148,8 +148,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 12, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 12, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -167,8 +167,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -186,8 +186,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 12, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 12, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -205,8 +205,8 @@ describe("getValidActions:Move Diver", () => {
       *-
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 15, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 15, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -224,8 +224,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 14, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 14, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -243,8 +243,8 @@ describe("getValidActions:Move Diver", () => {
       .*
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 14, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 14, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Move)).toBeUndefined();
@@ -260,8 +260,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 27, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.ENGINEER, location: 27, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
@@ -279,8 +279,8 @@ describe("getValidActions:Move Diver", () => {
       **
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.DIVER, location: 27, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.DIVER, location: 27, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.ShoreUp);
@@ -300,8 +300,8 @@ describe("getValidActions:Fly", () => {
 
   it("should be available when pilot not used yet", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.PILOT, location: 8, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Fly)).toBeDefined();
@@ -309,8 +309,8 @@ describe("getValidActions:Fly", () => {
 
   it("should be unavailable when pilot already used this turn", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.PILOT, location: 8, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ], roleSpecial: true };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
@@ -318,8 +318,8 @@ describe("getValidActions:Fly", () => {
 
   it("should be unavailable when not pilot's turn", () => {
     let board:BoardState = { ...b1, currentPlayer: 1, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 8, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: Role.PILOT, location: 8, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
@@ -335,8 +335,8 @@ describe("getValidActions:Fly", () => {
       ..
     `);
     let board = { ...b1, tiles, players: [
-      { id: 0, name: "Player 1", role: Role.PILOT, location: 3, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 9, cards: [23, 14] }
+      { id: 0, role: Role.PILOT, location: 3, cards: [19, 6] },
+      { id: 1, role: 2, location: 9, cards: [23, 14] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Fly).locations).toEqual([
@@ -362,9 +362,9 @@ describe("getValidActions:GiveTreasureCard", () => {
 
   it("should be unavailable when player has only special cards", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [24, 20] },
-      { id: 1, name: "Player 2", role: 2, location: 10, cards: [23, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 10, cards: [] }
+      { id: 0, role: 5, location: 10, cards: [24, 20] },
+      { id: 1, role: 2, location: 10, cards: [23, 14] },
+      { id: 2, role: 1, location: 10, cards: [] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard)).toBeUndefined();
@@ -390,9 +390,9 @@ describe("getValidActions:GiveTreasureCard", () => {
 
   it("should include ids of all other player on same tile", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 10, cards: [23, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 10, cards: [] }
+      { id: 0, role: 5, location: 10, cards: [19, 6] },
+      { id: 1, role: 2, location: 10, cards: [23, 14] },
+      { id: 2, role: 1, location: 10, cards: [] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard).players).toEqual([1, 2]);
@@ -400,9 +400,9 @@ describe("getValidActions:GiveTreasureCard", () => {
 
   it("should be available to messenger regardless of other player locations", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.MESSENGER, location: 3, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 10, cards: [23, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 12, cards: [] }
+      { id: 0, role: Role.MESSENGER, location: 3, cards: [19, 6] },
+      { id: 1, role: 2, location: 10, cards: [23, 14] },
+      { id: 2, role: 1, location: 12, cards: [] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.GiveTreasureCard).players).toEqual([1, 2]);
@@ -414,8 +414,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be available when player has cards and on correct treasure tile", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeDefined();
@@ -423,8 +423,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be available even when an extra card", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [12, 10, 0, 11, 14] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [12, 10, 0, 11, 14] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeDefined();
@@ -432,8 +432,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be available even when an extra special card", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [12, 10, 24, 11, 14] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [12, 10, 24, 11, 14] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeDefined();
@@ -447,8 +447,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be unavailable when player on treasure tile but without enough cards", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 18, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 18, cards: [19, 6] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeUndefined();
@@ -456,8 +456,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be unavailable when player has cards but not on any treasure tile", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [23, 14] }
+      { id: 0, role: 5, location: 19, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
     ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeUndefined();
@@ -465,8 +465,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be unavailable when player has cards but not on correct treasure tile", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 18, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 18, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeUndefined();
@@ -475,8 +475,8 @@ describe("getValidActions:CaptureTreasure", () => {
   it("should be unavailable when the same treasure already captured", () => {
     // treasure 2
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasuresCaptured: [false, false, true, false]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeUndefined();
@@ -484,8 +484,8 @@ describe("getValidActions:CaptureTreasure", () => {
 
   it("should be available when all other treasures captured", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 10, cards: [10, 11, 12, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 19, cards: [23, 14] }
+      { id: 0, role: 5, location: 10, cards: [10, 11, 12, 13] },
+      { id: 1, role: 2, location: 19, cards: [23, 14] }
     ], treasuresCaptured: [true, true, false, true]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.CaptureTreasure)).toBeDefined();
@@ -497,8 +497,8 @@ describe("getValidActions:Win", () => {
 
   it("should be available when player has Helicopter lift card & all players on exit & all treasures captured", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, 14] }
     ], treasuresCaptured: [ true, true, true, true ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeDefined();
@@ -506,8 +506,8 @@ describe("getValidActions:Win", () => {
 
   it("does not have to be current player", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, HELICOPTER_LIFT_CARD] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, HELICOPTER_LIFT_CARD] }
     ], treasuresCaptured: [ true, true, true, true ]}; 
     let actions:AvailableAction[] = getValidActions(board)[1];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeDefined();
@@ -515,8 +515,8 @@ describe("getValidActions:Win", () => {
 
   it("should not be available if no Helicopter lift", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, 14] }
     ], treasuresCaptured: [ true, true, true, true ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
@@ -524,8 +524,8 @@ describe("getValidActions:Win", () => {
 
   it("should not be available if not all treasures captured", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, 14] }
     ], treasuresCaptured: [ false, true, true, true ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
@@ -533,8 +533,8 @@ describe("getValidActions:Win", () => {
 
   it("should not be available if not all treasures captured ..2", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, 14] }
     ], treasuresCaptured: [ true, true, false, false ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
@@ -542,8 +542,8 @@ describe("getValidActions:Win", () => {
 
   it("should not be available if not all treasures captured ..3", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: EXIT_LOCATION, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: EXIT_LOCATION, cards: [19, 14] }
     ], treasuresCaptured: [ false, false, false, false ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
@@ -551,8 +551,8 @@ describe("getValidActions:Win", () => {
 
   it("should not be available not all on exit", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [19, 14] }
+      { id: 0, role: 5, location: EXIT_LOCATION, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: 18, cards: [19, 14] }
     ], treasuresCaptured: [ true, true, true, true ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
@@ -560,8 +560,8 @@ describe("getValidActions:Win", () => {
 
   it("should not be available not all on exit ..2", () => {
     let board:BoardState = { ...b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 18, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [19, 14] }
+      { id: 0, role: 5, location: 18, cards: [10, HELICOPTER_LIFT_CARD, 11, 13] },
+      { id: 1, role: 2, location: 18, cards: [19, 14] }
     ], treasuresCaptured: [ true, true, true, true ]}; 
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.Win)).toBeUndefined();
@@ -573,9 +573,9 @@ describe("getValidActions:HelicopterLift", () => {
 
   it("should be available when player has helicopter lift card", () => {
     let board = { ... b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+      { id: 0, role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 14] },
+      { id: 2, role: 1, location: 18, cards: [] }
     ]};
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.HelicopterLift)).toBeDefined();
@@ -583,9 +583,9 @@ describe("getValidActions:HelicopterLift", () => {
 
   it("should be available even when no players turn", () => {
     let board = { ... b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, HELICOPTER_LIFT_CARD, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+      { id: 0, role: 5, location: 19, cards: [6] },
+      { id: 1, role: 2, location: 18, cards: [9, HELICOPTER_LIFT_CARD, 14] },
+      { id: 2, role: 1, location: 18, cards: [] }
     ]};
     let actions:AvailableAction[] = getValidActions(board)[1];
     expect(actions.find(ac => ac.type === ActionType.HelicopterLift)).toBeDefined();
@@ -593,9 +593,9 @@ describe("getValidActions:HelicopterLift", () => {
 
   it("should not be available when player does not have helicopter lift card", () => {
     let board = { ... b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+      { id: 0, role: 5, location: 19, cards: [6] },
+      { id: 1, role: 2, location: 18, cards: [9, 14] },
+      { id: 2, role: 1, location: 18, cards: [] }
     ]};
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.HelicopterLift)).toBeUndefined();
@@ -603,9 +603,9 @@ describe("getValidActions:HelicopterLift", () => {
 
   it("should have all unsunk tiles as locations", () => {
     let board = { ... b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+      { id: 0, role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 14] },
+      { id: 2, role: 1, location: 18, cards: [] }
     ]};
     let action:AvailableAction = getValidActions(board)[0].find(ac => ac.type === ActionType.HelicopterLift);
     expect(action.locations.length).toEqual(22);
@@ -616,9 +616,9 @@ describe("getValidActions:HelicopterLift", () => {
 
   it("should have combinations of all players on the same tiles", () => {
     let board = { ... b1, players: [
-      { id: 0, name: "Player 1", role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
-      { id: 1, name: "Player 2", role: 2, location: 18, cards: [9, 14] },
-      { id: 2, name: "Player 3", role: 1, location: 18, cards: [] }
+      { id: 0, role: 5, location: 19, cards: [HELICOPTER_LIFT_CARD, 6] },
+      { id: 1, role: 2, location: 18, cards: [9, 14] },
+      { id: 2, role: 1, location: 18, cards: [] }
     ]};
     let action:AvailableAction = getValidActions(board)[0].find(ac => ac.type === ActionType.HelicopterLift);
     expect(action.playerCombos[0]).toEqual([0]);
@@ -631,8 +631,8 @@ describe("getValidActions:HelicopterLift", () => {
 describe("getValidActions:Engineer", () => {
   it("has normal actions including shore up", () => {
     let board = { ...b1, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+      { id: 0, role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, role: Role.PILOT, location: 18, cards: [23, 14, 3] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
@@ -642,8 +642,8 @@ describe("getValidActions:Engineer", () => {
   });
   it("has normal actions including shore up, after using one shore up", () => {
     let board:BoardState = { ...b1, roleSpecial: true, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+      { id: 0, role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, role: Role.PILOT, location: 18, cards: [23, 14, 3] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
@@ -653,8 +653,8 @@ describe("getValidActions:Engineer", () => {
   });
   it("has shore up only when 0 actions after using one shore up", () => {
     let board:BoardState = { ...b1, roleSpecial: true, actionsRemaining: 0, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+      { id: 0, role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, role: Role.PILOT, location: 18, cards: [23, 14, 3] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeDefined();
@@ -664,8 +664,8 @@ describe("getValidActions:Engineer", () => {
   });
   it("does not have shore up when 0 actions not after using one shore up", () => {
     let board:BoardState = { ...b1, actionsRemaining: 0, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+      { id: 0, role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, role: Role.PILOT, location: 18, cards: [23, 14, 3] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeUndefined();
@@ -675,8 +675,8 @@ describe("getValidActions:Engineer", () => {
   });
   it("does allow drawing cards when 0 action not after using one shore up", () => {
     let board:BoardState = { ...b1, actionsRemaining: 0, treasureCardsToDraw: 2, players: [
-      { id: 0, name: "Player 1", role: Role.ENGINEER, location: 19, cards: [19, 6] },
-      { id: 1, name: "Player 2", role: Role.PILOT, location: 18, cards: [23, 14, 3] }
+      { id: 0, role: Role.ENGINEER, location: 19, cards: [19, 6] },
+      { id: 1, role: Role.PILOT, location: 18, cards: [23, 14, 3] }
     ] };
     let actions:AvailableAction[] = getValidActions(board)[0];
     expect(actions.find(ac => ac.type === ActionType.ShoreUp)).toBeUndefined();

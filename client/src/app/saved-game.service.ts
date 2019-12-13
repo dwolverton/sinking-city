@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import BoardState from 'src/game/BoardState';
 import Game from 'src/game/Game';
 import { sortBy } from 'lodash';
-
+import GameMetadata from 'src/game/GameMetadata';
 
 @Injectable({
   providedIn: 'root'
@@ -11,38 +11,60 @@ export class SavedGameService {
 
   constructor() {}
 
-  getGame(id:number):Game {
-    const raw:string = localStorage.getItem("game-" + id);
-    if (raw) {
-      return { id, board: JSON.parse(raw) };
-    }
-    return null;
+  getNextId():string {
+    let nextId:number = parseInt(localStorage.getItem('nextId')) || 1;
+    localStorage.setItem('nextId', String(nextId + 1));
+    return String(nextId);
   }
 
-  saveGame(board:BoardState, id:number = this.getNextId()):number {
-    const raw = JSON.stringify(board);
-    localStorage.setItem("game-" + id, raw);
-    return id;
+  newGame(game:GameMetadata, board:BoardState):string {
+    game.id = this.getNextId();
+    this.saveMetadata(game.id, game);
+    this.saveBoard(game.id, board);
+    return game.id;
   }
 
-  listGameIds():number[] {
-    const ids:number[] = [];
+  getBoard(id:string):BoardState {
+    return this.get("board-" + id);
+  }
+
+  saveBoard(id:string, board:BoardState):void {
+    this.set("board-" + id, board);
+  }
+
+  getMetadata(id:string):GameMetadata {
+    return this.get("game-" + id);
+  }
+
+  saveMetadata(id:string, metadata:GameMetadata):void {
+    this.set("game-" + id, metadata);
+  }
+
+  listGameIds():string[] {
+    const ids:string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       let key:string = localStorage.key(i);
       if (key.startsWith("game-")) {
-        ids.push(+key.substring(5));
+        ids.push(key.substring(5));
       }
     }
     return sortBy(ids);
   }
 
-  listGames():Game[] {
-    return this.listGameIds().map(this.getGame.bind(this));
+  listMetadata():GameMetadata[] {
+    return this.listGameIds().map(this.getMetadata.bind(this));
   }
 
-  private getNextId():number {
-    let nextId:number = parseInt(localStorage.getItem('nextId')) || 1;
-    localStorage.setItem('nextId', String(nextId + 1));
-    return nextId;
+  private set(key:string, value:any):void {
+    const raw = JSON.stringify(value);
+    localStorage.setItem(key, raw);
+  }
+
+  private get(key:string):any {
+    const raw:string = localStorage.getItem(key);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+    return null;
   }
 }

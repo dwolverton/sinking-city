@@ -1,0 +1,6 @@
+.player::after {
+  content: ", "
+}
+.player:last-of-type::after {
+  content: ""
+}

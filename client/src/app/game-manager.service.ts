@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import BoardState from 'src/game/BoardState';
 import { BehaviorSubject } from 'rxjs';
-import { getInitialBoard, getValidActions } from 'src/game/gameEngine';
+import { getValidActions } from 'src/game/gameEngine';
 import { applyAction } from "src/game/gameEngine";
 import { Action, AvailableAction, ActionType } from 'src/game/actions';
 import { SavedGameService } from './saved-game.service';
 import Game from 'src/game/Game';
+import GameMetadata from 'src/game/GameMetadata';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameManagerService {
 
-  private gameId:number;
+  readonly game$:BehaviorSubject<GameMetadata> = new BehaviorSubject(null);
+  private _game:GameMetadata = null;
   readonly board$:BehaviorSubject<BoardState> = new BehaviorSubject(null);
   private _board:BoardState = null;
   readonly actions$:BehaviorSubject<AvailableAction[][]> = new BehaviorSubject([]);
@@ -21,12 +23,10 @@ export class GameManagerService {
   constructor(private savedGameService:SavedGameService) {
   }
 
-  loadGame(id:number):void {
-    let game:Game = this.savedGameService.getGame(id);
-    if (game) {
-      this.gameId = game.id;
-      this.updateBoard(game.board);
-    }
+  loadGame(id:string):void {
+    this._game = this.savedGameService.getMetadata(id);
+    this.game$.next(this._game);
+    this.updateBoard(this.savedGameService.getBoard(id));
   }
 
   private updateBoard(board:BoardState) {
@@ -49,7 +49,7 @@ export class GameManagerService {
     player = player === null ? this._board.currentPlayer : player;
     const board = applyAction(this._board, action, player);
     this.updateBoard(board);
-    this.savedGameService.saveGame(this._board, this.gameId);
+    this.savedGameService.saveBoard(this._game.id, this._board);
   }
 
 }
