@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SavedGameService } from '../saved-game.service';
 import { getInitialBoard } from 'src/game/gameEngine';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { DIFFICULTIES, ROLES } from 'src/game/boardElements';
 import GameMetadata, { PlayerOptions, initGame } from 'src/game/GameMetadata';
 import BoardState from 'src/game/BoardState';
@@ -18,7 +18,7 @@ export class NewGameComponent implements OnInit {
   roles = ROLES;
   players:FormArray = new FormArray([
     this.generatePlayerFormGroup(), this.generatePlayerFormGroup()
-  ])
+  ], noDuplicateRolesValidator)
   options = new FormGroup({
     difficulty: new FormControl('1', [Validators.required, Validators.pattern(/^\d$/), Validators.min(0), Validators.max(DIFFICULTIES.length - 1)]),
     players: this.players
@@ -62,3 +62,18 @@ export class NewGameComponent implements OnInit {
   }
 
 }
+
+function noDuplicateRolesValidator(players: FormArray): {[key: string]: any} | null {
+  const roles:any[] = players.controls.map((group:FormGroup) => group.controls.role.value);
+  
+  for (let i = 0; i < roles.length - 1; i++) {
+    if (roles[i]) { // skip empties
+      for (let j = i + 1; j < roles.length; j++) {
+        if (roles[i] === roles[j]) {
+          return {'duplicateRoles': roles[i]};
+        }
+      }
+    }
+  }
+  return null; // no duplicates found.
+};
