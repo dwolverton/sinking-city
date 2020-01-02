@@ -1,5 +1,4 @@
 - game features
-  - bug: pilot fly when sunk
   - visual indicators for locations & card selections
   - water level indicator
   - visual indication of engineer's free second shore up

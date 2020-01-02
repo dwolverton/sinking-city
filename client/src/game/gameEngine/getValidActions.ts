@@ -25,9 +25,13 @@ export default function getValidActions(board:BoardState):AvailableAction[][] {
         }
     }
     
+    // check for sunk players
     for (let player of board.players) {
         if (board.tiles[player.location] == null) {
             addMoveAction(board, player, actions[player.id]);
+            if (player.role === Role.PILOT) {
+                actions[player.id].push(buildFlyAction(board));
+            }
             disallowOtherActions = true;
         }
     }
@@ -103,7 +107,7 @@ function addValidActionsForCurrentPlayer(board:BoardState, playerState:PlayerSta
 
     function addPilotFlyAction() {
         if (playerState.role === Role.PILOT && !board.roleSpecial) {
-            actions.push({type: ActionType.Fly, locations: findAllUnsunkLocations(board)});
+            actions.push(buildFlyAction(board));
         }
     }
 
@@ -244,6 +248,10 @@ function addDiverMove(moves:number[], location:number, dx:number, dy:number, til
             moves.push(location);
         }
     } while (!tiles[location] || tiles[location].flooded);
+}
+
+function buildFlyAction(board:BoardState):AvailableAction {
+    return {type: ActionType.Fly, locations: findAllUnsunkLocations(board)};
 }
 
 function filterNonSpecialTreasureCards(cards:number[]):number[] {

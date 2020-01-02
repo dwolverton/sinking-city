@@ -325,6 +325,26 @@ describe("getValidActions:Fly", () => {
     expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
   });
 
+  it("should be available when pilot sunk", () => {
+    let board:BoardState = { ...b1, currentPlayer: 1, actionsRemaining: 0, players: [
+      { id: 0, role: Role.PILOT, location: 15, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Fly)).toBeDefined();
+  });
+
+  it("should be unavailable when other role sunk", () => {
+    let board:BoardState = { ...b1, currentPlayer: 1, actionsRemaining: 0, players: [
+      { id: 0, role: Role.NAVIGATOR, location: 15, cards: [19, 6] },
+      { id: 1, role: 2, location: 18, cards: [23, 14] }
+    ] };
+    let actions:AvailableAction[] = getValidActions(board)[0];
+    expect(actions.find(ac => ac.type === ActionType.Move)).toBeDefined();
+    expect(actions.find(ac => ac.type === ActionType.Fly)).toBeUndefined();
+  });
+
   it("includes all unsunk locations", () => {
     let tiles = mockTiles(`
       **
