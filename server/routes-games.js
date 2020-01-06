@@ -1,44 +1,48 @@
 const { Router } = require("express");
+const boardsRoutes = require("./routes-boards");
+const gamesRepo = require("./games-repo");
 const routes = new Router();
 
-let nextGameId = 2;
+routes.use("/:gameId/board", boardsRoutes);
 
-let games = [
-  { 
-    id: 1,
-    startTime: "2019-12-09T14:03:00Z", players: [
-    { name: "George", role: 0, client: "123" },
-    { name: "Thomas", role: 4, client: "123" }
-  ]}
-];
-
-routes.get("/", (req, res) => {
+routes.get("/", async (req, res) => {
   const { client } = req.query;
-  res.json(games.filter(game => game.players.some(player => player.client === client)));
+  const games = await gamesRepo.findByClient(client);
+  res.json(games);
 });
 
-routes.get("/:gameId", (req, res) => {
-  const gameId = parseInt(req.params.gameId, 10);
-  const game = games.find(g => g.id === gameId);
-  if (game) {
-    res.json(game);
+routes.get("/:gameId", async (req, res) => {
+  const { gameId } = req.params;
+  const gameJson = await gamesRepo.findByIdJson(gameId);
+  if (gameJson) {
+    res.type("json").send(gameJson);
   } else {
     res.status(404).json({ error: `Game ${gameId} not found.`});
   }
 });
 
-routes.post("/", (req, res) => {
-  const { body:game } = req;
-  game.id = nextGameId++;
-  games.push(game);
+routes.delete("/:gameId", async (req, res) => {
+  const { gameId } = req.params;
+  const gameJson = await gamesRepo.remove(gameId);
+  if (gameJson) {
+    // success
+    res.status(204).send();
+  } else {
+    res.status(404).json({ error: `Game ${gameId} not found.`});
+  }
+});
+
+routes.post("/", async (req, res) => {
+  let { body:game } = req;
+  game = await gamesRepo.create(game);
   res.status(201).json(game);
 });
 
-routes.patch("/:gameId/players/:playerIndex", (req, res) => {
-  const gameId = parseInt(req.params.gameId, 10);
-  const playerIndex = parseInt(req.params.playerIndex, 10);
+routes.patch("/:gameId/players/:playerIndex", async (req, res) => {
+  let { gameId, playerIndex } = req.params;
   const { body } = req;
-  const game = games.find(g => g.id === gameId);
+  playerIndex = parseInt(playerIndex, 10);
+  let game = await gamesRepo.findById(gameId);
   if (game) {
     const player = game.players[playerIndex];
     if (player) {
@@ -49,8 +53,9 @@ routes.patch("/:gameId/players/:playerIndex", (req, res) => {
         player.name = body.name;
       }
       if (typeof body.role === "number") {
-        player.role = body.naroleme;
+        player.role = body.role;
       }
+      await gamesRepo.update(game);
       res.json(player);
     } else {
       res.status(404).json({ error: `Player ${playerIndex} not found.`});

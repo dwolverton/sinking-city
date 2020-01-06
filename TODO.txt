@@ -1,4 +1,5 @@
 - game features
+  - custom tile names
   - visual indicators for locations & card selections
   - water level indicator
   - visual indication of engineer's free second shore up
@@ -6,8 +7,12 @@
     - navigator
   - to game list link
 - online play
+  - share code between client & server
   - delete a game
-  - additional game data in list screen (start date & time, players, win/loss)
   - share a game & see shared games
   - play shared game
   - join a shared game
+
+- deleting a game deletes the board
+- ensure unique client ids
+- prevent race conditions in gameRepo.update

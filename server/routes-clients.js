@@ -1,21 +1,29 @@
 const { Router } = require("express");
+const redisClient = require("./redis-client");
+const randomString = require("./random-string");
 const routes = new Router();
 
-let nextClientId = 2;
-
-routes.post("/", (req, res) => {
+routes.post("/", async (req, res) => {
+  const client = await getNextClientId();
   res.status(201).json({
-    client: nextClientId++ + "-" + randomString()
+    client
   });
 });
 
-function randomString() {
-  let str = "";
-  for (let i = 0; i < 10; i++) {
-    let char = Math.floor(Math.random() * 36).toString(36);
-    str += char;
-  }
-  return str;
+function getNextClientId() {
+  return new Promise((resolve, reject) => {
+    redisClient.incr(key_nextClient(), (err, reply) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(reply + "-" + randomString());
+      }
+    });
+  });
+}
+
+function key_nextClient() {
+  return "nextClient";
 }
 
 module.exports = routes;
