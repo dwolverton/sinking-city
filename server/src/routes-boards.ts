@@ -1,6 +1,7 @@
-const { Router } = require("express");
-const routes = new Router({mergeParams: true});
-const redisClient = require("./redis-client");
+import { Router } from "express";
+import redisClient from "./redis-client";
+const { get, set } = redisClient;
+const routes = Router({mergeParams: true});
 
 // set game board
 routes.put("/", (req, res) => {
@@ -8,7 +9,7 @@ routes.put("/", (req, res) => {
   const { body:board } = req;
   const key = "board:" + gameId;
   const value = JSON.stringify(board);
-  redisClient.set(key, value, (err, reply) => {
+  set(key, value, (err, reply) => {
     if (reply === "OK") {
       res.send();
     } else {
@@ -27,7 +28,7 @@ routes.post("/", (req, res) => {
 routes.get("/", (req, res) => {
   const { gameId } = req.params;
   const key = "board:" + gameId;
-  redisClient.get(key, (err, value) => {
+  get(key, (err, value) => {
     console.log(value);
     if (!value) {
       res.status(404).json({ err: "Not Found" });
@@ -38,4 +39,4 @@ routes.get("/", (req, res) => {
   })
 });
 
-module.exports = routes;
+export default routes;

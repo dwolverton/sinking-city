@@ -1,7 +1,8 @@
-const { Router } = require("express");
-const redisClient = require("./redis-client");
-const randomString = require("./random-string");
-const routes = new Router();
+import redisClient from "./redis-client";
+import randomString from "./random-string";
+import { Router } from "express";
+
+const routes = Router();
 
 routes.post("/", async (req, res) => {
   const client = await getNextClientId();
@@ -26,4 +27,4 @@ function key_nextClient() {
   return "nextClient";
 }
 
-module.exports = routes;
+export default routes;

@@ -1,4 +1,4 @@
-function randomString() {
+export default function randomString():string {
   let str = "";
   for (let i = 0; i < 20; i++) {
     let char = Math.floor(Math.random() * 36).toString(36);
@@ -6,5 +6,3 @@ function randomString() {
   }
   return str;
 }
-
-module.exports = randomString;

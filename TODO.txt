@@ -16,3 +16,6 @@
 - deleting a game deletes the board
 - ensure unique client ids
 - prevent race conditions in gameRepo.update
+
+
+https://nx.dev/angular/fundamentals/build-full-stack-applications

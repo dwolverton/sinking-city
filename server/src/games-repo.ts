@@ -1,8 +1,9 @@
-const redisClient = require("./redis-client");
-const randomString = require("./random-string");
-const _ = require("lodash");
+import redisClient from "./redis-client";
+import randomString from "./random-string";
+import _ from "lodash";
+import GameMetadata from "./temp/GameMetadata";
 
-function findByIdJson(id) {
+export function findByIdJson(id:string):Promise<string> {
   return new Promise((resolve, reject) => {
     redisClient.get(key_game(id), (err, value) => {
       if (err) {
@@ -14,28 +15,28 @@ function findByIdJson(id) {
   });
 }
 
-async function findById(id) {
+export async function findById(id:string):Promise<GameMetadata|null> {
   const str = await findByIdJson(id);
   return str ? JSON.parse(str) : null;
 }
 
-function findByClientJson(client) {
+export function findByClientJson(client:string):Promise<string[]> {
   return new Promise((resolve, reject) => {
     redisClient.smembers(key_gamesForClient(client), (err, gameIds) => {
       if (err) {
         reject(err);
       } else {
-        resolve(Promise.all(gameIds.map(findByIdJson)));
+        resolve(Promise.all(gameIds.map(findByIdJson)).then(jsons => _.filter(jsons)));
       }
     });
   });
 }
 
-async function findByClient(client) {
-  return (await findByClientJson(client)).map(JSON.parse);
+export async function findByClient(client:string):Promise<GameMetadata[]> {
+  return (await findByClientJson(client)).map(str => JSON.parse(str));
 }
 
-function create(game) {
+export function create(game:GameMetadata):Promise<GameMetadata> {
   return getNextGameId().then(id => new Promise((resolve, reject) => {
     game.id = id;
     const value = JSON.stringify(game);
@@ -54,22 +55,27 @@ function create(game) {
   }));
 }
 
-function update(game) {
+export function update(game:GameMetadata):Promise<GameMetadata> {
+  const id:string = <string>game.id;
   const multi = redisClient.multi();
-  multi.watch(key_game(game.id));
-  return findById(game.id).then(oldGame => new Promise((resolve, reject) => {
+  multi.watch(key_game(id));
+  return findById(id).then(oldGame => new Promise<GameMetadata>((resolve, reject) => {
+    if (!oldGame) {
+      reject(`Game ${id} not found.`);
+      return;
+    }
     let prevClients = getClients(oldGame);
     let nextClients = getClients(game);
     let addedClients = _.difference(nextClients, prevClients);
     let removedClients = _.difference(prevClients, nextClients);
     const value = JSON.stringify(game);
 
-    multi.set(key_game(game.id), value)
+    multi.set(key_game(id), value)
     for (let client of addedClients) {
-      multi.sadd(key_gamesForClient(client), game.id);
+      multi.sadd(key_gamesForClient(client), id);
     }
     for (let client of removedClients) {
-      multi.srem(key_gamesForClient(client), game.id);
+      multi.srem(key_gamesForClient(client), id);
     }
     multi.exec((err) => {
       if (err) {
@@ -84,13 +90,8 @@ function update(game) {
   });
 }
 
-function remove(gameId) {
-  return new Promise((resolve, rawReject) => {
-    function reject(err) {
-      redisClient.unwatch(key_game(gameId));
-      rawReject(err);
-    }
-
+export function remove(gameId:string):Promise<boolean> {
+  return new Promise((resolve, reject) => {
     redisClient.watch(key_game(gameId), err => {
       if (err) {
         reject(err);
@@ -103,9 +104,9 @@ function remove(gameId) {
 
             const multi = redisClient.multi();
             redisClient.multi();
-            multi.del(key_game(game.id));
+            multi.del(key_game(<string>game.id));
             for (let client of removedClients) {
-              multi.srem(key_gamesForClient(client), game.id);
+              multi.srem(key_gamesForClient(client), <string>game.id);
             }
             multi.exec((err) => {
               if (err) {
@@ -121,7 +122,7 @@ function remove(gameId) {
   });
 }
 
-function getNextGameId() {
+function getNextGameId():Promise<string> {
   return new Promise((resolve, reject) => {
     redisClient.incr(key_nextGame(), (err, reply) => {
       if (err) {
@@ -133,11 +134,11 @@ function getNextGameId() {
   });
 }
 
-function key_game(id) {
+function key_game(id:string):string {
   return "game:" + id;
 }
 
-function key_gamesForClient(client) {
+function key_gamesForClient(client:string):string {
   return "gamesForClient:" + client;
 }
 
@@ -145,19 +146,9 @@ function key_nextGame() {
   return "nextGame";
 }
 
-function getClients(game) {
+function getClients(game:GameMetadata):string[] {
   if (!game) {
     return [];
   }
-  return _.uniq(game.players.map(p => p.client));
+  return <string[]>_.uniq(_.filter(game.players.map(p => p.client)));
 }
-
-module.exports = {
-  findById,
-  findByIdJson,
-  findByClient,
-  findByClientJson,
-  create,
-  update,
-  remove
-};

@@ -1,7 +1,7 @@
-const { Router } = require("express");
-const boardsRoutes = require("./routes-boards");
-const gamesRepo = require("./games-repo");
-const routes = new Router();
+import { Router } from "express";
+import boardsRoutes from "./routes-boards";
+import * as gamesRepo from "./games-repo";
+const routes = Router();
 
 routes.use("/:gameId/board", boardsRoutes);
 
@@ -39,9 +39,9 @@ routes.post("/", async (req, res) => {
 });
 
 routes.patch("/:gameId/players/:playerIndex", async (req, res) => {
-  let { gameId, playerIndex } = req.params;
+  let { gameId, playerIndex:playerIndexStr } = req.params;
   const { body } = req;
-  playerIndex = parseInt(playerIndex, 10);
+  const playerIndex = parseInt(playerIndexStr, 10);
   let game = await gamesRepo.findById(gameId);
   if (game) {
     const player = game.players[playerIndex];
@@ -65,4 +65,4 @@ routes.patch("/:gameId/players/:playerIndex", async (req, res) => {
   }
 });
 
-module.exports = routes;
+export default routes;
