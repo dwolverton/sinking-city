@@ -22,5 +22,5 @@ jobs:
         node-version: 10.x
     - run: npm ci
       working-directory: ./client
-    - run: npm test --sourceMap=false --browsers=ChromeHeadless --watch=false --progress=false
+    - run: npm test --sourceMap=false --watch=false --progress=false
       working-directory: ./client
