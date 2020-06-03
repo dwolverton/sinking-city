@@ -19,3 +19,5 @@
 
 
 https://nx.dev/angular/fundamentals/build-full-stack-applications
+
+https://medium.com/@arnaudrinquin/build-modular-application-with-npm-local-modules-dfc5ff047bcc
