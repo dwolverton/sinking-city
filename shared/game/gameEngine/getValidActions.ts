@@ -1,7 +1,7 @@
 import BoardState, { TileState, PlayerState, Outcome } from '../BoardState';
 import { AvailableAction, ActionType, ACTION_ORDER } from '../actions';
 import Coord, { ICoord, MAX_COORD } from '../Coord';
-import { TILES, TREASURE_CARDS, Tile, TreasureCardSpecial, ROLES, Role } from '../boardElements';
+import { TILES, TREASURE_CARDS, Tile, TreasureCardSpecial, ROLES, Role, OUT_OF_BOUNDS_LOCATIONS } from '../boardElements';
 
 export default function getValidActions(board:BoardState):AvailableAction[][] {
     const actions:AvailableAction[][] = board.players.map(() => []);
@@ -228,26 +228,32 @@ function allowDiagonal(player:PlayerState):boolean {
 
 function getDiverMoves(location:number, tiles:TileState[]):number[] {
     const moves:number[] = [];
-    addDiverMove(moves, location, -1, 0, tiles);
-    addDiverMove(moves, location, 1, 0, tiles);
-    addDiverMove(moves, location, 0, -1, tiles);
-    addDiverMove(moves, location, 0, 1, tiles);
+    const visitedLocations:Set<number> = new Set();
+    visitedLocations.add(location);
+    const coord:Coord = Coord.fromIndex(location);
+    addDiverMove(moves, coord.getRelative(-1, 0), tiles, visitedLocations);
+    addDiverMove(moves, coord.getRelative(1, 0), tiles, visitedLocations);
+    addDiverMove(moves, coord.getRelative(0, -1), tiles, visitedLocations);
+    addDiverMove(moves, coord.getRelative(0, 1), tiles, visitedLocations);
     return moves;
 }
 
-function addDiverMove(moves:number[], location:number, dx:number, dy:number, tiles:TileState[]) {
-    let coord:Coord = Coord.fromIndex(location);
-    do {
-        coord.x += dx;
-        coord.y += dy;
-        if (!coord.isInBounds()) {
-            return;
-        }
-        location = coord.toIndex();
-        if (tiles[location]) {
-            moves.push(location);
-        }
-    } while (!tiles[location] || tiles[location].flooded);
+function addDiverMove(moves:number[], coord:Coord, tiles:TileState[], visitedLocations:Set<number>) {
+    const location = coord.toIndex();
+    if (visitedLocations.has(location) || !coord.isInIslandBounds()) {
+        return;
+    }
+    visitedLocations.add(location);
+    const tile:TileState = tiles[location];
+    if (tile !== null) {
+        moves.push(location);
+    }
+    if (tile === null || tile.flooded) {
+        addDiverMove(moves, coord.getRelative(-1, 0), tiles, visitedLocations);
+        addDiverMove(moves, coord.getRelative(1, 0), tiles, visitedLocations);
+        addDiverMove(moves, coord.getRelative(0, -1), tiles, visitedLocations);
+        addDiverMove(moves, coord.getRelative(0, 1), tiles, visitedLocations);
+    }
 }
 
 function buildFlyAction(board:BoardState):AvailableAction {

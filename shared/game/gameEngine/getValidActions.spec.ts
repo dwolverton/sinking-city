@@ -1,6 +1,6 @@
 import BoardState from "../BoardState";
 import getValidActions from './getValidActions';
-import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards';
+import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD, locationsFromMap } from './mock-boards';
 import { AvailableAction, ActionType } from '../actions';
 import { Tile, Role } from '../boardElements';
 
@@ -59,7 +59,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([9, 19, 23, 33]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        **
+       **x*
+      **x.x*
+      *x.*.x
+       *x.x
+        *x
+    `));
   });
 
   it("should be able to move over multiple sunken tiles", () => {
@@ -78,7 +85,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([3, 25, 28, 33]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        *x
+       *x.x
+      **x.x*
+      **x.x*
+       x.*x
+        xx
+    `));
   });
 
   it("should be able to move over multiple sunken tiles (2)", () => {
@@ -97,7 +111,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([17, 18]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        **
+       xxxx
+      *....x
+      xxxxx*
+       ****
+        **
+    `));
   });
 
   it("should be able to move over one flooded tile", () => {
@@ -116,7 +137,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([9, 15, 19, 20, 22, 23, 27, 33]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        **
+       **x*
+      **xxx*
+      *xx*xx
+       *xxx
+        *x
+    `));
   });
 
   it("should be able to move over multiple flooded tiles", () => {
@@ -135,7 +163,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([3, 9, 15, 21, 25, 26, 28, 33]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        *x
+       *xxx
+      **xxx*
+      **xxx*
+       xx*x
+        xx
+    `));
   });
 
   it("should be able to move over multiple flooded tiles (2)", () => {
@@ -154,7 +189,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([13, 14, 15, 16, 17, 18]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        **
+       xxxx
+      *xxxxx
+      xxxxx*
+       ****
+        **
+    `));
   });
 
   it("should be able to move over multiple flooded & sunken tiles", () => {
@@ -173,7 +215,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([3, 15, 21, 25, 26, 28, 33]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        *x
+       *x.x
+      **xxx*
+      **xxx*
+       xx*x
+        xx
+    `));
   });
 
   it("should be able to move over multiple flooded & sunken tiles (2)", () => {
@@ -192,7 +241,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([14, 16, 17, 18]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        **
+       xxxx
+      *.x.xx
+      xxxxx*
+       ****
+        **
+    `));
   });
 
   it("should be able to move over multiple flooded & sunken tiles to flooded edge", () => {
@@ -211,7 +267,14 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([3, 9, 12, 17, 33]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        xx
+       xxxx
+      x..-.x
+      xxx.xx
+       *x.x
+        xx
+    `));
   });
 
   it("should be able to move off of sunken tile", () => {
@@ -230,17 +293,27 @@ describe("getValidActions:Move Diver", () => {
     let actions:AvailableAction[] = getValidActions(board)[0];
     let action:AvailableAction = actions.find(ac => ac.type === ActionType.Move);
     action.locations.sort((a,b) => a - b);
-    expect(action.locations).toEqual([17, 26, 32]);
+    expect(action.locations).toEqual(locationsFromMap(`
+        .x
+       x.xx
+      .....x
+      xx..xx
+       xxxx
+        xx
+    `));
   });
+
+  // check for non-consecutive flooded tiles
+  // check for swimming out of bounds
 
   it("should not be available if nowhere to go", () => {
     let tiles = mockTiles(`
-      .*
-     -.**
-    ..-...
-    --..-*
-     *.-*
-      .*
+      ..
+     ....
+    ..*...
+    ......
+     ....
+      ..
     `);
     let board = { ...b1, tiles, players: [
       { id: 0, role: Role.DIVER, location: 14, cards: [19, 6] },

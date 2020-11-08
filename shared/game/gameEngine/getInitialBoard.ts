@@ -1,7 +1,8 @@
-import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial } from '../boardElements';
+import { TREASURE_CARDS, FLOOD_CARDS, ROLES, TreasureCard, TreasureCardSpecial, OUT_OF_BOUNDS_LOCATIONS, BOARD_TILE_COUNT } from '../boardElements';
 import BoardState, { TileState, Outcome } from '../BoardState';
 import { createShuffledNumbersArray } from '../utils';
 import GameMetadata, { PlayerMetadata } from '../GameMetadata';
+import { map } from 'lodash';
 
 export default function getInitialBoard(game:GameMetadata):BoardState {
     const board:BoardState = {
@@ -71,19 +72,10 @@ function createTiles():TileState[] {
 }
 
 export function createBlankMap():TileState[] {
-    const spaces:TileState[] = [];
+    const spaces:TileState[] = new Array(BOARD_TILE_COUNT);
     // block off empty tiles
-    spaces[0] = null;
-    spaces[1] = null;
-    spaces[4] = null;
-    spaces[5] = null;
-    spaces[6] = null;
-    spaces[11] = null;
-    spaces[24] = null;
-    spaces[29] = null;
-    spaces[30] = null;
-    spaces[31] = null;
-    spaces[34] = null;
-    spaces[35] = null;
+    OUT_OF_BOUNDS_LOCATIONS.forEach(i => {
+        spaces[i] = null;
+    });
     return spaces;
 }

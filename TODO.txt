@@ -1,12 +1,14 @@
 - technical
   - upgrade Angular
 - game features
+  - explanation of loss
+  - click tile to move
+  - click tile to shore up
   - custom tile names
   - visual indicators for locations & card selections
   - water level indicator
   - visual indication of engineer's free second shore up
   - special abilities
-    - BUG: diver swim through any missing/flooded adjacent tiles
     - navigator
   - to game list link
 - online play

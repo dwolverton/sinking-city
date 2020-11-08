@@ -1,6 +1,6 @@
 import BoardState, { Outcome, TileState } from '../BoardState';
 import { createBlankMap } from './getInitialBoard';
-import { Role } from '../boardElements';
+import { BOARD_TILE_COUNT, OUT_OF_BOUNDS_LOCATIONS, Role } from '../boardElements';
 
 export const b_start:BoardState = {
   players: [
@@ -218,6 +218,11 @@ export const b1:BoardState = {
   undo: null
 };
 
+/**
+ * Builds a state array of tiles based on a string representation of the map.
+ * @param string a representation of the map: out of bounds are whitespace, in bounds are '*', '-', or '.'
+ *    '*' means unflooded tile. '-' means flooded tile, '.' means sunken tile.
+ */
 export function mockTiles(string: string): TileState[] {
   let locations = createBlankMap();
   let nextTile = 0;
@@ -238,6 +243,27 @@ export function mockTiles(string: string): TileState[] {
   for (let i = 0; i < locations.length; i++) {
     if (locations[i] !== null) {
       locations[i] = tiles[tileI++];
+    }
+  }
+  return locations;
+}
+
+/**
+ * @param string a representation of the map: out of bounds are whitespace, in bounds are non-whitespace,
+ *    selected tiles are marked by x's.
+ * @returns an array of the locations of the x's on the map.
+ */
+export function locationsFromMap(string: string): number[] {
+  let tiles:string = string.replace(/\s/g, "");
+  let locations:number[] = [];
+
+  let tilesI = 0;
+  for (let location = 0; location < BOARD_TILE_COUNT; location++) {
+    if (!OUT_OF_BOUNDS_LOCATIONS.has(location)) {
+      if (tiles[tilesI] === 'x') {
+        locations.push(location);
+      }
+      tilesI++;
     }
   }
   return locations;

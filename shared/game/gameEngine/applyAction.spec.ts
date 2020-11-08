@@ -368,22 +368,6 @@ describe("applyAction indicates loss", () => {
     expect(board.outcome).toEqual(Outcome.NONE);
   });
 
-  it("LOSS when diver in water and can not swim to safety", () => {
-    let tiles = mockTiles(`
-      **
-     ---.
-    ***...
-    .-**..
-     ....
-      ..
-    `);
-    let board = { ...b1, tiles, floodCardsToDraw: 2, floodStack: [ 1, 2, 9 ],
-      players: [ ...b1.players.slice(0, 1), { ...b1.players[2], location: 28, role: Role.DIVER } ]
-    };
-    board = applyAction(board, { type: ActionType.DrawFloodCard}, 0);
-    expect(board.outcome).toEqual(Outcome.LOSE);
-  });
-
   it("NOT LOSS when pilot in water", () => {
     let tiles = mockTiles(`
       **
