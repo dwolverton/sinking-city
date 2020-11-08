@@ -1,9 +1,12 @@
+- technical
+  - upgrade Angular
 - game features
   - custom tile names
   - visual indicators for locations & card selections
   - water level indicator
   - visual indication of engineer's free second shore up
   - special abilities
+    - BUG: diver swim through any missing/flooded adjacent tiles
     - navigator
   - to game list link
 - online play
@@ -20,4 +23,7 @@
 
 https://nx.dev/angular/fundamentals/build-full-stack-applications
 
-https://medium.com/@arnaudrinquin/build-modular-application-with-npm-local-modules-dfc5ff047bcc
+NPM link https://stackoverflow.com/questions/39858993/compile-typescript-project-as-local-module
+
+TypeScript Project References https://www.typescriptlang.org/docs/handbook/project-references.html
+TypeScript Relative Modules

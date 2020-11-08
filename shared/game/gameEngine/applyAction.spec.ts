@@ -1,7 +1,7 @@
 import BoardState, { Outcome } from "../BoardState";
 import applyAction from './applyAction';
 import { ActionType } from '../actions';
-import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
+import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards';
 import { Role } from '../boardElements';
 
 const WATERS_RISE_CARD:number = 20;

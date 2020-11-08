@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TreasureCard } from 'src/game/boardElements';
+import { TreasureCard } from 'src/../../shared/game/boardElements';
 
 @Component({
   selector: 'app-player-card',

@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { GameManagerService } from '../game-manager.service';
-import BoardState, { PlayerState } from 'src/game/BoardState';
-import { ROLES } from 'src/game/boardElements';
-import Coord from 'src/game/Coord';
+import BoardState, { PlayerState } from 'src/../../shared/game/BoardState';
+import { ROLES } from 'src/../../shared/game/boardElements';
+import Coord from 'src/../../shared/game/Coord';
 
 @Component({
   selector: 'app-board',

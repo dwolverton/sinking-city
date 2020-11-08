@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import BoardState from 'src/game/BoardState';
-import Game from 'src/game/Game';
+import BoardState from 'src/../../shared/game/BoardState';
+import Game from 'src/../../shared/game/Game';
 import { sortBy } from 'lodash';
-import GameMetadata from 'src/game/GameMetadata';
+import GameMetadata from 'src/../../shared/game/GameMetadata';
 
 @Injectable({
   providedIn: 'root'

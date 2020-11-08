@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Outcome } from 'src/game/BoardState';
+import { Outcome } from 'src/../../shared/game/BoardState';
 
 @Component({
   selector: 'app-end-modal',

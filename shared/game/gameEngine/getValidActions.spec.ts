@@ -1,6 +1,6 @@
 import BoardState from "../BoardState";
 import getValidActions from './getValidActions';
-import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards.spec';
+import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards';
 import { AvailableAction, ActionType } from '../actions';
 import { Tile, Role } from '../boardElements';
 

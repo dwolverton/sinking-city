@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import BoardState from 'src/game/BoardState';
-import { TreasureCard, FloodCard, FLOOD_CARDS, TREASURE_CARDS, WATER_LEVELS, TREASURES } from 'src/game/boardElements';
+import BoardState from 'src/../../shared/game/BoardState';
+import { TreasureCard, FloodCard, FLOOD_CARDS, TREASURE_CARDS, WATER_LEVELS, TREASURES } from 'src/../../shared/game/boardElements';
 
 @Component({
   selector: 'app-dashboard',

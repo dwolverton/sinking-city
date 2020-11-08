@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TileState } from 'src/game/BoardState';
-import { Tile, TILES, Treasure, TREASURES } from 'src/game/boardElements';
+import { TileState } from 'src/../../shared/game/BoardState';
+import { Tile, TILES, Treasure, TREASURES } from 'src/../../shared/game/boardElements';
 
 @Component({
   selector: 'app-tile',

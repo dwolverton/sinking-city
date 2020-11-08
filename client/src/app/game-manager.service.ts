@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import BoardState from 'src/game/BoardState';
+import BoardState from 'src/../../shared/game/BoardState';
 import { BehaviorSubject } from 'rxjs';
-import { getValidActions } from 'src/game/gameEngine';
-import { applyAction } from "src/game/gameEngine";
-import { Action, AvailableAction, ActionType } from 'src/game/actions';
+import { getValidActions } from 'src/../../shared/game/gameEngine';
+import { applyAction } from "src/../../shared/game/gameEngine";
+import { Action, AvailableAction, ActionType } from 'src/../../shared/game/actions';
 import { SavedGameService } from './saved-game.service';
-import Game from 'src/game/Game';
-import GameMetadata from 'src/game/GameMetadata';
+import Game from 'src/../../shared/game/Game';
+import GameMetadata from 'src/../../shared/game/GameMetadata';
 
 @Injectable({
   providedIn: 'root'

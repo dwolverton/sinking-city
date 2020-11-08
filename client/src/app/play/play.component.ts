@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameManagerService } from '../game-manager.service';
-import BoardState, { Outcome } from 'src/game/BoardState';
+import BoardState, { Outcome } from 'src/../../shared/game/BoardState';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/game/actions';
-import GameMetadata from 'src/game/GameMetadata';
+import { AvailableAction, Action, ActionType, ACTION_NAMES } from 'src/../../shared/game/actions';
+import GameMetadata from 'src/../../shared/game/GameMetadata';
 
 @Component({
   selector: 'app-play',

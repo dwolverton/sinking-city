@@ -1,0 +1,21 @@
+{
+  "name": "sinking-city-shared",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.3",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.165",
+    "lodash": "^4.17.20",
+    "tslib": "^2.0.3"
+  }
+}

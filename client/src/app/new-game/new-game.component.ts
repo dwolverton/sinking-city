@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SavedGameService } from '../saved-game.service';
-import { getInitialBoard } from 'src/game/gameEngine';
+import { getInitialBoard } from 'src/../../shared/game/gameEngine';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray, AbstractControl } from '@angular/forms';
-import { DIFFICULTIES, ROLES } from 'src/game/boardElements';
-import GameMetadata, { PlayerOptions, initGame } from 'src/game/GameMetadata';
-import BoardState from 'src/game/BoardState';
+import { DIFFICULTIES, ROLES } from 'src/../../shared/game/boardElements';
+import GameMetadata, { PlayerOptions, initGame } from 'src/../../shared/game/GameMetadata';
+import BoardState from 'src/../../shared/game/BoardState';
 
 @Component({
   selector: 'app-new-game',

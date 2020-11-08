@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
-import { PlayerState } from 'src/game/BoardState';
-import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/game/boardElements';
-import { ACTION_NAMES, AvailableAction } from 'src/game/actions';
-import { PlayerMetadata } from 'src/game/GameMetadata';
+import { PlayerState } from 'src/../../shared/game/BoardState';
+import { Role, ROLES, TreasureCard, TREASURE_CARDS } from 'src/../../shared/game/boardElements';
+import { ACTION_NAMES, AvailableAction } from 'src/../../shared/game/actions';
+import { PlayerMetadata } from 'src/../../shared/game/GameMetadata';
 
 @Component({
   selector: 'app-player-board',

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FloodCard, FLOOD_CARDS } from 'src/game/boardElements';
+import { FloodCard, FLOOD_CARDS } from 'src/../../shared/game/boardElements';
 
 @Component({
   selector: 'app-flood-card',
