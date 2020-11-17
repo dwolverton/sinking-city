@@ -1,8 +1,8 @@
-import BoardState, { Outcome } from "../BoardState";
-import applyAction from './applyAction';
-import { ActionType } from '../actions';
+import BoardState, { Outcome } from "../game/BoardState";
+import applyAction from '../game/gameEngine/applyAction';
+import { ActionType } from '../game/actions';
 import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD } from './mock-boards';
-import { Role } from '../boardElements';
+import { Role } from '../game/boardElements';
 
 const WATERS_RISE_CARD:number = 20;
 

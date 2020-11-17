@@ -1,6 +1,6 @@
-import BoardState, { Outcome, TileState } from '../BoardState';
-import { createBlankMap } from './getInitialBoard';
-import { BOARD_TILE_COUNT, OUT_OF_BOUNDS_LOCATIONS, Role } from '../boardElements';
+import BoardState, { Outcome, TileState } from '../game/BoardState';
+import { createBlankMap } from '../game/gameEngine/getInitialBoard';
+import { BOARD_TILE_COUNT, OUT_OF_BOUNDS_LOCATIONS, Role } from '../game/boardElements';
 
 export const b_start:BoardState = {
   players: [

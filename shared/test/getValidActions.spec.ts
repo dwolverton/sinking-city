@@ -1,8 +1,8 @@
-import BoardState from "../BoardState";
-import getValidActions from './getValidActions';
+import BoardState from "../game/BoardState";
+import getValidActions from '../game/gameEngine/getValidActions';
 import { b1, mockTiles, EXIT_LOCATION, HELICOPTER_LIFT_CARD, locationsFromMap } from './mock-boards';
-import { AvailableAction, ActionType } from '../actions';
-import { Tile, Role } from '../boardElements';
+import { AvailableAction, ActionType } from '../game/actions';
+import { Tile, Role } from '../game/boardElements';
 
 describe("getValidActions:Move Diver", () => {
   it("should allow normal moves", () => {

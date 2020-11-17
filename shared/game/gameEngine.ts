@@ -1,6 +1,6 @@
 import BoardState from './BoardState';
 import { Action } from './actions';
-import { getValidActions } from './gameEngine';
+import getValidActions from './gameEngine/getValidActions';
 export { default as getInitialBoard } from './gameEngine/getInitialBoard';
 export { default as applyAction } from './gameEngine/applyAction';
 export { default as getValidActions } from './gameEngine/getValidActions';
